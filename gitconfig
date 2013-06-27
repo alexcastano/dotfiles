@@ -1,0 +1,46 @@
+[color]
+    ui = true
+
+[color "diff"]
+    whitespace = red reverse
+
+[color "status"]
+    added = yellow
+    changed = green
+    untracked = cyan
+
+[core]
+    whitespace=fix,-indent-with-non-tab,trailing-space,cr-at-eol
+
+[alias]
+    ci = commit
+    st = status
+    br = branch
+    co = checkout
+    df = diff
+    lp = log -p
+    lol = log --graph --decorate --pretty=oneline --abbrev-commit
+    lola = log --graph --decorate --pretty=oneline --abbrev-commit --all
+    ls = ls-files
+
+[user]
+	name = Alejandro Castaño del Castillo
+	email = alex@batkiwi.com
+
+[url "git@git.batkiwi.com:"]
+    insteadOf = bk:
+[url "git@git.batkiwi.com:"]
+    pushInsteadOf = bk:
+
+[url "git@github.com:"]
+    insteadOf = gh:
+[url "git@github.com:"]
+    pushInsteadOf = gh:
+
+[url "git@github.com:alexcastano/"]
+    insteadOf = gha:
+[url "git@github.com:alexcastano/"]
+    pushInsteadOf = gha:
+
+[push]
+	default = simple
