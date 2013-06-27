@@ -1,25 +1,75 @@
 " Pathogen
 execute pathogen#infect()
 
-syntax on
+" Use Vim settings, rather than Vi settings (much better!).
+" This must be first, because it changes other options as a side effect.
+set nocompatible
+
+" allow backspacing over everything in insert mode
+set history=50    " keep 50 lines of command line history
+
+
+" Switch syntax highlighting on, when the terminal has colors
+" Also switch on highlighting the last used search pattern.
+if &t_Co > 2 || has("gui_running")
+  syntax on
+  set hlsearch
+endif
+
+" Only do this part when compiled with support for autocommands.
+if has("autocmd")
+
+  " Enable file type detection.
+  " Use the default filetype settings, so that mail gets 'tw' set to 72,
+  " 'cindent' is on in C files, etc.
+  " Also load indent files, to automatically do language-dependent indenting.
+  filetype plugin indent on
+
+  " Put these in an autocmd group, so that we can delete them easily.
+  augroup vimrcEx
+  au!
+
+  " For all text files set 'textwidth' to 78 characters.
+  autocmd FileType text setlocal textwidth=78
+
+  " When editing a file, always jump to the last known cursor position.
+  " Don't do it when the position is invalid or when inside an event handler
+  " (happens when dropping a file on gvim).
+  " Also don't do it when the mark is in the first line, that is the default
+  " position when opening a file.
+  autocmd BufReadPost *
+    \ if line("'\"") > 1 && line("'\"") <= line("$") |
+    \   exe "normal! g`\"" |
+    \ endif
+
+  augroup END
+
+else
+
+  set autoindent    " always set autoindenting on
+
+endif " has("autocmd")
+
+" Convenient command to see the difference between the current buffer and the
+" file it was loaded from, thus the changes you made.
+" Only define it when not defined already.
+if !exists(":DiffOrig")
+  command DiffOrig vert new | set bt=nofile | r ++edit # | 0d_ | diffthis
+      \ | wincmd p | diffthis
+endif
 
 " If using a dark background within the editing area and syntax highlighting
 " turn on this option as well
 set background=dark
 
 
-" Uncomment the following to have Vim load indentation rules according to the
-" detected filetype.
-filetype indent on
-
 colorscheme railscasts2
 
 " Tabs
 set ts=2  " Tabs are 2 spaces
-set bs=2  " Backspace over everything in insert mode
 set shiftwidth=2  " Tabs under smart indent
 
-set autoindent          " auto indent
+set backspace=indent,eol,start " Backspace over everything in insert mode
 set showcmd		" Show (partial) command in status line.
 set ignorecase		" Do case insensitive matching
 set smartcase		" Do smart case matching
@@ -27,8 +77,7 @@ set incsearch		" Incremental search
 set hls             " Highlight
 set autowrite		" Automatically save before commands like :next and :make
 set hidden             " Hide buffers when they are abandoned
-set mouse=a		" Enable mouse usage (all modes) in terminals
-set mousehide  		" Hide mouse after chars typed
+
 set cf  " Enable error files & error jumping.
 set autowrite  " Writes on make/shell commands
 set ruler  " Ruler on
@@ -37,6 +86,12 @@ set timeoutlen=250  " Time to wait after ESC (default causes an annoying delay)
 set laststatus=2  " Always show status line.
 
 set nu  " Line numbers on
+
+" In many terminal emulators the mouse works just fine, thus enable it.
+if has('mouse')
+  set mouse=a		" Enable mouse usage (all modes) in terminals
+  set mousehide  		" Hide mouse after chars typed
+endif
 
 " No blinking  No noise
 set noerrorbells visualbell t_vb=
@@ -77,14 +132,16 @@ let g:rails_default_file='config/database.yml'
 set showmatch  " Show matching brackets.
 set mat=5  " Bracket blinking.
 
-set backup                     " Enable creation of backup file.
-set backupdir=~/.vim/backups " Where backups will go.
-set directory=~/.vim/tmp     " Where temporary files will go.
+if has("vms")
+  set nobackup    " do not keep a backup file, use versions instead
+else
+  set backup    " keep a backup file
+endif
+
+"set backupdir=~/.vim_backups " Where backups will go.
+"set directory=~/.vim_tmp     " Where temporary files will go.
+
 "
 " " sesiones
 " " map ,s :mksession! ~/.vim/.session
 " " map ,r :source ~/.vim/.session
-"
-"
-" set textwidth=80
-"
