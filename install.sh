@@ -9,6 +9,7 @@
 dir=~/dotfiles                    # dotfiles directory
 olddir=~/dotfiles_old             # old dotfiles backup directory
 dotfiles="bashrc bash_aliases vim gitconfig"    # list of files/folders to symlink in homedir
+normalfiles="bin"
 
 ##########
 
@@ -30,8 +31,12 @@ for file in $dotfiles; do
   ln -s $dir/$file ~/.$file
 done
 
-# vim configuration
-mv ~/.vimrc $olddir
-ln -s ~/.vim/vimrc ~/.vimrc
+# move any existing dotfiles in homedir to dotfiles_old directory, then create symlinks 
+for file in $normalfiles; do
+  echo "Moving any existing files from ~ to $olddir"
+  mv ~/$file $olddir
+  echo "Creating symlink to $file in home directory."
+  ln -s $dir/$file ~/$file
+done
 
-git submodule update --init
+echo "Don't forget run _install_vim"

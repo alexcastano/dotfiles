@@ -1,0 +1,15 @@
+#!/bin/bash
+
+if [ -f ~/.vimrc ]; then
+  echo "Moving old configuration"
+  mv ~/.vimrc ~/.vimrc.bak
+fi
+
+echo "Linking configuration"
+ln -s ~/.vim/vimrc ~/.vimrc
+
+echo "Download plugins"
+git submodule update --init
+
+mkdir ~/.vim/backup
+mkdir ~/.vim/tmp
