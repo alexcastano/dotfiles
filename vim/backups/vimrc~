@@ -28,6 +28,7 @@ set hidden             " Hide buffers when they are abandoned
 set mouse=a		" Enable mouse usage (all modes) in terminals
 set mousehide  		" Hide mouse after chars typed
 set cf  " Enable error files & error jumping.
+set clipboard+=unnamed  " Yanks go on clipboard instead.
 set autowrite  " Writes on make/shell commands
 set ruler  " Ruler on
 set nowrap  " Line wrapping off
@@ -41,25 +42,32 @@ set noerrorbells visualbell t_vb=
 autocmd GUIEnter * set visualbell t_vb=
 
 " " Formatting (some of these are for coding in C and C++)
-set nocp incsearch
-set cinoptions=:0,p0,t0
-set cinwords=if,else,while,do,for,switch,case
-set formatoptions=tcqr
-set smarttab
-set expandtab
+" set nocp incsearch
+" set cinoptions=:0,p0,t0
+" set cinwords=if,else,while,do,for,switch,case
+" set formatoptions=tcqr
+" set cindent
+" set smarttab
+" set expandtab
 abbr #i #include
 abbr #d #define
 
 " Completion commands with tab
 set wildmode=longest,list,full
 set wildmenu
-
 " 
 "
 " highligth extre spaces
 highlight ExtraWhitespace ctermbg=red guibg=red
 match ExtraWhitespace /\s\+$/
 
+" 
+" " sesiones
+" " map ,s :mksession! ~/.vim/.session
+" " map ,r :source ~/.vim/.session
+" 
+" set textwidth=80
+" 
 " Save as sudo
 command WW w !sudo tee % >/dev/null
 
@@ -79,11 +87,3 @@ set mat=5  " Bracket blinking.
 set backup                     " Enable creation of backup file.
 set backupdir=~/.vim/backups " Where backups will go.
 set directory=~/.vim/tmp     " Where temporary files will go.
-" 
-" " sesiones
-" " map ,s :mksession! ~/.vim/.session
-" " map ,r :source ~/.vim/.session
-" 
-" 
-" set textwidth=80
-" 
