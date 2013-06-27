@@ -138,8 +138,8 @@ else
   set backup    " keep a backup file
 endif
 
-"set backupdir=~/.vim_backups " Where backups will go.
-"set directory=~/.vim_tmp     " Where temporary files will go.
+set backupdir=~/.vim_backups " Where backups will go.
+set directory=~/.vim_tmp     " Where temporary files will go.
 
 "
 " " sesiones
