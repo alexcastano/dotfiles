@@ -2,7 +2,7 @@
 execute pathogen#infect()
 
 syntax on
- 
+
 " If using a dark background within the editing area and syntax highlighting
 " turn on this option as well
 set background=dark
@@ -11,7 +11,9 @@ set background=dark
 " Uncomment the following to have Vim load indentation rules according to the
 " detected filetype.
 filetype indent on
- 
+
+colorscheme railscasts2
+
 " Tabs
 set ts=2  " Tabs are 2 spaces
 set bs=2  " Backspace over everything in insert mode
@@ -54,7 +56,7 @@ abbr #d #define
 set wildmode=longest,list,full
 set wildmenu
 
-" 
+"
 "
 " highligth extre spaces
 highlight ExtraWhitespace ctermbg=red guibg=red
@@ -63,15 +65,14 @@ match ExtraWhitespace /\s\+$/
 " Save as sudo
 command WW w !sudo tee % >/dev/null
 
-" colorscheme railscasts2
-" 
+"
 " OpenURL command for rails plugin
 :command -bar -nargs=1 OpenURL :!chromium <args>
 
-" Rails default file 
+" Rails default file
 let g:rails_default_file='config/database.yml'
 
-" " 
+"
 " Visual
 set showmatch  " Show matching brackets.
 set mat=5  " Bracket blinking.
@@ -79,11 +80,11 @@ set mat=5  " Bracket blinking.
 set backup                     " Enable creation of backup file.
 set backupdir=~/.vim/backups " Where backups will go.
 set directory=~/.vim/tmp     " Where temporary files will go.
-" 
+"
 " " sesiones
 " " map ,s :mksession! ~/.vim/.session
 " " map ,r :source ~/.vim/.session
-" 
-" 
+"
+"
 " set textwidth=80
-" 
+"
