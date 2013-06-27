@@ -8,7 +8,7 @@
 
 dir=~/dotfiles                    # dotfiles directory
 olddir=~/dotfiles_old             # old dotfiles backup directory
-dotfiles="bashrc bash_aliases vim gitconfig"    # list of files/folders to symlink in homedir
+dotfiles="bashrc bash_aliases vim gitconfig rvmrc"    # list of files/folders to symlink in homedir
 normalfiles="bin"
 
 ##########
