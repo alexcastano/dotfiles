@@ -31,3 +31,6 @@
 [submodule "vim/bundle/speeddating"]
 	path = vim/bundle/speeddating
 	url = git@github.com:tpope/vim-speeddating.git
+[submodule "vim/bundle/NERDTree"]
+	path = vim/bundle/NERDTree
+	url = git://github.com/scrooloose/nerdtree.git
