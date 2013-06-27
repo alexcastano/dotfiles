@@ -34,3 +34,5 @@ done
 # vim configuration
 mv ~/.vimrc $olddir
 ln -s ~/.vim/vimrc ~/.vimrc
+
+git submodule update --init
