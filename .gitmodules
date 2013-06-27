@@ -16,3 +16,6 @@
 [submodule "vim/bundle/rake"]
 	path = vim/bundle/rake
 	url = git@github.com:tpope/vim-rake.git
+[submodule "vim/bundle/unimpaired"]
+	path = vim/bundle/unimpaired
+	url = git@github.com:tpope/vim-unimpaired.git
