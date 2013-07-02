@@ -9,6 +9,7 @@ echo "Linking configuration"
 ln -s ~/.vim/vimrc ~/.vimrc
 
 echo "Download plugins"
+cd ~/dotfiles
 git submodule update --init
 
 mkdir ~/.vim_backups
