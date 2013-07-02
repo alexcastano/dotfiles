@@ -8,7 +8,7 @@
 
 dir=~/dotfiles                    # dotfiles directory
 olddir=~/dotfiles_old             # old dotfiles backup directory
-dotfiles="bashrc bash_aliases vim gitconfig rvmrc irbrc"    # list of files/folders to symlink in homedir
+dotfiles="bashrc bash_aliases gitconfig rvmrc irbrc"    # list of files/folders to symlink in homedir
 normalfiles="bin"
 
 ##########
@@ -38,5 +38,3 @@ for file in $normalfiles; do
   echo "Creating symlink to $file in home directory."
   ln -s $dir/$file ~/$file
 done
-
-echo "Don't forget run _install_vim"
