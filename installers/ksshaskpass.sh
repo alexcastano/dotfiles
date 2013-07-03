@@ -1,3 +1,5 @@
+#!/bin/bash -x
+
 DIRECTORY=~/.kde4/Autostart/
 if [ -d $DIRECTORY ]
 then

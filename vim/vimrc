@@ -85,7 +85,7 @@ set nowrap  " Line wrapping off
 set timeoutlen=250  " Time to wait after ESC (default causes an annoying delay)
 set laststatus=2  " Always show status line.
 
-set nu  " Line numbers on
+" set nu  " Line numbers on
 
 " In many terminal emulators the mouse works just fine, thus enable it.
 if has('mouse')
