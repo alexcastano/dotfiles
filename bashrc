@@ -16,17 +16,21 @@ shopt -s checkwinsize
 # make less more friendly for non-text input files, see lesspipe(1)
 [ -x /usr/bin/lesspipe ] && eval "$(lesspipe)"
 
-function current_branch
-{
-    x=$(git branch 2> /dev/null | grep ^* | awk '{print $2}')
-    if [ ! -z $x ]
-    then
-        echo "!$x"
-    fi
-}
+# function current_branch
+# {
+#     x=$(git branch 2> /dev/null | grep ^* | awk '{print $2}')
+#     if [ ! -z $x ]
+#     then
+#         echo "!$x"
+#     fi
+# }
+# 
+# PS1='\u@\[\033[01;32m\]\h\[\033[0m\] \w\[\033[01;33m\]$(current_branch)\[\033[0m\] \$ '
 
-PS1='\u@\[\033[01;32m\]\h\[\033[0m\] \w\[\033[01;33m\]$(current_branch)\[\033[0m\] \$ '
-
+if [ -f ~/.bash_prompt ]
+then
+  source ~/.bash_prompt
+fi
 
 # Alias definition.
 
