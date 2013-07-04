@@ -80,8 +80,10 @@ export LD_LIBRARY_PATH=.
 
 xhost +local: &> /dev/null
 
+# RVM
 if [ -f ~/.rvm/scripts/rvm ]; then
     source ~/.rvm/scripts/rvm
 fi
 
-# PATH=$PATH:$HOME/.rvm/bin # Add RVM to PATH for scripting
+# NVM
+[[ -s ~/.nvm/nvm.sh ]] && source ~/.nvm/nvm.sh # This loads NVM
