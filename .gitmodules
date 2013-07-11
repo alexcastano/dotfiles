@@ -34,9 +34,6 @@
 [submodule "vim/bundle/NERDTree"]
 	path = vim/bundle/NERDTree
 	url = git://github.com/scrooloose/nerdtree.git
-[submodule "vim/bundle/snipmate"]
-	path = vim/bundle/snipmate
-	url = git://github.com/msanders/snipmate.vim.git
 [submodule "vim/bundle/qml"]
 	path = vim/bundle/qml
 	url = git@github.com:peterhoeg/vim-qml.git
