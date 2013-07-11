@@ -63,7 +63,7 @@ endif
 set background=dark
 
 
-colorscheme railscasts2
+"colorscheme railscasts2
 
 " Tabs
 set ts=2  " Tabs are 2 spaces
