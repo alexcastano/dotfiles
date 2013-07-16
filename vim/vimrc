@@ -38,7 +38,7 @@ if has("autocmd")
   " Also don't do it when the mark is in the first line, that is the default
   " position when opening a file.
   autocmd BufReadPost *
-    \ if line("'\"") > 1 && line("'\"") <= line("$") |
+    \ if line("'\"") > 0 && line("'\"") <= line("$") |
     \   exe "normal! g`\"" |
     \ endif
 
@@ -58,12 +58,11 @@ if !exists(":DiffOrig")
       \ | wincmd p | diffthis
 endif
 
-" If using a dark background within the editing area and syntax highlighting
-" turn on this option as well
+set t_Co=16
 set background=dark
-
-
-"colorscheme railscasts2
+let g:solarized_termcolors=16
+let g:solarized_termtrans = 1
+colorscheme solarized
 
 " Tabs
 set ts=2  " Tabs are 2 spaces
