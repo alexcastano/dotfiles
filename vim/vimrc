@@ -67,8 +67,8 @@ let g:solarized_termtrans = 1
 colorscheme solarized
 
 " Tabs
-set ts=2  " Tabs are 2 spaces
-set shiftwidth=2  " Tabs under smart indent
+set ts=4  " Tabs are 2 spaces
+set shiftwidth=4  " Tabs under smart indent
 set smarttab
 set expandtab
 
@@ -142,6 +142,10 @@ endif
 set backupdir=~/.vim_backups " Where backups will go.
 set directory=~/.vim_tmp     " Where temporary files will go.
 
+" clang complete settings
+let g:clang_snippets = 1
+let g:clang_snippets_engine = 'ultisnips'
+set completeopt=menu,longest
 "
 " " sesiones
 " " map ,s :mksession! ~/.vim/.session
