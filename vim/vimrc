@@ -145,10 +145,32 @@ endif
 set backupdir=~/.vim_backups " Where backups will go.
 set directory=~/.vim_tmp     " Where temporary files will go.
 
+" Librery mode is faster
+let g:clang_use_library = 1
+
+" Complete options (disable preview scratch window)
+set completeopt=menu,menuone,longest
+" Limit popup menu height
+set pumheight=15
+
+map <leader>cc :call g:ClangUpdateQuickFix()<CR>
+
+" SuperTab option for context aware completion
+let g:SuperTabDefaultCompletionType="context"
+
 " clang complete settings
-let g:clang_snippets = 1
-let g:clang_snippets_engine = 'ultisnips'
-set completeopt=menu,longest
+let g:clang_snippets=1
+let g:clang_snippets_engine='ultisnips'
+
+let g:clang_user_options='--std=c++11'
+
+" Auto select first option but doesn't write
+let g:clang_auto_select=1
+" Enable auto popup, use <Tab> to autocomplete
+let g:clang_complete_auto=1
+" Show clang errors in the quickfix window
+let g:clang_complete_copen=1
+
 "
 " " sesiones
 " " map ,s :mksession! ~/.vim/.session
