@@ -96,6 +96,7 @@ set foldmethod=syntax
 " In many terminal emulators the mouse works just fine, thus enable it.
 if has('mouse')
   set mouse=a		" Enable mouse usage (all modes) in terminals
+  set ttymouse=xterm2
   set mousehide  		" Hide mouse after chars typed
 endif
 
@@ -170,6 +171,8 @@ let g:clang_auto_select=1
 let g:clang_complete_auto=1
 " Show clang errors in the quickfix window
 let g:clang_complete_copen=1
+" Search for error automatically
+let g:clang_periodic_quickfix=0
 
 "
 " " sesiones
