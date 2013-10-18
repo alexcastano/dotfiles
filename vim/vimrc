@@ -178,3 +178,11 @@ let g:clang_periodic_quickfix=0
 " " sesiones
 " " map ,s :mksession! ~/.vim/.session
 " " map ,r :source ~/.vim/.session
+"
+" This is to set the current directory
+cnoremap %% <C-R>=fnameescape(expand('%:h')).'/'<cr>
+map <leader>ew :e %%
+map <leader>es :sp %%
+map <leader>ev :vsp %%
+map <leader>et :tabe %%
+
