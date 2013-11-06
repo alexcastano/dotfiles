@@ -67,3 +67,6 @@
 [submodule "vim/bundle/rename"]
 	path = vim/bundle/rename
 	url = git@github.com:danro/rename.vim.git
+[submodule "vim/bundle/rdoc"]
+	path = vim/bundle/rdoc
+	url = https://github.com/depuracao/vim-rdoc.git
