@@ -1,1 +1,2 @@
 rvm_make_flags="-j10"
+export rvm_ignore_gemsets_flag=1
