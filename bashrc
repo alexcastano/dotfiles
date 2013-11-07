@@ -66,7 +66,6 @@ if [ -f /etc/bash_completion ]; then
 fi
 
 export PATH=~/bin:$HOME/.rvm/bin:/usr/local/bin:/usr/lib/ccache/bin/:/usr/lib/icecream/bin/:/usr/bin/vendor_perl/:${PATH}
-# set -o vi
 
 if [ -e $HOME/TODO ]
 then
