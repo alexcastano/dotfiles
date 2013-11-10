@@ -1,72 +1,72 @@
-[submodule "vim/bundle/fugitive"]
-	path = vim/bundle/fugitive
+[submodule "vim/.vim/bundle/fugitive"]
+	path = vim/.vim/bundle/fugitive
 	url = http://github.com/tpope/vim-fugitive.git
-[submodule "vim/bundle/rails"]
-	path = vim/bundle/rails
+[submodule "vim/.vim/bundle/rails"]
+	path = vim/.vim/bundle/rails
 	url = git@github.com:tpope/vim-rails.git
-[submodule "vim/bundle/haml"]
-	path = vim/bundle/haml
+[submodule "vim/.vim/bundle/haml"]
+	path = vim/.vim/bundle/haml
 	url = git@github.com:tpope/vim-haml.git
-[submodule "vim/bundle/cucumber"]
-	path = vim/bundle/cucumber
+[submodule "vim/.vim/bundle/cucumber"]
+	path = vim/.vim/bundle/cucumber
 	url = git@github.com:tpope/vim-cucumber.git
-[submodule "vim/bundle/bundler"]
-	path = vim/bundle/bundler
+[submodule "vim/.vim/bundle/bundler"]
+	path = vim/.vim/bundle/bundler
 	url = git@github.com:tpope/vim-bundler.git
-[submodule "vim/bundle/rake"]
-	path = vim/bundle/rake
+[submodule "vim/.vim/bundle/rake"]
+	path = vim/.vim/bundle/rake
 	url = git@github.com:tpope/vim-rake.git
-[submodule "vim/bundle/unimpaired"]
-	path = vim/bundle/unimpaired
+[submodule "vim/.vim/bundle/unimpaired"]
+	path = vim/.vim/bundle/unimpaired
 	url = git@github.com:tpope/vim-unimpaired.git
-[submodule "vim/bundle/repeat"]
-	path = vim/bundle/repeat
+[submodule "vim/.vim/bundle/repeat"]
+	path = vim/.vim/bundle/repeat
 	url = git@github.com:tpope/vim-repeat.git
-[submodule "vim/bundle/surround"]
-	path = vim/bundle/surround
+[submodule "vim/.vim/bundle/surround"]
+	path = vim/.vim/bundle/surround
 	url = git@github.com:tpope/vim-surround.git
-[submodule "vim/bundle/commentary"]
-	path = vim/bundle/commentary
+[submodule "vim/.vim/bundle/commentary"]
+	path = vim/.vim/bundle/commentary
 	url = git@github.com:tpope/vim-commentary.git
-[submodule "vim/bundle/speeddating"]
-	path = vim/bundle/speeddating
+[submodule "vim/.vim/bundle/speeddating"]
+	path = vim/.vim/bundle/speeddating
 	url = git@github.com:tpope/vim-speeddating.git
-[submodule "vim/bundle/NERDTree"]
-	path = vim/bundle/NERDTree
+[submodule "vim/.vim/bundle/NERDTree"]
+	path = vim/.vim/bundle/NERDTree
 	url = git://github.com/scrooloose/nerdtree.git
-[submodule "vim/bundle/qml"]
-	path = vim/bundle/qml
+[submodule "vim/.vim/bundle/qml"]
+	path = vim/.vim/bundle/qml
 	url = git@github.com:peterhoeg/vim-qml.git
-[submodule "vim/bundle/ack"]
-	path = vim/bundle/ack
+[submodule "vim/.vim/bundle/ack"]
+	path = vim/.vim/bundle/ack
 	url = https://github.com/mileszs/ack.vim
-[submodule "vim/bundle/ruby"]
-	path = vim/bundle/ruby
+[submodule "vim/.vim/bundle/ruby"]
+	path = vim/.vim/bundle/ruby
 	url = git://github.com/vim-ruby/vim-ruby.git
-[submodule "vim/bundle/coffee-script"]
-	path = vim/bundle/coffee-script
+[submodule "vim/.vim/bundle/coffee-script"]
+	path = vim/.vim/bundle/coffee-script
 	url = git://github.com/kchmck/vim-coffee-script.git
-[submodule "vim/bundle/ultisnips"]
-	path = vim/bundle/ultisnips
+[submodule "vim/.vim/bundle/ultisnips"]
+	path = vim/.vim/bundle/ultisnips
 	url = https://github.com/SirVer/ultisnips.git
-[submodule "vim/bundle/colors-solarized"]
-	path = vim/bundle/colors-solarized
+[submodule "vim/.vim/bundle/colors-solarized"]
+	path = vim/.vim/bundle/colors-solarized
 	url = git://github.com/altercation/vim-colors-solarized.git
-[submodule "vim/bundle/ctrlp"]
-	path = vim/bundle/ctrlp
+[submodule "vim/.vim/bundle/ctrlp"]
+	path = vim/.vim/bundle/ctrlp
 	url = https://github.com/kien/ctrlp.vim.git
-[submodule "vim/bundle/A"]
-	path = vim/bundle/A
+[submodule "vim/.vim/bundle/A"]
+	path = vim/.vim/bundle/A
 	url = git@github.com:vim-scripts/a.vim.git
-[submodule "vim/bundle/clang_complete"]
-	path = vim/bundle/clang_complete
+[submodule "vim/.vim/bundle/clang_complete"]
+	path = vim/.vim/bundle/clang_complete
 	url = https://github.com/Rip-Rip/clang_complete.git
-[submodule "vim/bundle/supertab"]
-	path = vim/bundle/supertab
+[submodule "vim/.vim/bundle/supertab"]
+	path = vim/.vim/bundle/supertab
 	url = git@github.com:ervandew/supertab.git
-[submodule "vim/bundle/rename"]
-	path = vim/bundle/rename
+[submodule "vim/.vim/bundle/rename"]
+	path = vim/.vim/bundle/rename
 	url = git@github.com:danro/rename.vim.git
-[submodule "vim/bundle/rdoc"]
-	path = vim/bundle/rdoc
+[submodule "vim/.vim/bundle/rdoc"]
+	path = vim/.vim/bundle/rdoc
 	url = https://github.com/depuracao/vim-rdoc.git
