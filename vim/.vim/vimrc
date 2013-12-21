@@ -186,3 +186,4 @@ map <leader>es :sp %%
 map <leader>ev :vsp %%
 map <leader>et :tabe %%
 
+autocmd BufNewFile,BufReadPost *.coffee setl foldmethod=indent
