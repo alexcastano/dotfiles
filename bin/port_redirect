@@ -1,0 +1,17 @@
+#!/bin/bash
+
+if [[ -z "$1" ]]; then
+  out=80
+else
+  out=$1
+fi
+
+if [[ -z "$2" ]]; then
+  in=3000
+else
+  in=$2
+fi
+
+sudo iptables -t nat -F
+sudo iptables -t nat -I OUTPUT -p tcp -o lo --dport $in -j REDIRECT --to-ports $out
+sudo iptables -t nat -I PREROUTING -p tcp --dport $in -j REDIRECT --to-ports $out
