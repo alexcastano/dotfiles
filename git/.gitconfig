@@ -27,6 +27,10 @@
 	name = Alejandro Castaño del Castillo
 	email = alex@batkiwi.com
 
+[url "git@bitbucket.org:latitud70/"]
+    insteadOf = l70:
+    pushInsteadOf = l70:
+
 [url "git@git.batkiwi.com:"]
     insteadOf = bk:
 [url "git@git.batkiwi.com:"]
