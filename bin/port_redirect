@@ -12,6 +12,5 @@ else
   in=$2
 fi
 
-sudo iptables -t nat -F
-sudo iptables -t nat -I OUTPUT -p tcp -o lo --dport $in -j REDIRECT --to-ports $out
-sudo iptables -t nat -I PREROUTING -p tcp --dport $in -j REDIRECT --to-ports $out
+sudo iptables -t nat -I OUTPUT -p tcp -o lo --dport $out -j REDIRECT --to-ports $in
+sudo iptables -t nat -I PREROUTING -p tcp --dport $out -j REDIRECT --to-ports $in
