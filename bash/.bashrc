@@ -24,7 +24,7 @@ shopt -s checkwinsize
 #         echo "!$x"
 #     fi
 # }
-# 
+#
 # PS1='\u@\[\033[01;32m\]\h\[\033[0m\] \w\[\033[01;33m\]$(current_branch)\[\033[0m\] \$ '
 
 if [ -f ~/.bash_prompt ]
@@ -65,7 +65,7 @@ if [ -f /etc/bash_completion ]; then
     . /etc/bash_completion
 fi
 
-export PATH=~/bin:$HOME/.rvm/bin:/usr/local/bin:/usr/lib/ccache/bin/:/usr/lib/icecream/bin/:/usr/bin/vendor_perl/:${PATH}
+export PATH=~/bin:$HOME/.rbenv/bin:/usr/local/bin:/usr/lib/ccache/bin/:/usr/lib/icecream/bin/:/usr/bin/vendor_perl/:${PATH}
 
 if [ -e $HOME/TODO ]
 then
@@ -79,11 +79,27 @@ export LD_LIBRARY_PATH=.
 
 xhost +local: &> /dev/null
 
-# RVM
-if [ -f ~/.rvm/scripts/rvm ]; then
-    source ~/.rvm/scripts/rvm
-fi
-
 # NVM
 [[ -s ~/.nvm/nvm.sh ]] && source ~/.nvm/nvm.sh # This loads NVM
 [[ -r $NVM_DIR/bash_completion ]] && . $NVM_DIR/bash_completion
+
+
+# rbenv
+export PATH="$HOME/.rbenv/shims:${PATH}"
+export RBENV_SHELL=bash
+source "$HOME/.rbenv/libexec/../completions/rbenv.bash"
+rbenv rehash 2>/dev/null
+rbenv() {
+  local command
+  command="$1"
+  if [ "$#" -gt 0 ]; then
+    shift
+  fi
+
+  case "$command" in
+  rehash|shell)
+    eval "`rbenv "sh-$command" "$@"`";;
+  *)
+    command rbenv "$command" "$@";;
+  esac
+}
