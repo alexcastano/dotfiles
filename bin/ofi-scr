@@ -1,0 +1,1 @@
+xrandr --output DFP4 --mode 1920x1080 --pos 0x0 --output DFP5 --mode 1920x1200 --pos 1920x0 --output DFP6 --mode 1920x1200 --pos 3840x0
