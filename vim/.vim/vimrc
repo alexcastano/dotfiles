@@ -45,6 +45,12 @@ if has("autocmd")
     \   exe "normal! g`\"" |
     \ endif
 
+  autocmd FileType text,markdown,html setlocal wrap linebreak nolist number
+  au BufRead,BufNewFile *.md set filetype=markdown
+
+
+  autocmd BufNewFile,BufReadPost *.coffee setl foldmethod=indent
+
   augroup END
 
 else
@@ -187,4 +193,7 @@ map <leader>es :sp %%
 map <leader>ev :vsp %%
 map <leader>et :tabe %%
 
-autocmd BufNewFile,BufReadPost *.coffee setl foldmethod=indent
+noremap  <buffer> <silent> k gk
+noremap  <buffer> <silent> j gj
+noremap  <buffer> <silent> 0 g0
+noremap  <buffer> <silent> $ g$

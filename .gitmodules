@@ -76,3 +76,6 @@
 [submodule "ruby/.ruby-build"]
 	path = ruby/.ruby-build
 	url = git@github.com:sstephenson/ruby-build.git
+[submodule "vim/.vim/bundle/markdown"]
+	path = vim/.vim/bundle/markdown
+	url = https://github.com/plasticboy/vim-markdown.git
