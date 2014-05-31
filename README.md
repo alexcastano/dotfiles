@@ -10,9 +10,15 @@ git commit -m "Install Fugitive.vim bundle as a submodule."
 
 Update plugins
 
+# new ones
+git submodule init
+git submodule sync
+git submodule update
+
+
 git submodule foreach git pull origin master
 
-Remove plugins
+# Remove plugins
 
 1. Remove it from .gitmodules
 2. Remove it from .git/config
