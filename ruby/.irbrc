@@ -1,2 +1,2 @@
-require 'rubygems'
-require 'interactive_editor'
+# require 'rubygems'
+# require 'interactive_editor'
