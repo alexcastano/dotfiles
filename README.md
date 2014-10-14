@@ -23,3 +23,6 @@ git submodule foreach git pull origin master
 1. Remove it from .gitmodules
 2. Remove it from .git/config
 3. Run git rm --cached <path-to-module></path-to-module>
+
+# update all plugins
+git submodule foreach git pull origin master
