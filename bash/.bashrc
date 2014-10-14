@@ -86,3 +86,4 @@ xhost +local: &> /dev/null
 
 # rbenv
 eval "$(rbenv init -)"
+export SHUTDOWN_VIPS="true"
