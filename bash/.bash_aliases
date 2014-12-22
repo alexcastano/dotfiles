@@ -13,6 +13,8 @@ alias dhclient='dhclient -v'
 
 alias ver-scr='xrandr --output DP1 --mode 1920x1200 --pos 0x0 --rotate left --output LVDS1 --mode 1366x768 --pos 1200x780'
 alias hor-scr='xrandr --output DP1 --mode 1920x1200 --pos 0x0 --rotate normal --output LVDS1 --mode 1366x768 --pos 1920x432'
+alias pro-scr='xrandr --output HDMI1 --mode 1920x1080 --pos 0x0 --rotate normal --output LVDS1 --off'
+alias mus-scr='xrandr --output HDMI1 --mode 1280x720 --pos 0x0 --rotate normal --output LVDS1 --mode 1366x768 --pos 0x0'
 alias dis-scr='xrandr --output LVDS1 --mode 1366x768 --output DP1 --off --output VGA1 --off --output HDMI1 --off'
 alias ofi-scr='xrandr --output eDP1 --mode 1920x1080 --pos 0x0 --rotate normal --output HDMI1 --mode 1920x1080 --pos 1920x0 --rotate normal'
 
@@ -25,3 +27,4 @@ alias pythonweb='python -m http.server'
 alias cal='cal -m'
 
 alias be='bundle exec'
+alias bes='bundle exec spring'
