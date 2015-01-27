@@ -1,7 +1,7 @@
-alias ins='yaourt -S'
+alias ins='yaourt -S --noconfirm'
 alias rem='yaourt -Rns'
 alias upd='sudo pacman -Su'
-alias upg='yaourt -Syua'
+alias upg='yaourt -Syua --noconfirm'
 alias upg-ati='sudo yaourt -Suy --ignore xorg* --ignore xf86-*'
 alias shp='yaourt -Si'
 alias sea='yaourt -Ss'
@@ -14,7 +14,7 @@ alias dhclient='dhclient -v'
 alias ver-scr='xrandr --output DP1 --mode 1920x1200 --pos 0x0 --rotate left --output LVDS1 --mode 1366x768 --pos 1200x780'
 alias hor-scr='xrandr --output DP1 --mode 1920x1200 --pos 0x0 --rotate normal --output LVDS1 --mode 1366x768 --pos 1920x432'
 alias dis-scr='xrandr --output LVDS1 --mode 1366x768 --output DP1 --off --output VGA1 --off --output HDMI1 --off'
-alias ofi-scr='xrandr --output eDP1 --mode 1920x1080 --pos 0x0 --rotate normal --output HDMI1 --mode 1920x1080 --pos 1920x0 --rotate normal'
+alias ofi-scr='xrandr --output eDP1 --mode 1920x1080 --pos 1920x0 --rotate normal --output HDMI1 --mode 1920x1080 --pos 0x0 --rotate normal'
 
 alias remotevnc="ssh -t -L 5900:localhost:5900 insomnia 'x11vnc -ncache 10 -localhost -display :0'"
 
