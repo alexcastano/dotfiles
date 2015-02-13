@@ -89,8 +89,8 @@
 	path = vim/.vim/bundle/tabular
 	url = git@github.com:godlygeek/tabular.git
 [submodule "vim/bundle/vim-jsx"]
-	path = vim/bundle/vim-jsx
+	path = vim/.vim/bundle/jsx
 	url = https://github.com/mxw/vim-jsx.git
 [submodule "vim-endwise"]
-	path = vim-endwise
+	path = vim/.vim/bundle/endwise
 	url = git://github.com/tpope/vim-endwise.git
