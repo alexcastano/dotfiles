@@ -48,7 +48,7 @@ if has("autocmd")
   au BufRead,BufNewFile *.md set filetype=markdown
 
 
-  autocmd BufNewFile,BufReadPost *.coffee setl foldmethod=indent
+  " autocmd BufNewFile,BufReadPost *.coffee setl foldmethod=indent
 
   augroup END
 
@@ -95,7 +95,7 @@ set timeoutlen=250  " Time to wait after ESC (default causes an annoying delay)
 set laststatus=2  " Always show status line.
 
 " Fold
-set foldmethod=syntax
+set foldmethod=indent
 
 " set nu  " Line numbers on
 
