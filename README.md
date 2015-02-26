@@ -3,7 +3,7 @@ dotfiles
 
 Add plugin on vim
 
-git submodule add http://github.com/tpope/vim-fugitive.git vim/bundle/fugitive
+git submodule add http://github.com/tpope/vim-fugitive.git vim/.vim/bundle/fugitive
 git add .
 git commit -m "Install Fugitive.vim bundle as a submodule."
 
