@@ -29,18 +29,10 @@ bindsym $mod+Return exec i3-sensible-terminal
 # kill focused window
 bindsym $mod+Shift+q kill
 
-# start dmenu (a program launcher)
-bindsym $mod+d exec dmenu_run
-# There also is the (new) i3-dmenu-desktop which only displays applications
-# shipping a .desktop file. It is a wrapper around dmenu, so you need that
-# installed.
-# bindsym $mod+d exec --no-startup-id i3-dmenu-desktop
+# start *faster* dmenu (a program launcher)
+bindsym $mod+d exec j4-dmenu-desktop
 
-# change focus
-# bindsym $mod+j focus left
-# bindsym $mod+k focus down
-# bindsym $mod+l focus up
-# bindsym $mod+semicolon focus right
+# like vim change focus
 bindsym $mod+h focus left
 bindsym $mod+j focus down
 bindsym $mod+k focus up
@@ -69,7 +61,7 @@ bindsym $mod+Shift+Up move up
 bindsym $mod+Shift+Right move right
 
 # split in horizontal orientation
-bindsym $mod+h split g
+bindsym $mod+g split h
 
 # split in vertical orientation
 bindsym $mod+v split v

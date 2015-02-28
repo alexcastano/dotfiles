@@ -1,0 +1,8 @@
+! Make caps lock acts as control
+keycode 66 = Control_L
+clear Lock
+add Control = Control_L
+
+! User lenovo menu key for ctrl action
+! add Super_L = Menu
+keycode 135 = Super_L Super_L Super_L
