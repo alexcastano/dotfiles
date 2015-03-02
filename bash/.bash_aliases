@@ -28,3 +28,5 @@ alias cal='cal -m'
 
 alias be='bundle exec'
 alias bes='bundle exec spring'
+
+alias gg='surfraw google'
