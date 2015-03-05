@@ -41,3 +41,12 @@ URxvt.url-select.launcher: chromium
 URxvt.url-select.underline: true
 URxvt.keysym.M-u:      perl:url-select:select_next
 URxvt.keysym.M-p:      perl:clipboard:paste
+
+! Enable to use control tab
+URxvt.keysym.Control-Tab: \033}\033[27;5;9~
+URxvt.keysym.Control-ISO_Left_Tab: \033[27;6;9~
+URxvt.keysym.Control-Shift-ISO_Left_Tab: \033[27;6;9~
+
+! disable ctrl-shift default behaviour
+URxvt*iso14755: False
+URxvt*iso14755_52: False

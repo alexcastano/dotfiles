@@ -97,3 +97,6 @@
 [submodule "vim/.vim/bundle/rspec"]
 	path = vim/.vim/bundle/rspec
 	url = https://github.com/thoughtbot/vim-rspec.git
+[submodule "vim/.vim/bundle/tmux-navigator"]
+	path = vim/.vim/bundle/tmux-navigator
+	url = https://github.com/christoomey/vim-tmux-navigator.git
