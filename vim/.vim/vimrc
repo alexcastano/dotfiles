@@ -255,3 +255,7 @@ nmap Qrx :VimuxInterruptRunner<CR>
 
 " Zoom the runner pane (use <bind-key> z to restore runner pane)
 nmap Qrz :call VimuxZoomRunner()<CR>
+
+" Pretty json
+nmap Qpj vipQpj
+vmap Qpj :!python -m json.tool<CR>
