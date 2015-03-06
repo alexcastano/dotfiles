@@ -94,9 +94,9 @@
 [submodule "vim-endwise"]
 	path = vim/.vim/bundle/endwise
 	url = git://github.com/tpope/vim-endwise.git
-[submodule "vim/.vim/bundle/rspec"]
-	path = vim/.vim/bundle/rspec
-	url = https://github.com/thoughtbot/vim-rspec.git
 [submodule "vim/.vim/bundle/tmux-navigator"]
 	path = vim/.vim/bundle/tmux-navigator
 	url = https://github.com/christoomey/vim-tmux-navigator.git
+[submodule "vim/.vim/bundle/vimux"]
+	path = vim/.vim/bundle/vimux
+	url = https://github.com/benmills/vimux.git

@@ -91,7 +91,7 @@ set cf  " Enable error files & error jumping.
 set autowrite  " Writes on make/shell commands
 set ruler  " Ruler on
 set nowrap  " Line wrapping off
-set timeoutlen=250  " Time to wait after ESC (default causes an annoying delay)
+set timeoutlen=1000  " Time to wait after ESC (default causes an annoying delay)
 set laststatus=2  " Always show status line.
 
 " Fold
@@ -207,13 +207,6 @@ nmap <Esc>[27;6;9~ :tabprevious<cr>
 imap <Esc>[27;6;9~ <Esc>:tabprevious<cr>
 
 
-" RSpec
-map <Leader>t :call RunCurrentSpecFile()<CR>
-map <Leader>s :call RunNearestSpec()<CR>
-map <Leader>l :call RunLastSpec()<CR>
-map <Leader>a :call RunAllSpecs()<CR>
-let g:rspec_command = "!bin/rspec {spec}"
-
 " Swap arguments
 map <F9> "wdiwdwep"wp
 
@@ -225,3 +218,40 @@ autocmd BufWinEnter * match ExtraWhitespace /\s\+$/
 autocmd InsertEnter * match ExtraWhitespace /\s\+\%#\@<!$/
 autocmd InsertLeave * match ExtraWhitespace /\s\+$/
 autocmd BufWinLeave * call clearmatches()
+
+" Yank until the end of the line
+:map Y y$
+
+" disabling Q
+:map Q <Nop>
+
+" Vimux
+" If text is selected, save it in the v buffer and send that buffer it to tmux
+vmap Qr "vy :call VimuxSendText(@v)<CR>']
+
+" Select current paragraph and send it to tmux
+nmap Qrr vipQr
+
+" Run the nearest test with rspec
+nmap QrT :call VimuxRunCommand("clear; bin/rspec " . bufname("%"))<CR>
+
+" Run the current file with rspec
+nmap Qrt :call VimuxRunCommand("clear; bin/rspec " . bufname("%") . ":" . line('.'))<CR>
+
+" Prompt for a command to run
+nmap Qrc :VimuxPromptCommand<CR>
+
+" Run last command executed by VimuxRunCommand
+nmap Qr. :VimuxRunLastCommand<CR>
+
+" Inspect runner pane
+nmap Qri :VimuxInspectRunner<CR>
+
+" Close vim tmux runner opened by VimuxRunCommand
+nmap Qrq :VimuxCloseRunner<CR>
+
+" Interrupt any command running in the runner pane
+nmap Qrx :VimuxInterruptRunner<CR>
+
+" Zoom the runner pane (use <bind-key> z to restore runner pane)
+nmap Qrz :call VimuxZoomRunner()<CR>
