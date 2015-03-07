@@ -259,3 +259,8 @@ nmap Qrz :call VimuxZoomRunner()<CR>
 " Pretty json
 nmap Qpj vipQpj
 vmap Qpj :!python -m json.tool<CR>
+
+
+" Vim Airline
+let g:airline#extensions#tabline#enabled = 1
+let g:airline_powerline_fonts = 1
