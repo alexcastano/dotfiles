@@ -78,7 +78,7 @@ source $ZSH/oh-my-zsh.sh
 # Example aliases
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
-source .zsh_aliases
+source ~/.zsh_aliases
 
 # default user to don't show in the prompt
 DEFAULT_USER=alex
