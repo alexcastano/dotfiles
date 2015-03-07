@@ -14,7 +14,9 @@ Xft.hintstyle:  hintfull
 ! urxvt.font:  xft:Source Code Pro:size=8
 ! urxvt.font:  xft:DejaVuSansMono:size=26
 ! urxvt.font:  xft:DejaVuSansMono:size=10
-urxvt.font:  xft:DejaVuSansMono:size=8
+! urxvt.font:  xft:DejaVuSansMono:size=8
+! urxvt.font:  xft:Terminus:size=8,xft:Inconsolata\ for\ Powerline:pixelsize=12
+urxvt.font:  xft:DejaVuSansMono:size=8,xft:Inconsolata\ for\ Powerline:pixelsize=12
 
 URxvt.scrollBar:  false
 URxvt.jumpScroll: true
