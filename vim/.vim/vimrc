@@ -324,6 +324,15 @@ let g:gitgutter_eager = 0
 " let g:gitgutter_realtime = 750
 highlight clear SignColumn
 
+" Syntastic
+let g:syntastic_always_populate_loc_list = 1
+let g:syntastic_auto_loc_list            = 0
+let g:syntastic_check_on_open            = 1
+let g:syntastic_check_on_wq              = 0
+
+let g:syntastic_ruby_checkers            = ['rubylint', 'mri']
+
+
 " Undo
 set undofile                " Save undo's after file closes
 set undodir=~/.vim_tmp/undo " where to save undo histories
