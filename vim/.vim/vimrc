@@ -261,6 +261,7 @@ autocmd BufWinLeave * call clearmatches()
 " Vimux
 " If text is selected, save it in the v buffer and send that buffer it to tmux
 vmap Qr "vy :call VimuxSendText(@v)<CR>']
+" VimuxSendKeys("'" . escape(@k, "'") . "'")
 
 " Select current paragraph and send it to tmux
 nmap Qrr vipQr
@@ -297,7 +298,17 @@ vmap Qpj :!python -m json.tool<CR>
 map Qt :TagbarToggle<CR>
 
 " Vim Airline
+let g:airline#extensions#tabline#enabled = 1
 let g:airline_powerline_fonts = 1
 
 " Gitgutter
-let g:gitgutter_realtime = 750
+let g:gitgutter_realtime = 0
+let g:gitgutter_eager = 0
+" let g:gitgutter_realtime = 750
+highlight clear SignColumn
+
+" Undo
+set undofile                " Save undo's after file closes
+set undodir=~/.vim_tmp/undo " where to save undo histories
+set undolevels=1000         " How many undos
+set undoreload=10000        " number of lines to save for undo
