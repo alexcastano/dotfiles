@@ -214,3 +214,13 @@ bindsym XF86Sleep exec $Locker && systemctl suspend, mode "default"
 # Assign
 assign [class="Spotify"] 10
 assign [class="Chromium"] 2
+
+# Spotify
+# Play/Pause
+bindsym $mod+o exec dbus-send --print-reply --dest=org.mpris.MediaPlayer2.spotify /org/mpris/MediaPlayer2 org.mpris.MediaPlayer2.Player.PlayPause
+
+# Next
+bindsym $mod+p exec dbus-send --print-reply --dest=org.mpris.MediaPlayer2.spotify /org/mpris/MediaPlayer2 org.mpris.MediaPlayer2.Player.Next
+
+# Previous
+bindsym $mod+i exec dbus-send --print-reply --dest=org.mpris.MediaPlayer2.spotify /org/mpris/MediaPlayer2 org.mpris.MediaPlayer2.Player.Previous
