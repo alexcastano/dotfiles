@@ -26,7 +26,7 @@ ZSH_THEME="agnoster"
 # ENABLE_CORRECTION="true"
 
 # Uncomment the following line to display red dots whilst waiting for completion.
-# COMPLETION_WAITING_DOTS="true"
+COMPLETION_WAITING_DOTS="true"
 
 # Uncomment the following line if you want to disable marking untracked files
 # under VCS as dirty. This makes repository status check for large repositories
@@ -48,6 +48,7 @@ ZSH_THEME="agnoster"
 plugins=(git
          vi-mode
          archlinux
+         bundler
          dirhistory
          docker
          gem
@@ -102,3 +103,6 @@ source ~/.zsh_aliases
 
 # default user to don't show in the prompt
 DEFAULT_USER=alex
+
+bindkey '^R' history-incremental-search-backward
+bindkey '^R' history-incremental-pattern-search-backward
