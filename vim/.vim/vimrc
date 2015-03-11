@@ -3,6 +3,8 @@ call plug#begin('~/.vim/plugged')
 Plug 'airblade/vim-gitgutter'
 Plug 'altercation/vim-colors-solarized'
 Plug 'benmills/vimux'
+Plug 'kana/vim-textobj-user'
+Plug 'nelstrom/vim-textobj-rubyblock'
 Plug 'bling/vim-airline'
 Plug 'christoomey/vim-tmux-navigator'
 Plug 'danro/rename.vim'
@@ -16,7 +18,9 @@ Plug 'mileszs/ack.vim'
 Plug 'mxw/vim-jsx'
 Plug 'nelstrom/vim-visual-star-search'
 Plug 'plasticboy/vim-markdown'
+Plug 'scrooloose/syntastic'
 Plug 'SirVer/ultisnips'
+Plug 'tommcdo/vim-exchange'
 Plug 'tpope/vim-abolish'
 Plug 'tpope/vim-bundler'
 Plug 'tpope/vim-commentary'
@@ -171,6 +175,7 @@ let g:rails_default_file='config/database.yml'
 set showmatch  " Show matching brackets.
 set mat=5  " Bracket blinking.
 
+" Backups
 if has("vms")
   set nobackup    " do not keep a backup file, use versions instead
 else
@@ -178,7 +183,17 @@ else
 endif
 
 set backupdir=~/.vim_backups " Where backups will go.
+
 set directory=~/.vim_tmp     " Where temporary files will go.
+
+" leader key is space
+nnoremap <Space> <Nop>
+let mapleader = "\<Space>"
+
+nnoremap ; :
+nnoremap : ;
+vnoremap ; :
+vnoremap : ;
 
 "" Librery mode is faster
 "let g:clang_use_library = 1
@@ -215,10 +230,10 @@ set directory=~/.vim_tmp     " Where temporary files will go.
 "
 " This is to set the current directory
 cnoremap %% <C-R>=fnameescape(expand('%:h')).'/'<cr>
-map <leader>ew :e %%
-map <leader>es :sp %%
-map <leader>ev :vsp %%
-map <leader>et :tabe %%
+map <leader>ew ;e %%
+map <leader>es ;sp %%
+map <leader>ev ;vsp %%
+map <leader>et ;tabe %%
 
 " better movement in spplit lines
 noremap  <buffer> <silent> k gk
@@ -233,11 +248,11 @@ nnoremap <C-l> <C-w>l
 nnoremap <C-h> <C-w>h
 
 " Faster tab movement
-nmap <Esc>[27;5;9~ :tabnext<cr>
-imap <Esc>[27;5;9~ <Esc>:tabnext<cr>
+nmap <Esc>[27;5;9~ ;tabnext<cr>
+imap <Esc>[27;5;9~ <Esc>;tabnext<cr>
 
-nmap <Esc>[27;6;9~ :tabprevious<cr>
-imap <Esc>[27;6;9~ <Esc>:tabprevious<cr>
+nmap <Esc>[27;6;9~ ;tabprevious<cr>
+imap <Esc>[27;6;9~ <Esc>;tabprevious<cr>
 
 
 " Swap arguments
@@ -253,49 +268,49 @@ autocmd InsertLeave * match ExtraWhitespace /\s\+$/
 autocmd BufWinLeave * call clearmatches()
 
 " Yank until the end of the line
-:map Y y$
+map Y y$
 
 " disabling Q
-:map Q <Nop>
+map Q <Nop>
 
 " Vimux
 " If text is selected, save it in the v buffer and send that buffer it to tmux
-vmap Qr "vy :call VimuxSendText(@v)<CR>']
+vmap <leader>r "vy ;call VimuxSendText(@v)<CR>']
 " VimuxSendKeys("'" . escape(@k, "'") . "'")
 
 " Select current paragraph and send it to tmux
-nmap Qrr vipQr
+nmap <leader>rr vip<leader>r
 
 " Run the nearest test with rspec
-nmap QrT :call VimuxRunCommand("clear; bin/rspec " . bufname("%"))<CR>
+nmap <leader>rT ;call VimuxRunCommand("clear; bin/rspec " . bufname("%"))<CR>
 
 " Run the current file with rspec
-nmap Qrt :call VimuxRunCommand("clear; bin/rspec " . bufname("%") . ":" . line('.'))<CR>
+nmap <leader>rt ;call VimuxRunCommand("clear; bin/rspec " . bufname("%") . ":" . line('.'))<CR>
 
 " Prompt for a command to run
-nmap Qrc :VimuxPromptCommand<CR>
+nmap <leader>rc ;VimuxPromptCommand<CR>
 
 " Run last command executed by VimuxRunCommand
-nmap Qr. :VimuxRunLastCommand<CR>
+nmap <leader>r. ;VimuxRunLastCommand<CR>
 
 " Inspect runner pane
-nmap Qri :VimuxInspectRunner<CR>
+nmap <leader>ri ;VimuxInspectRunner<CR>
 
 " Close vim tmux runner opened by VimuxRunCommand
-nmap Qrq :VimuxCloseRunner<CR>
+nmap <leader>rq ;VimuxCloseRunner<CR>
 
 " Interrupt any command running in the runner pane
-nmap Qrx :VimuxInterruptRunner<CR>
+nmap <leader>rx ;VimuxInterruptRunner<CR>
 
 " Zoom the runner pane (use <bind-key> z to restore runner pane)
-nmap Qrz :call VimuxZoomRunner()<CR>
+nmap <leader>rz ;call VimuxZoomRunner()<CR>
 
 " Pretty json
-nmap Qpj vipQpj
-vmap Qpj :!python -m json.tool<CR>
+nmap <leader>pj vip<leader>pj
+vmap <leader>pj ;!python -m json.tool<CR>
 
 " Tabbar
-map Qt :TagbarToggle<CR>
+map Qt ;TagbarToggle<CR>
 
 " Vim Airline
 let g:airline#extensions#tabline#enabled = 1
