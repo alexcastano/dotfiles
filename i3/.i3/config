@@ -33,8 +33,10 @@ bindsym $mod+Return exec i3-sensible-terminal
 # kill focused window
 bindsym $mod+Shift+q kill
 
+bindsym $mod+d exec i3-dmenu-desktop
 # start *faster* dmenu (a program launcher)
-bindsym $mod+d exec j4-dmenu-desktop
+# it is not working correctly
+# bindsym $mod+d exec j4-dmenu-desktop
 
 # like vim change focus
 bindsym $mod+h focus left
