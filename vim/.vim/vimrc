@@ -163,7 +163,7 @@ set wildmenu
 " Save as sudo
 command WW w !sudo tee % >/dev/null
 
-"
+
 " OpenURL command for rails plugin
 :command -bar -nargs=1 OpenURL :!chromium <args>
 
@@ -177,9 +177,9 @@ set mat=5  " Bracket blinking.
 
 " Backups
 if has("vms")
-  set nobackup    " do not keep a backup file, use versions instead
+  set nobackup " do not keep a backup file, use versions instead
 else
-  set backup    " keep a backup file
+  set backup   " keep a backup file
 endif
 
 set backupdir=~/.vim_backups " Where backups will go.
@@ -190,44 +190,16 @@ set directory=~/.vim_tmp     " Where temporary files will go.
 nnoremap <Space> <Nop>
 let mapleader = "\<Space>"
 
+" Faster command mode
 nnoremap ; :
 nnoremap : ;
 vnoremap ; :
 vnoremap : ;
 
-"" Librery mode is faster
-"let g:clang_use_library = 1
-"
-"" Complete options (disable preview scratch window)
-"set completeopt=menu,menuone,longest
-"" Limit popup menu height
-"set pumheight=15
-"
-"map <leader>cc :call g:ClangUpdateQuickFix()<CR>
-"
-"" SuperTab option for context aware completion
-"let g:SuperTabDefaultCompletionType="context"
-"
-"" clang complete settings
-"let g:clang_snippets=1
-"let g:clang_snippets_engine='ultisnips'
-"
-"let g:clang_user_options='--std=c++11'
-"
-"" Auto select first option but doesn't write
-"let g:clang_auto_select=1
-"" Enable auto popup, use <Tab> to autocomplete
-"let g:clang_complete_auto=1
-"" Show clang errors in the quickfix window
-"let g:clang_complete_copen=1
-"" Search for error automatically
-"let g:clang_periodic_quickfix=0
+" sessions
+map <leader>ss ;mksession! ~/.vim_tmp/last_session<cr>
+map <leader>sl ;source ~/.vim_tmp/last_session<cr>
 
-"
-" " sesiones
-" " map ,s :mksession! ~/.vim/.session
-" " map ,r :source ~/.vim/.session
-"
 " This is to set the current directory
 cnoremap %% <C-R>=fnameescape(expand('%:h')).'/'<cr>
 map <leader>ew ;e %%
@@ -319,9 +291,9 @@ let g:airline#extensions#tabline#enabled = 1
 let g:airline_powerline_fonts = 1
 
 " Gitgutter
-let g:gitgutter_realtime = 0
+let g:gitgutter_realtime = 750
+" let g:gitgutter_realtime = 0
 let g:gitgutter_eager = 0
-" let g:gitgutter_realtime = 750
 highlight clear SignColumn
 
 " Syntastic
@@ -330,11 +302,23 @@ let g:syntastic_auto_loc_list            = 0
 let g:syntastic_check_on_open            = 1
 let g:syntastic_check_on_wq              = 0
 
-let g:syntastic_ruby_checkers            = ['rubylint', 'mri']
+let g:syntastic_ruby_checkers            = ['reek', 'rubylint', 'mri']
 
 
 " Undo
 set undofile                " Save undo's after file closes
-set undodir=~/.vim_tmp/undo " where to save undo histories
+set undodir=~/.vim_undo     " where to save undo histories
 set undolevels=1000         " How many undos
 set undoreload=10000        " number of lines to save for undo
+
+" Align with tabular
+nmap <leader>a= ;Tabularize /=<CR>
+vmap <leader>a= ;Tabularize /=<CR>
+nmap <leader>a: ;Tabularize /:\zs<CR>
+vmap <leader>a: ;Tabularize /:\zs<CR>
+nmap <leader>a# ;Tabularize /#<CR>
+vmap <leader>a# ;Tabularize /#<CR>
+nmap <leader>a\| ;Tabularize /\|<CR>
+vmap <leader>a\| ;Tabularize /\|<CR>
+nmap <leader>a" ;Tabularize /"<CR>
+vmap <leader>a" ;Tabularize /"<CR>
