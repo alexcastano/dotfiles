@@ -9,6 +9,7 @@ Plug 'danro/rename.vim'
 Plug 'depuracao/vim-rdoc'
 Plug 'digitaltoad/vim-jade'
 Plug 'godlygeek/tabular'
+Plug 'kana/vim-textobj-entire'
 Plug 'kana/vim-textobj-user'
 Plug 'kchmck/vim-coffee-script'
 Plug 'kien/ctrlp.vim'
@@ -301,8 +302,6 @@ let g:syntastic_always_populate_loc_list = 1
 let g:syntastic_auto_loc_list            = 0
 let g:syntastic_check_on_open            = 1
 let g:syntastic_check_on_wq              = 0
-
-let g:syntastic_ruby_checkers            = ['reek', 'rubylint', 'mri']
 
 
 " Undo
