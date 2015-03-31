@@ -70,7 +70,7 @@ ZSH_TMUX_AUTOCONNECT=false
 
 # User configuration
 
-export PATH="/home/alex/.rbenv/shims:/home/alex/bin:/home/alex/.rbenv/bin:/home/alex/.nvm/v0.10.36/bin:/usr/local/sbin:/usr/local/bin:/usr/bin:/opt/android-sdk/platform-tools:/usr/lib/jvm/default/bin:/usr/bin/site_perl:/usr/bin/vendor_perl:/usr/bin/core_perl"
+export PATH="/home/alex/bin:/home/alex/.rbenv/bin:/usr/local/sbin:/usr/local/bin:/usr/bin:/opt/android-sdk/platform-tools:/usr/lib/jvm/default/bin:/usr/bin/site_perl:/usr/bin/vendor_perl:/usr/bin/core_perl"
 # export MANPATH="/usr/local/man:$MANPATH"
 
 source $ZSH/oh-my-zsh.sh
@@ -101,3 +101,6 @@ bindkey '^R' history-incremental-pattern-search-backward
 
 # Alt+. behaviour
 bindkey '\e.' insert-last-word
+
+# rbenv auto completation
+eval "$(rbenv init -)"

@@ -49,3 +49,13 @@ Link files
 cd ~/dotfiles
 stow zsh
 ```
+
+# Rbenv
+
+https://github.com/sstephenson/rbenv
+
+It needs to add rbenv to the path. Already done in zshrc.
+```
+git clone https://github.com/sstephenson/rbenv.git ~/.rbenv
+git clone https://github.com/sstephenson/ruby-build.git ~/.rbenv/plugins/ruby-build
+```
