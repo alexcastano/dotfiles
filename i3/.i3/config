@@ -215,7 +215,6 @@ bindsym XF86Sleep exec $Locker && systemctl suspend, mode "default"
 
 # Assign
 assign [class="Spotify"] 10
-assign [class="Chromium"] 2
 
 # Spotify
 # Play/Pause
