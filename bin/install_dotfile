@@ -1,8 +1,0 @@
-#!/bin/bash -x
-
-[[ -d ~/dotfiles_old ]] || mkdir -p ~/dotfiles_old/
-
-[[ -a ~/.$1 ]] && mv ~/.$1 ~/dotfiles_old
-
-ln -s ~/dotfiles/$1 ~/.$1
-

@@ -1,7 +1,0 @@
-#!/bin/bash -x
-
-cd ~/dotfiles
-git submodule add $1 vim/.vim/bundle/$2
-git add .
-git commit
-cd -
