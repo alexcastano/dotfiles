@@ -225,3 +225,13 @@ bindsym $mod+p exec dbus-send --print-reply --dest=org.mpris.MediaPlayer2.spotif
 
 # Previous
 bindsym $mod+i exec dbus-send --print-reply --dest=org.mpris.MediaPlayer2.spotify /org/mpris/MediaPlayer2 org.mpris.MediaPlayer2.Player.Previous
+
+# Change layout
+bindsym $mod+q exec ~/bin/change_layout
+
+# Volume
+bindsym XF86AudioRaiseVolume exec pactl set-sink-mute 0 false ; exec pactl set-sink-volume 0 +5%
+bindsym XF86AudioLowerVolume exec pactl set-sink-mute 0 false ; exec pactl set-sink-volume 0 -5%
+
+# Mute
+bindsym XF86AudioMute exec pactl set-sink-mute 0 toggle

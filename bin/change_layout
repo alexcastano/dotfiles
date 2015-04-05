@@ -1,0 +1,11 @@
+#!/bin/sh
+
+current=$(setxkbmap -print | awk -F"+" '/xkb_symbols/ {print $2}')
+
+if [[ $current == 'us' ]]; then
+  setxkbmap es
+else
+  setxkbmap us
+fi
+
+xmodmap ~/.Xmodmap
