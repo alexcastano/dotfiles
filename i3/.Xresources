@@ -38,7 +38,7 @@ URxvt.urgentOnBell:    true
 URxvt*cursorBlink:     true
 
 ! perl shit
-URxvt.perl-ext-common: default,keyboard-select,url-select,clipboard
+URxvt.perl-ext-common: default,keyboard-select,url-select,clipboard,osc-xterm-clipboard
 URxvt.url-select.launcher: chromium
 URxvt.url-select.underline: true
 URxvt.keysym.M-u:      perl:url-select:select_next
