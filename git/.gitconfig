@@ -25,16 +25,7 @@
 
 [user]
 	name = Alejandro Castaño del Castillo
-	email = alex@xap.ie
-
-[url "git@bitbucket.org:latitud70/"]
-    insteadOf = l70:
-    pushInsteadOf = l70:
-
-[url "git@git.batkiwi.com:"]
-    insteadOf = bk:
-[url "git@git.batkiwi.com:"]
-    pushInsteadOf = bk:
+	email = adelcastillo@path.travel
 
 [url "git@github.com:"]
     insteadOf = gh:
@@ -47,4 +38,4 @@
     pushInsteadOf = gha:
 
 [push]
-	default = simple
+	default = current
