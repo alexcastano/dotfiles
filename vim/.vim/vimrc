@@ -36,6 +36,7 @@ Plug 'tpope/vim-surround'
 Plug 'tpope/vim-unimpaired'
 Plug 'vim-ruby/vim-ruby'
 Plug 'moll/vim-bbye'
+Plug 'uarun/vim-protobuf'
 
 call plug#end()
 
