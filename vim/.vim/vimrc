@@ -360,4 +360,5 @@ vmap <leader>a\| ;Tabularize /\|<CR>
 nmap <leader>a" ;Tabularize /"<CR>
 vmap <leader>a" ;Tabularize /"<CR>
 
+vmap R "_dP // Replace the selected text with the clipboard without overwritting
 set wildignore+=*/tmp/*
