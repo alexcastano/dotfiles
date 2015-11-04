@@ -362,3 +362,15 @@ vmap <leader>a" ;Tabularize /"<CR>
 
 vmap R "_dP // Replace the selected text with the clipboard without overwritting
 set wildignore+=*/tmp/*
+
+noremap <Up> <NOP>
+noremap <Down> <NOP>
+noremap <Left> <NOP>
+noremap <Right> <NOP>
+
+" resize horzontal split window
+nmap <Left> <C-W><
+nmap <Right> <C-W>>
+" resize vertical split window
+nmap <Up> <C-W>-
+nmap <Down> <C-W>+
