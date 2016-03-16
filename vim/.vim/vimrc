@@ -37,6 +37,7 @@ Plug 'tpope/vim-unimpaired'
 Plug 'vim-ruby/vim-ruby'
 Plug 'moll/vim-bbye'
 Plug 'uarun/vim-protobuf'
+Plug 'wesQ3/vim-windowswap'
 
 call plug#end()
 
