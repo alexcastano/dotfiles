@@ -266,6 +266,12 @@ nmap <leader>rT ;call VimuxRunCommand("rspec " . bufname("%"))<CR>
 " Run the current file with rspec
 nmap <leader>rt ;call VimuxRunCommand("rspec " . bufname("%") . ":" . line('.'))<CR>
 
+" Run the nearest test with minitest
+nmap <leader>rM ;call VimuxRunCommand("m " . bufname("%"))<CR>
+
+" Run the current file with rspec
+nmap <leader>rm ;call VimuxRunCommand("m " . bufname("%") . ":" . line('.'))<CR>
+
 " Prompt for a command to run
 nmap <leader>rc ;VimuxPromptCommand<CR>
 
