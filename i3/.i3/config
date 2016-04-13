@@ -216,7 +216,10 @@ bindsym XF86MonBrightnessDown exec xbacklight -dec 5
 bindsym XF86MonBrightnessUp exec xbacklight -inc 5
 
 # Assign
+for_window [class="Spotify"] move to workspace 10
 assign [class="Spotify"] 10
+assign [class="Slack"] 9
+assign [class="Zeal"] 8
 
 # Spotify
 # Play/Pause
