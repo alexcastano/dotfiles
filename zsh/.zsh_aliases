@@ -25,3 +25,6 @@ alias be='bundle exec'
 alias bes='bundle exec spring'
 
 alias gg='surfraw google'
+
+alias weather='curl http://wttr.in/Barcelona'
+alias myip='curl canihazip.com/s'
