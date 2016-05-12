@@ -215,11 +215,13 @@ map <leader>es ;sp %%
 map <leader>ev ;vsp %%
 map <leader>et ;tabe %%
 
+map <leader>d "_d
+
 " better movement in spplit lines
 noremap  <buffer> <silent> k gk
 noremap  <buffer> <silent> j gj
-noremap  <buffer> <silent> 0 g0
-noremap  <buffer> <silent> $ g$
+" noremap  <buffer> <silent> 0 g0
+" noremap  <buffer> <silent> $ g$
 
 " Faster windows movement
 nnoremap <C-j> <C-w>j
@@ -371,7 +373,7 @@ nmap <leader>a" ;Tabularize /"<CR>
 vmap <leader>a" ;Tabularize /"<CR>
 
 vmap R "_dP // Replace the selected text with the clipboard without overwritting
-set wildignore+=*/tmp/*
+set wildignore+=*/tmp/*,*/node_modules/*
 
 noremap <Up> <NOP>
 noremap <Down> <NOP>

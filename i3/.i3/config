@@ -219,6 +219,7 @@ bindsym XF86MonBrightnessUp exec xbacklight -inc 5
 for_window [class="Spotify"] move to workspace 10
 assign [class="Spotify"] 10
 assign [class="Slack"] 9
+assign [class="Franz"] 9
 assign [class="Zeal"] 8
 
 # Spotify
