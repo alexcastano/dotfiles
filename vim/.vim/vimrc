@@ -5,7 +5,6 @@ Plug 'SirVer/ultisnips'
 Plug 'airblade/vim-gitgutter'
 Plug 'altercation/vim-colors-solarized'
 Plug 'benmills/vimux'
-Plug 'bling/vim-airline'
 Plug 'christoomey/vim-tmux-navigator'
 Plug 'danro/rename.vim'
 Plug 'depuracao/vim-rdoc'
@@ -39,8 +38,11 @@ Plug 'tpope/vim-speeddating'
 Plug 'tpope/vim-surround'
 Plug 'tpope/vim-unimpaired'
 Plug 'uarun/vim-protobuf'
+Plug 'vim-airline/vim-airline'
+Plug 'vim-airline/vim-airline-themes'
 Plug 'vim-ruby/vim-ruby'
 Plug 'wesQ3/vim-windowswap'
+Plug 'chrisbra/csv.vim'
 
 call plug#end()
 
@@ -266,10 +268,10 @@ vmap <leader>r "vy ;call VimuxSendText(@v)<CR>']
 nmap <leader>rr vip<leader>r
 
 " Run the nearest test with rspec
-nmap <leader>rT ;call VimuxRunCommand("rspec " . bufname("%"))<CR>
+nmap <leader>rT ;call VimuxRunCommand("bin/rspec " . bufname("%"))<CR>
 
 " Run the current file with rspec
-nmap <leader>rt ;call VimuxRunCommand("rspec " . bufname("%") . ":" . line('.'))<CR>
+nmap <leader>rt ;call VimuxRunCommand("bin/rspec " . bufname("%") . ":" . line('.'))<CR>
 
 " Run the nearest test with minitest
 nmap <leader>rM ;call VimuxRunCommand("m " . bufname("%"))<CR>
