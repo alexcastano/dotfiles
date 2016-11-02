@@ -173,6 +173,11 @@ set wildmenu
 " Save as sudo
 command WW w !sudo tee % >/dev/null
 
+" Remove current file
+command Rm call delete(expand('%'))
+
+" Remove current file and buffer
+command RM call delete(expand('%')) | bdelete!
 
 " OpenURL command for rails plugin
 :command -bar -nargs=1 OpenURL :!chromium <args>
@@ -231,19 +236,8 @@ nnoremap <C-k> <C-w>k
 nnoremap <C-l> <C-w>l
 nnoremap <C-h> <C-w>h
 
-" Faster tab movement
-nmap <Esc>[27;5;9~ ;tabnext<cr>
-" This provokes delay
-" imap <Esc>[27;5;9~ <Esc>;tabnext<cr>
-
-nmap <Esc>[27;6;9~ ;tabprevious<cr>
-" This provokes delay
-" imap <Esc>[27;6;9~ <Esc>;tabprevious<cr>
-
-
 " Swap arguments
 map <F9> "wdiwdwep"wp
-
 
 " highligth extre spaces
 highlight ExtraWhitespace ctermbg=darkgreen guibg=darkgreen
@@ -398,3 +392,5 @@ let g:zv_file_types = {
       \ }
 
 let g:zv_docsets_dir = '~/.local/share/Zeal/Zeal/docsets/'
+
+
