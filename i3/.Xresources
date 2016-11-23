@@ -26,7 +26,7 @@ URxvt.saveLines:  1000
 URxvt.visualBell: false
 
 URxvt.depth:       24
-URxvt.buffered:    true
+URxvt.buffered:    false
 !URxvt.foreground:  #f0f0f0
 !URxvt.background:  #000000
 URxvt.transparent: false
@@ -55,5 +55,5 @@ URxvt.iso14755: false
 URxvt.iso14755_52: false
 
 ! resize font
-URxvt.resize-font.smaller: C-equal
-URxvt.resize-font.bigger: C-minus
+URxvt.resize-font.smaller: C-minus
+URxvt.resize-font.bigger: C-equal

@@ -1,0 +1,10 @@
+#!/usr/bin/expect
+
+spawn "bluetoothctl"
+expect "#"
+send "power on\n"
+expect "#"
+send "connect \t\n"
+sleep 3
+expect "SONY HT-CT260H"
+send "quit\n"

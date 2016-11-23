@@ -1,20 +1,22 @@
 call plug#begin('~/.vim/plugged')
 
-Plug 'KabbAmine/zeavim.vim'
-Plug 'SirVer/ultisnips'
+Plug 'AndrewRadev/splitjoin.vim'
 Plug 'airblade/vim-gitgutter'
 Plug 'altercation/vim-colors-solarized'
 Plug 'benmills/vimux'
+Plug 'chrisbra/csv.vim'
 Plug 'christoomey/vim-tmux-navigator'
+Plug 'ctrlpvim/ctrlp.vim'
 Plug 'danro/rename.vim'
 Plug 'depuracao/vim-rdoc'
 Plug 'digitaltoad/vim-jade'
 Plug 'elixir-lang/vim-elixir'
 Plug 'godlygeek/tabular'
+Plug 'janko-m/vim-test'
+Plug 'KabbAmine/zeavim.vim'
 Plug 'kana/vim-textobj-entire'
 Plug 'kana/vim-textobj-user'
 Plug 'kchmck/vim-coffee-script'
-Plug 'kien/ctrlp.vim'
 Plug 'majutsushi/tagbar'
 Plug 'mileszs/ack.vim'
 Plug 'moll/vim-bbye'
@@ -23,17 +25,24 @@ Plug 'nathanaelkane/vim-indent-guides'
 Plug 'nelstrom/vim-textobj-rubyblock'
 Plug 'nelstrom/vim-visual-star-search'
 Plug 'plasticboy/vim-markdown'
+Plug 'PotatoesMaster/i3-vim-syntax'
 Plug 'scrooloose/syntastic'
+Plug 'SirVer/ultisnips'
+Plug 'szw/vim-maximizer'
+Plug 'tmux-plugins/vim-tmux'
 Plug 'tommcdo/vim-exchange'
 Plug 'tpope/vim-abolish'
 Plug 'tpope/vim-bundler'
 Plug 'tpope/vim-commentary'
+Plug 'tpope/vim-dispatch'
 Plug 'tpope/vim-endwise'
 Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-haml'
+Plug 'tpope/vim-obsession'
 Plug 'tpope/vim-rails'
 Plug 'tpope/vim-rake'
 Plug 'tpope/vim-repeat'
+Plug 'tpope/vim-rsi'
 Plug 'tpope/vim-speeddating'
 Plug 'tpope/vim-surround'
 Plug 'tpope/vim-unimpaired'
@@ -42,7 +51,6 @@ Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
 Plug 'vim-ruby/vim-ruby'
 Plug 'wesQ3/vim-windowswap'
-Plug 'chrisbra/csv.vim'
 
 call plug#end()
 
@@ -51,7 +59,7 @@ call plug#end()
 set nocompatible
 
 " allow backspacing over everything in insert mode
-set history=50    " keep 50 lines of command line history
+set history=500    " keep 50 lines of command line history
 
 " Switch syntax highlighting on, when the terminal has colors
 " Also switch on highlighting the last used search pattern.
@@ -74,26 +82,26 @@ if has("autocmd")
 
   " Put these in an autocmd group, so that we can delete them easily.
   augroup vimrcEx
-  au!
+    au!
 
-  " For all text files set 'textwidth' to 78 characters.
-  autocmd FileType text setlocal textwidth=78
+    " For all text files set 'textwidth' to 78 characters.
+    autocmd FileType text setlocal textwidth=78
 
-  " When editing a file, always jump to the last known cursor position.
-  " Don't do it when the position is invalid or when inside an event handler
-  " (happens when dropping a file on gvim).
-  " Also don't do it when the mark is in the first line, that is the default
-  " position when opening a file.
-  autocmd BufReadPost *
-    \ if line("'\"") > 0 && line("'\"") <= line("$") |
-    \   exe "normal! g`\"" |
-    \ endif
+    " When editing a file, always jump to the last known cursor position.
+    " Don't do it when the position is invalid or when inside an event handler
+    " (happens when dropping a file on gvim).
+    " Also don't do it when the mark is in the first line, that is the default
+    " position when opening a file.
+    autocmd BufReadPost *
+          \ if line("'\"") > 0 && line("'\"") <= line("$") |
+          \   exe "normal! g`\"" |
+          \ endif
 
-  autocmd FileType text,markdown,html setlocal wrap linebreak nolist number
-  au BufRead,BufNewFile *.md set filetype=markdown
+    autocmd FileType text,markdown,html setlocal wrap linebreak nolist number
+    au BufRead,BufNewFile *.md set filetype=markdown
 
 
-  " autocmd BufNewFile,BufReadPost *.coffee setl foldmethod=indent
+    " autocmd BufNewFile,BufReadPost *.coffee setl foldmethod=indent
 
   augroup END
 
@@ -108,7 +116,7 @@ endif " has("autocmd")
 " Only define it when not defined already.
 if !exists(":DiffOrig")
   command DiffOrig vert new | set bt=nofile | r ++edit # | 0d_ | diffthis
-      \ | wincmd p | diffthis
+        \ | wincmd p | diffthis
 endif
 
 set t_Co=16
@@ -144,7 +152,8 @@ set laststatus=2  " Always show status line.
 " Fold
 set foldmethod=indent
 
-" set nu  " Line numbers on
+set relativenumber
+set number
 
 " In many terminal emulators the mouse works just fine, thus enable it.
 if has('mouse')
@@ -171,16 +180,16 @@ set wildmenu
 
 
 " Save as sudo
-command WW w !sudo tee % >/dev/null
+command! WW w !sudo tee % >/dev/null
 
 " Remove current file
-command Rm call delete(expand('%'))
+command! Rm call delete(expand('%'))
 
 " Remove current file and buffer
-command RM call delete(expand('%')) | bdelete!
+command! RM call delete(expand('%')) | bdelete!
 
 " OpenURL command for rails plugin
-:command -bar -nargs=1 OpenURL :!chromium <args>
+":command -bar -nargs=1 OpenURL :!chromium <args>
 
 " Rails default file
 let g:rails_default_file='config/database.yml'
@@ -205,6 +214,9 @@ set directory=~/.vim_tmp     " Where temporary files will go.
 nnoremap <Space> <Nop>
 let mapleader = "\<Space>"
 
+" Reload vim after save this file
+" autocmd BufWritePost vimrc source %
+
 " Faster command mode
 nnoremap ; :
 nnoremap : ;
@@ -224,6 +236,10 @@ map <leader>et ;tabe %%
 
 map <leader>d "_d
 
+" Each time you press S, the yanked text is _stamped_ over the current word.
+nnoremap S diw"0P
+vnoremap S "_d"0P
+
 " better movement in spplit lines
 noremap  <buffer> <silent> k gk
 noremap  <buffer> <silent> j gj
@@ -235,9 +251,6 @@ nnoremap <C-j> <C-w>j
 nnoremap <C-k> <C-w>k
 nnoremap <C-l> <C-w>l
 nnoremap <C-h> <C-w>h
-
-" Swap arguments
-map <F9> "wdiwdwep"wp
 
 " highligth extre spaces
 highlight ExtraWhitespace ctermbg=darkgreen guibg=darkgreen
@@ -292,7 +305,10 @@ nmap <leader>rx ;VimuxInterruptRunner<CR>
 nmap <leader>rz ;call VimuxZoomRunner()<CR>
 
 " Send exit to the pane
-nmap <leader>re ;call VimuxSendText("exit\n")<CR>
+nmap <leader>re ;call VimuxSendKeys("C-d")<CR>
+
+" Previous command using Control-p Enter
+nmap <leader>rp ;call VimuxSendKeys("C-p Enter")<CR>
 
 " Pretty json
 nmap <leader>pj vip<leader>pj
@@ -388,9 +404,36 @@ let g:indent_guides_enable_on_vim_startup = 1
 
 " Zeal plugin
 let g:zv_file_types = {
-      \ 'ruby': 'ruby 2,rails'
+      \ 'ruby': 'ruby,rails',
+      \ 'haml': 'ruby,rails'
       \ }
 
 let g:zv_docsets_dir = '~/.local/share/Zeal/Zeal/docsets/'
+let g:zv_disable_mapping = 1
+map <leader>Z <Plug>Zeavim               " <leader>z (NORMAL mode)
+vmap <leader>Z <Plug>ZVVisSelection      " <leader>z (VISUAL mode)
+nmap gz <Plug>ZVMotion                   " gz{motion} (NORMAL mode)
+nmap <leader><leader>Z <Plug>ZVKeyDocset " <leader><leader>zn
 
+" The Silver Searcher
+if executable('ag')
+  " Use ag over grep
+  set grepprg=ag\ --nogroup\ --nocolor
 
+  " Use ag in CtrlP for listing files. Lightning fast and respects .gitignore
+  let g:ctrlp_user_command = 'ag %s -l --nocolor -g ""'
+
+  " ag is fast enough that CtrlP doesn't need to cache
+  let g:ctrlp_use_caching = 0
+
+  let g:ackprg = 'ag --vimgrep'
+endif
+
+" grep word under cursor
+nnoremap <leader>gg :grep! "\b<C-R><C-W>\b"<CR>:cw<CR>
+nnoremap <leader>gt :grep! "TODO\\|FIXME"<CR>:cw<CR><CR>
+nnoremap <leader>gs :grep! "" \| cw<Left><Left><Left><Left><Left><Left>
+vnoremap <leader>g "gy:grep! "<C-R>g"<CR>:cw<CR>
+
+let g:maximizer_set_default_mapping = 0
+nnoremap <leader>z :MaximizerToggle<CR>

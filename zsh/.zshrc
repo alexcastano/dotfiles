@@ -68,7 +68,7 @@ plugins=(git
 # Tmux configuration
 
 ZSH_TMUX_AUTOSTART=true
-ZSH_TMUX_AUTOCONNECT=false
+ZSH_TMUX_AUTOCONNECT=true
 
 # User configuration
 
