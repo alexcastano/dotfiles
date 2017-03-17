@@ -1,3 +1,4 @@
+vim/.vim_tmp/*
 vim/.vim/plugged
 vim/.vim/.netrwhist
 i3/.tmux/resurrect/

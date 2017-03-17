@@ -1,45 +1,60 @@
 [color]
-    ui = true
+  ui = true
 
 [color "diff"]
-    whitespace = red reverse
+  whitespace = red reverse
 
 [color "status"]
-    added = yellow
-    changed = green
-    untracked = cyan
+  added = yellow
+  changed = green
+  untracked = cyan
 
 [core]
-    whitespace=fix,-indent-with-non-tab,trailing-space,cr-at-eol
+  whitespace=fix,-indent-with-non-tab,trailing-space,cr-at-eol
 
 [alias]
-    ci = commit
-    st = status
-    br = branch
-    co = checkout
-    df = diff
-    lp = log -p
-    lol = log --graph --decorate --pretty=oneline --abbrev-commit
-    lola = log --graph --decorate --pretty=oneline --abbrev-commit --all
-    ls = ls-files
+  ci = commit
+  st = status
+  br = branch
+  co = checkout
+  df = diff
+  lp = log -p
+  lol = log --graph --decorate --pretty=oneline --abbrev-commit
+  lola = log --graph --decorate --pretty=oneline --abbrev-commit --all
+  ls = ls-files
 
 [user]
-	name = Alejandro Castaño del Castillo
-	email = adelcastillo@path.travel
+  name = Alejandro Castaño
+  email = alexcastanodev@gmail.com
 
 [url "git@github.com:"]
-    insteadOf = gh:
+  insteadOf = gh:
+
 [url "git@github.com:"]
-    pushInsteadOf = gh:
+  pushInsteadOf = gh:
 
 [url "git@github.com:alexcastano/"]
-    insteadOf = gha:
+  insteadOf = gha:
+
 [url "git@github.com:alexcastano/"]
-    pushInsteadOf = gha:
+  pushInsteadOf = gha:
+
+[url "git@gitlab.com:"]
+  insteadOf = gl:
+
+[url "git@gitlab.com:"]
+  pushInsteadOf = gl:
+
+[url "git@gitlab.com:eagerflow/"]
+  insteadOf = gle:
+
+[url "git@gitlab.com:eagerflow/"]
+  pushInsteadOf = gle:
+
 
 [url "git@github.com:3mundi/"]
-    insteadOf = 3m:
-    pushInsteadOf = 3m:
+  insteadOf = 3m:
+  pushInsteadOf = 3m:
 
 [push]
-	default = current
+  default = current

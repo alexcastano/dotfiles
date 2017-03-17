@@ -28,6 +28,7 @@ Plug 'plasticboy/vim-markdown'
 Plug 'PotatoesMaster/i3-vim-syntax'
 Plug 'scrooloose/syntastic'
 Plug 'SirVer/ultisnips'
+Plug 'slim-template/vim-slim'
 Plug 'szw/vim-maximizer'
 Plug 'tmux-plugins/vim-tmux'
 Plug 'tommcdo/vim-exchange'
@@ -275,16 +276,22 @@ vmap <leader>r "vy ;call VimuxSendText(@v)<CR>']
 nmap <leader>rr vip<leader>r
 
 " Run the nearest test with rspec
-nmap <leader>rT ;call VimuxRunCommand("bin/rspec " . bufname("%"))<CR>
+autocmd FileType ruby nmap <leader>rT ;call VimuxRunCommand("bin/rspec " . bufname("%"))<CR>
 
 " Run the current file with rspec
-nmap <leader>rt ;call VimuxRunCommand("bin/rspec " . bufname("%") . ":" . line('.'))<CR>
+autocmd FileType ruby nmap <leader>rt ;call VimuxRunCommand("bin/rspec " . bufname("%") . ":" . line('.'))<CR>
 
 " Run the nearest test with minitest
-nmap <leader>rM ;call VimuxRunCommand("m " . bufname("%"))<CR>
+autocmd FileType ruby nmap <leader>rM ;call VimuxRunCommand("m " . bufname("%"))<CR>
 
 " Run the current file with rspec
-nmap <leader>rm ;call VimuxRunCommand("m " . bufname("%") . ":" . line('.'))<CR>
+autocmd FileType ruby nmap <leader>rm ;call VimuxRunCommand("m " . bufname("%") . ":" . line('.'))<CR>
+
+" Run the nearest test with rspec
+autocmd FileType elixir nmap <leader>rT ;call VimuxRunCommand("mix test " . bufname("%"))<CR>
+
+" Run the current file with rspec
+autocmd FileType elixir nmap <leader>rt ;call VimuxRunCommand("mix test " . bufname("%") . ":" . line('.'))<CR>
 
 " Prompt for a command to run
 nmap <leader>rc ;VimuxPromptCommand<CR>
@@ -437,3 +444,11 @@ vnoremap <leader>g "gy:grep! "<C-R>g"<CR>:cw<CR>
 
 let g:maximizer_set_default_mapping = 0
 nnoremap <leader>z :MaximizerToggle<CR>
+
+ab riex require IEx; IEx.pry
+ab rpry require 'pry'; binding.pry
+ab rirb require 'irb'; binding.irb
+ab lastest latest
+
+autocmd BufRead,BufNewFile *.md setlocal spell
+set complete+=kspell

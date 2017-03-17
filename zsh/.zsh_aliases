@@ -30,3 +30,8 @@ alias weather='curl http://wttr.in/Barcelona'
 alias myip='curl canihazip.com/s'
 
 alias mem_process="ps aux | awk '{print \$2, \$4, \$11}' | sort -k2rn | head -n 20"
+
+alias app='docker-compose run --service-ports --rm app'
+alias appb='docker-compose run --rm app bundle exec'
+alias appc='docker-compose run --rm app bundle exec rails c'
+alias appt='docker-compose run --rm -e RAILS_ENV=test app bundle exec bash'
