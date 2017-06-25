@@ -24,6 +24,7 @@ Plug 'mxw/vim-jsx'
 Plug 'nathanaelkane/vim-indent-guides'
 Plug 'nelstrom/vim-textobj-rubyblock'
 Plug 'nelstrom/vim-visual-star-search'
+Plug 'pbrisbin/vim-mkdir'
 Plug 'plasticboy/vim-markdown'
 Plug 'PotatoesMaster/i3-vim-syntax'
 Plug 'scrooloose/syntastic'
@@ -42,6 +43,7 @@ Plug 'tpope/vim-haml'
 Plug 'tpope/vim-obsession'
 Plug 'tpope/vim-rails'
 Plug 'tpope/vim-rake'
+Plug 'tpope/vim-rbenv'
 Plug 'tpope/vim-repeat'
 Plug 'tpope/vim-rsi'
 Plug 'tpope/vim-speeddating'
@@ -281,17 +283,18 @@ autocmd FileType ruby nmap <leader>rT ;call VimuxRunCommand("bin/rspec " . bufna
 " Run the current file with rspec
 autocmd FileType ruby nmap <leader>rt ;call VimuxRunCommand("bin/rspec " . bufname("%") . ":" . line('.'))<CR>
 
+" Run all the tests with rspec
+autocmd FileType ruby nmap <leader>ra ;call VimuxRunCommand("bin/rspec")<CR>
+
 " Run the nearest test with minitest
 autocmd FileType ruby nmap <leader>rM ;call VimuxRunCommand("m " . bufname("%"))<CR>
 
 " Run the current file with rspec
 autocmd FileType ruby nmap <leader>rm ;call VimuxRunCommand("m " . bufname("%") . ":" . line('.'))<CR>
 
-" Run the nearest test with rspec
 autocmd FileType elixir nmap <leader>rT ;call VimuxRunCommand("mix test " . bufname("%"))<CR>
-
-" Run the current file with rspec
 autocmd FileType elixir nmap <leader>rt ;call VimuxRunCommand("mix test " . bufname("%") . ":" . line('.'))<CR>
+autocmd FileType elixir nmap <leader>rc ;call VimuxRunCommand("iex -S mix")<CR>
 
 " Prompt for a command to run
 nmap <leader>rc ;VimuxPromptCommand<CR>
@@ -354,7 +357,8 @@ command! PrettyXML call DoPrettyXML()
 nmap <leader>px ;PrettyXML<CR>
 
 " Tabbar
-map <leader>t ;TagbarToggle<CR>
+map <leader>tt ;CtrlPTag<CR>
+map <leader>tb ;TagbarToggle<CR>
 
 " Vim Airline
 let g:airline#extensions#tabline#enabled = 1
@@ -452,3 +456,14 @@ ab lastest latest
 
 autocmd BufRead,BufNewFile *.md setlocal spell
 set complete+=kspell
+
+" netrw
+let g:netrw_banner = 0
+let g:netrw_liststyle = 3
+let g:netrw_browse_split = 4
+let g:netrw_altv = 1
+let g:netrw_winsize = 25
+augroup ProjectDrawer
+  autocmd!
+  autocmd VimEnter * :Vexplore
+augroup END

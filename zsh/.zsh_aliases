@@ -33,5 +33,6 @@ alias mem_process="ps aux | awk '{print \$2, \$4, \$11}' | sort -k2rn | head -n 
 
 alias app='docker-compose run --service-ports --rm app'
 alias appb='docker-compose run --rm app bundle exec'
-alias appc='docker-compose run --rm app bundle exec rails c'
-alias appt='docker-compose run --rm -e RAILS_ENV=test app bundle exec bash'
+alias appm='appb rails db:drop db:create db:migrate db:seed'
+alias appc='appb rails c'
+alias appt='docker-compose run --rm -e RAILS_ENV=test app bash'

@@ -212,8 +212,8 @@ mode "$mode_system" {
 bindsym $mod+Pause mode "$mode_system"
 bindsym XF86ScreenSaver exec $Locker
 bindsym XF86Sleep exec $Locker && systemctl suspend, mode "default"
-bindsym XF86MonBrightnessDown exec xbacklight -dec 5
-bindsym XF86MonBrightnessUp exec xbacklight -inc 5
+bindsym XF86MonBrightnessDown exec xbacklight -dec 2
+bindsym XF86MonBrightnessUp exec xbacklight -inc 2
 
 # Assign
 for_window [class="Spotify"] move to workspace 10
@@ -239,6 +239,8 @@ bindsym $mod+i exec dbus-send --print-reply --dest=org.mpris.MediaPlayer2.spotif
 
 # Change layout
 bindsym $mod+q exec ~/bin/change_layout
+
+bindsym $mod+Shift+Pause exec killall chromium
 
 # Volume
 bindsym XF86AudioRaiseVolume exec pactl set-sink-mute 0 false ; exec pactl set-sink-volume 0 +5%

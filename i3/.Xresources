@@ -3,7 +3,7 @@
 Xcursor.theme: DMZ-White
 
 ! Colors - also see scripts/xcolor for switching
-#include "/home/alex/.xcolors/solarized.xcolors"
+#include "/home/alex/.xcolors/solarized.light.xcolors"
 
 ! Fonts
 Xft.antialias:  true
