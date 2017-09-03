@@ -36,3 +36,5 @@ alias appb='docker-compose run --rm app bundle exec'
 alias appm='appb rails db:drop db:create db:migrate db:seed'
 alias appc='appb rails c'
 alias appt='docker-compose run --rm -e RAILS_ENV=test app bash'
+
+alias tmuxfix='tmux unbind -n n \; unbind -n N'

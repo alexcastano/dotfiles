@@ -1,6 +1,8 @@
 call plug#begin('~/.vim/plugged')
 
 Plug 'AndrewRadev/splitjoin.vim'
+Plug 'KabbAmine/zeavim.vim'
+Plug 'SirVer/ultisnips'
 Plug 'airblade/vim-gitgutter'
 Plug 'altercation/vim-colors-solarized'
 Plug 'benmills/vimux'
@@ -8,28 +10,23 @@ Plug 'chrisbra/csv.vim'
 Plug 'christoomey/vim-tmux-navigator'
 Plug 'ctrlpvim/ctrlp.vim'
 Plug 'danro/rename.vim'
-Plug 'depuracao/vim-rdoc'
-Plug 'digitaltoad/vim-jade'
-Plug 'elixir-lang/vim-elixir'
 Plug 'godlygeek/tabular'
 Plug 'janko-m/vim-test'
-Plug 'KabbAmine/zeavim.vim'
 Plug 'kana/vim-textobj-entire'
 Plug 'kana/vim-textobj-user'
 Plug 'kchmck/vim-coffee-script'
 Plug 'majutsushi/tagbar'
 Plug 'mileszs/ack.vim'
 Plug 'moll/vim-bbye'
-Plug 'mxw/vim-jsx'
 Plug 'nathanaelkane/vim-indent-guides'
 Plug 'nelstrom/vim-textobj-rubyblock'
 Plug 'nelstrom/vim-visual-star-search'
+Plug 'nicwest/QQ.vim'
 Plug 'pbrisbin/vim-mkdir'
 Plug 'plasticboy/vim-markdown'
-Plug 'PotatoesMaster/i3-vim-syntax'
-Plug 'scrooloose/syntastic'
-Plug 'SirVer/ultisnips'
-Plug 'slim-template/vim-slim'
+Plug 'powerman/vim-plugin-AnsiEsc'
+Plug 'sheerun/vim-polyglot'
+Plug 'slashmili/alchemist.vim'
 Plug 'szw/vim-maximizer'
 Plug 'tmux-plugins/vim-tmux'
 Plug 'tommcdo/vim-exchange'
@@ -39,7 +36,6 @@ Plug 'tpope/vim-commentary'
 Plug 'tpope/vim-dispatch'
 Plug 'tpope/vim-endwise'
 Plug 'tpope/vim-fugitive'
-Plug 'tpope/vim-haml'
 Plug 'tpope/vim-obsession'
 Plug 'tpope/vim-rails'
 Plug 'tpope/vim-rake'
@@ -49,10 +45,9 @@ Plug 'tpope/vim-rsi'
 Plug 'tpope/vim-speeddating'
 Plug 'tpope/vim-surround'
 Plug 'tpope/vim-unimpaired'
-Plug 'uarun/vim-protobuf'
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
-Plug 'vim-ruby/vim-ruby'
+Plug 'w0rp/ale'
 Plug 'wesQ3/vim-windowswap'
 
 call plug#end()
@@ -185,12 +180,6 @@ set wildmenu
 " Save as sudo
 command! WW w !sudo tee % >/dev/null
 
-" Remove current file
-command! Rm call delete(expand('%'))
-
-" Remove current file and buffer
-command! RM call delete(expand('%')) | bdelete!
-
 " OpenURL command for rails plugin
 ":command -bar -nargs=1 OpenURL :!chromium <args>
 
@@ -294,7 +283,8 @@ autocmd FileType ruby nmap <leader>rm ;call VimuxRunCommand("m " . bufname("%") 
 
 autocmd FileType elixir nmap <leader>rT ;call VimuxRunCommand("mix test " . bufname("%"))<CR>
 autocmd FileType elixir nmap <leader>rt ;call VimuxRunCommand("mix test " . bufname("%") . ":" . line('.'))<CR>
-autocmd FileType elixir nmap <leader>rc ;call VimuxRunCommand("iex -S mix")<CR>
+autocmd FileType elixir nmap <leader>ra ;call VimuxRunCommand("mix test")<CR>
+autocmd FileType elixir nmap <leader>rs ;call VimuxRunCommand("iex -S mix")<CR>
 
 " Prompt for a command to run
 nmap <leader>rc ;VimuxPromptCommand<CR>
@@ -362,6 +352,7 @@ map <leader>tb ;TagbarToggle<CR>
 
 " Vim Airline
 let g:airline#extensions#tabline#enabled = 1
+let g:airline#extensions#ale#enabled = 1
 let g:airline_powerline_fonts = 1
 
 " Gitgutter
@@ -371,10 +362,10 @@ let g:gitgutter_eager = 0
 highlight clear SignColumn
 
 " Syntastic
-let g:syntastic_always_populate_loc_list = 1
-let g:syntastic_auto_loc_list            = 0
-let g:syntastic_check_on_open            = 1
-let g:syntastic_check_on_wq              = 0
+" let g:syntastic_always_populate_loc_list = 1
+" let g:syntastic_auto_loc_list            = 0
+" let g:syntastic_check_on_open            = 1
+" let g:syntastic_check_on_wq              = 0
 
 
 " Undo
@@ -463,7 +454,13 @@ let g:netrw_liststyle = 3
 let g:netrw_browse_split = 4
 let g:netrw_altv = 1
 let g:netrw_winsize = 25
-augroup ProjectDrawer
-  autocmd!
-  autocmd VimEnter * :Vexplore
-augroup END
+" augroup ProjectDrawer
+"   autocmd!
+"   autocmd VimEnter * :Vexplore
+" augroup END
+
+" Remove current file
+command! RRm call delete(expand('%'))
+
+" Remove current file and buffer
+command! RRM call delete(expand('%')) | bdelete!

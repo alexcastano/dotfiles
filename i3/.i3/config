@@ -164,19 +164,19 @@ bindsym $mod+r mode "resize"
 
 # Start i3bar to display a workspace bar (plus the system information i3status
 # finds out, if available)
-bar {
-        status_command i3status
-        position top
-        colors {
-            background #0e0e0e
-            statusline #839496
+# bar {
+#         status_command i3status
+#         position top
+#         colors {
+#             background #0e0e0e
+#             statusline #839496
 
-            focused_workspace  #b58900 #111111
-            inactive_workspace #586e75 #111111
-            urgent_workspace   #839496 #dc322f
-    #       active_workspace   #839496 #111111
-        }
-}
+#             focused_workspace  #b58900 #111111
+#             inactive_workspace #586e75 #111111
+#             urgent_workspace   #839496 #dc322f
+#     #       active_workspace   #839496 #111111
+#         }
+# }
 
 # Colors
 # class                 border  backgr. text
@@ -212,8 +212,8 @@ mode "$mode_system" {
 bindsym $mod+Pause mode "$mode_system"
 bindsym XF86ScreenSaver exec $Locker
 bindsym XF86Sleep exec $Locker && systemctl suspend, mode "default"
-bindsym XF86MonBrightnessDown exec xbacklight -dec 2
-bindsym XF86MonBrightnessUp exec xbacklight -inc 2
+bindsym XF86MonBrightnessDown exec xbacklight -dec 10
+bindsym XF86MonBrightnessUp exec xbacklight -inc 10
 
 # Assign
 for_window [class="Spotify"] move to workspace 10
@@ -248,3 +248,5 @@ bindsym XF86AudioLowerVolume exec pactl set-sink-mute 0 false ; exec pactl set-s
 
 # Mute
 bindsym XF86AudioMute exec pactl set-sink-mute 0 toggle
+
+exec_always --no-startup-id $HOME/.config/polybar/launch.sh

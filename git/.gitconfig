@@ -24,7 +24,7 @@
   ls = ls-files
 
 [user]
-  name = Alejandro Castaño
+  name = Alex Castaño
   email = alexcastanodev@gmail.com
 
 [url "git@github.com:"]
