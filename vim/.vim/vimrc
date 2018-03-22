@@ -21,12 +21,13 @@ Plug 'moll/vim-bbye'
 Plug 'nathanaelkane/vim-indent-guides'
 Plug 'nelstrom/vim-textobj-rubyblock'
 Plug 'nelstrom/vim-visual-star-search'
+Plug 'neomake/neomake'
 Plug 'nicwest/QQ.vim'
 Plug 'pbrisbin/vim-mkdir'
 Plug 'plasticboy/vim-markdown'
 Plug 'powerman/vim-plugin-AnsiEsc'
 Plug 'sheerun/vim-polyglot'
-Plug 'slashmili/alchemist.vim'
+" Plug 'slashmili/alchemist.vim'
 Plug 'szw/vim-maximizer'
 Plug 'tmux-plugins/vim-tmux'
 Plug 'tommcdo/vim-exchange'
@@ -47,10 +48,48 @@ Plug 'tpope/vim-surround'
 Plug 'tpope/vim-unimpaired'
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
-Plug 'w0rp/ale'
 Plug 'wesQ3/vim-windowswap'
 
+if has('nvim')
+  Plug 'autozimu/LanguageClient-neovim', { 'do': ':UpdateRemotePlugins' }
+  Plug 'roxma/nvim-completion-manager'
+  Plug 'Shougo/echodoc.vim'
+
+  let g:LanguageClient_serverCommands = {
+        \ 'elixir': ['/home/alex/bin/elixirls'],
+        \ }
+  let g:LanguageClient_autoStart = 1
+  let g:LanguageClient_diagnosticsEnable = 1
+  let g:LanguageClient_diagnosticsList = "location"
+
+  " call LanguageClient_setLoggingLevel('DEBUG')
+endif
+" if has('nvim')
+"   Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
+"   let g:deoplete#enable_at_startup = 1
+" endif
+
+if has('nvim')
+  Plug 'iCyMind/NeoSolarized'
+else
+  Plug 'altercation/vim-colors-solarized'
+endif
 call plug#end()
+
+if has('nvim')
+  colorscheme NeoSolarized
+  set termguicolors
+else
+  let g:solarized_termcolors=16
+  let g:solarized_termtrans = 1
+  colorscheme solarized
+end
+
+set t_Co=16
+set background=light
+
+autocmd BufReadPost *.ex setlocal filetype=elixir
+autocmd BufReadPost *.exs setlocal filetype=elixir
 
 " Use Vim settings, rather than Vi settings (much better!).
 " This must be first, because it changes other options as a side effect.
@@ -117,11 +156,6 @@ if !exists(":DiffOrig")
         \ | wincmd p | diffthis
 endif
 
-set t_Co=16
-set background=dark
-let g:solarized_termcolors=16
-let g:solarized_termtrans = 1
-colorscheme solarized
 
 " Tabs
 set ts=2  " Tabs are 2 spaces
@@ -156,7 +190,6 @@ set number
 " In many terminal emulators the mouse works just fine, thus enable it.
 if has('mouse')
   set mouse=a   " Enable mouse usage (all modes) in terminals
-  set ttymouse=xterm2
   set mousehide     " Hide mouse after chars typed
 endif
 
@@ -285,6 +318,12 @@ autocmd FileType elixir nmap <leader>rT ;call VimuxRunCommand("mix test " . bufn
 autocmd FileType elixir nmap <leader>rt ;call VimuxRunCommand("mix test " . bufname("%") . ":" . line('.'))<CR>
 autocmd FileType elixir nmap <leader>ra ;call VimuxRunCommand("mix test")<CR>
 autocmd FileType elixir nmap <leader>rs ;call VimuxRunCommand("iex -S mix")<CR>
+autocmd FileType elixir nnoremap <silent> K :call LanguageClient_textDocument_hover()<CR>
+autocmd FileType elixir nnoremap <silent> <F3> :call LanguageClient_textDocument_formatting()<CR>
+autocmd FileType elixir nnoremap <silent> gd :call LanguageClient_textDocument_definition()<CR>
+autocmd FileType elixir set formatexpr=LanguageClient_textDocument_rangeFormatting()
+
+" autocmd! FileType qf nnoremap <buffer> <leader><Enter> <C-w><Enter><C-w>L
 
 " Prompt for a command to run
 nmap <leader>rc ;VimuxPromptCommand<CR>
@@ -347,12 +386,11 @@ command! PrettyXML call DoPrettyXML()
 nmap <leader>px ;PrettyXML<CR>
 
 " Tabbar
-map <leader>tt ;CtrlPTag<CR>
-map <leader>tb ;TagbarToggle<CR>
+" map <leader>tt ;CtrlPTag<CR>
+" map <leader>tb ;TagbarToggle<CR>
 
 " Vim Airline
 let g:airline#extensions#tabline#enabled = 1
-let g:airline#extensions#ale#enabled = 1
 let g:airline_powerline_fonts = 1
 
 " Gitgutter
@@ -464,3 +502,19 @@ command! RRm call delete(expand('%'))
 
 " Remove current file and buffer
 command! RRM call delete(expand('%')) | bdelete!
+
+
+" let test#strategy = "neomake"
+let test#strategy = "dispatch"
+
+nmap <leader>tt ;TestNearest<CR>
+nmap <leader>tf ;TestFile<CR>
+nmap <leader>ta ;TestSuite<CR>
+nmap <leader>t. ;TestLast<CR>
+nmap <leader>tv ;TestVisit<CR>
+
+" nmap <silent> <leader>tt :TestNearest<CR>
+" nmap <silent> <leader>tf :TestFile<CR>
+" nmap <silent> <leader>ta :TestSuite<CR>
+" nmap <silent> <leader>t. :TestLast<CR>
+" nmap <silent> <leader>tv :TestVisit<CR>

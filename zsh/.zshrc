@@ -90,6 +90,8 @@ export SSH_KEY_PATH="~/.ssh/dsa_id"
 
 export ACKRC=".ackrc"
 
+export ERL_AFLAGS="-kernel shell_history enabled"
+
 # Set personal aliases, overriding those provided by oh-my-zsh libs,
 # plugins, and themes. Aliases can be placed here, though oh-my-zsh
 # users are encouraged to define aliases within the ZSH_CUSTOM folder.
@@ -112,3 +114,13 @@ eval "$(rbenv init -)"
 . ~/.nvm/nvm.sh
 
 unsetopt share_history
+
+# tabtab source for serverless package
+# uninstall by removing these lines or running `tabtab uninstall serverless`
+[[ -f /home/alex/.config/yarn/global/node_modules/tabtab/.completions/serverless.zsh ]] && . /home/alex/.config/yarn/global/node_modules/tabtab/.completions/serverless.zsh
+# tabtab source for sls package
+# uninstall by removing these lines or running `tabtab uninstall sls`
+[[ -f /home/alex/.config/yarn/global/node_modules/tabtab/.completions/sls.zsh ]] && . /home/alex/.config/yarn/global/node_modules/tabtab/.completions/sls.zsh
+. $HOME/.asdf/asdf.sh
+
+. $HOME/.asdf/completions/asdf.bash
