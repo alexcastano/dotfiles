@@ -2,4 +2,4 @@ vim/.vim_tmp/*
 vim/.vim/plugged
 vim/.vim/.netrwhist
 vim/.vim/spell
-i3/.tmux/resurrect/
+i3/.tmux/plugins

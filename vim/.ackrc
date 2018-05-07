@@ -9,6 +9,7 @@
 --ignore-file=is:tags
 --ignore-dir=vendor
 --ignore-dir=deps
+--ignore-dir=.elixir_ls
 --type-add=ruby:is:Vagrantfile
 --type-add=ruby:is:Cheffile
 --type-add=ruby:is:Rules

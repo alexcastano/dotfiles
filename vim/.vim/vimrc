@@ -27,7 +27,7 @@ Plug 'pbrisbin/vim-mkdir'
 Plug 'plasticboy/vim-markdown'
 Plug 'powerman/vim-plugin-AnsiEsc'
 Plug 'sheerun/vim-polyglot'
-" Plug 'slashmili/alchemist.vim'
+Plug 'slashmili/alchemist.vim'
 Plug 'szw/vim-maximizer'
 Plug 'tmux-plugins/vim-tmux'
 Plug 'tommcdo/vim-exchange'
@@ -51,7 +51,11 @@ Plug 'vim-airline/vim-airline-themes'
 Plug 'wesQ3/vim-windowswap'
 
 if has('nvim')
-  Plug 'autozimu/LanguageClient-neovim', { 'do': ':UpdateRemotePlugins' }
+  Plug 'autozimu/LanguageClient-neovim', {
+    \ 'branch': 'next',
+    \ 'do': 'bash install.sh',
+    \ }
+
   Plug 'roxma/nvim-completion-manager'
   Plug 'Shougo/echodoc.vim'
 
@@ -62,8 +66,9 @@ if has('nvim')
   let g:LanguageClient_diagnosticsEnable = 1
   let g:LanguageClient_diagnosticsList = "location"
 
-  " call LanguageClient_setLoggingLevel('DEBUG')
+  " call LanguageClient#setLoggingLevel('DEBUG')
 endif
+
 " if has('nvim')
 "   Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
 "   let g:deoplete#enable_at_startup = 1
@@ -182,7 +187,7 @@ set ttimeoutlen=-1
 set laststatus=2  " Always show status line.
 
 " Fold
-set foldmethod=indent
+" set foldmethod=indent
 
 set relativenumber
 set number
@@ -318,10 +323,10 @@ autocmd FileType elixir nmap <leader>rT ;call VimuxRunCommand("mix test " . bufn
 autocmd FileType elixir nmap <leader>rt ;call VimuxRunCommand("mix test " . bufname("%") . ":" . line('.'))<CR>
 autocmd FileType elixir nmap <leader>ra ;call VimuxRunCommand("mix test")<CR>
 autocmd FileType elixir nmap <leader>rs ;call VimuxRunCommand("iex -S mix")<CR>
-autocmd FileType elixir nnoremap <silent> K :call LanguageClient_textDocument_hover()<CR>
-autocmd FileType elixir nnoremap <silent> <F3> :call LanguageClient_textDocument_formatting()<CR>
-autocmd FileType elixir nnoremap <silent> gd :call LanguageClient_textDocument_definition()<CR>
-autocmd FileType elixir set formatexpr=LanguageClient_textDocument_rangeFormatting()
+autocmd FileType elixir nnoremap <silent> K :call LanguageClient#textDocument_hover()<CR>
+autocmd FileType elixir nnoremap <silent> <F3> :call LanguageClient#textDocument_formatting()<CR>
+autocmd FileType elixir nnoremap <silent> gd :call LanguageClient#textDocument_definition()<CR>
+autocmd FileType elixir set formatexpr=LanguageClient#textDocument_rangeFormatting()
 
 " autocmd! FileType qf nnoremap <buffer> <leader><Enter> <C-w><Enter><C-w>L
 
@@ -512,6 +517,12 @@ nmap <leader>tf ;TestFile<CR>
 nmap <leader>ta ;TestSuite<CR>
 nmap <leader>t. ;TestLast<CR>
 nmap <leader>tv ;TestVisit<CR>
+
+" When hit enter with popup works correctly
+" https://github.com/roxma/nvim-completion-manager/issues/49
+let g:endwise_no_mappings = 1
+imap <C-X><CR>   <CR><Plug>AlwaysEnd
+imap <expr> <CR> (pumvisible() ? "\<C-Y>\<CR>\<Plug>DiscretionaryEnd" : "\<CR>\<Plug>DiscretionaryEnd")
 
 " nmap <silent> <leader>tt :TestNearest<CR>
 " nmap <silent> <leader>tf :TestFile<CR>

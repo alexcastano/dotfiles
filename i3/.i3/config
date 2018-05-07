@@ -221,6 +221,7 @@ for_window [class="Spotify"] move to workspace 10
 assign [class="Spotify"] 10
 assign [class="Slack"] 9
 assign [class="Franz"] 9
+assign [class="Rambox"] 9
 assign [class="Zeal"] 8
 
 workspace 1 output eDP-1
