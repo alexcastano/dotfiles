@@ -1,0 +1,3 @@
+#!/bin/bash
+
+oly-prod 'docker exec -i $(docker ps | grep "ecs-app-prod" | cut -f 1 -d " ") bin/boot.sh remote_console'
