@@ -5,4 +5,4 @@ ID=$(aws ec2 describe-instances --filters 'Name=instance.group-name,Values=app-p
 ID=${ID//\"}
 echo $ID
 
-ssh -o ProxyCommand='ssh -W %h:%p "oly-prod-bastion"' $ID "$*"
+ssh -tt -o ProxyCommand='ssh -W %h:%p "oly-prod-bastion"' $ID "$*"
