@@ -52,11 +52,39 @@ Plug 'wesQ3/vim-windowswap'
 
 if has('nvim')
   Plug 'autozimu/LanguageClient-neovim', {
-    \ 'branch': 'next',
-    \ 'do': 'bash install.sh',
-    \ }
+        \ 'branch': 'next',
+        \ 'do': 'bash install.sh',
+        \ }
 
-  Plug 'roxma/nvim-completion-manager'
+  Plug 'ncm2/ncm2'
+  Plug 'roxma/nvim-yarp'
+  " enable ncm2 for all buffers
+  autocmd BufEnter * call ncm2#enable_for_buffer()
+
+  " IMPORTANTE: :help Ncm2PopupOpen for more information
+  set completeopt=noinsert,menuone,noselect
+
+  " NOTE: you need to install completion sources to get completions. Check
+  " our wiki page for a list of sources: https://github.com/ncm2/ncm2/wiki
+  Plug 'ncm2/ncm2-bufword'
+  Plug 'ncm2/ncm2-tmux'
+  Plug 'ncm2/ncm2-path'
+
+  " suppress the annoying 'match x of y', 'The only match' and 'Pattern not
+  " found' messages
+  set shortmess+=c
+
+  " CTRL-C doesn't trigger the InsertLeave autocmd . map to <ESC> instead.
+  inoremap <c-c> <ESC>
+
+  " When the <Enter> key is pressed while the popup menu is visible, it only
+  " hides the menu. Use this mapping to close the menu and also start a new
+  " line.
+  let g:endwise_no_mappings = 1
+  imap <C-X><CR>   <CR><Plug>AlwaysEnd
+  inoremap <expr> <CR> (pumvisible() ? "\<c-y>\<cr>" : "\<CR>")
+
+
   Plug 'Shougo/echodoc.vim'
 
   let g:LanguageClient_serverCommands = {
@@ -517,12 +545,6 @@ nmap <leader>tf ;TestFile<CR>
 nmap <leader>ta ;TestSuite<CR>
 nmap <leader>t. ;TestLast<CR>
 nmap <leader>tv ;TestVisit<CR>
-
-" When hit enter with popup works correctly
-" https://github.com/roxma/nvim-completion-manager/issues/49
-let g:endwise_no_mappings = 1
-imap <C-X><CR>   <CR><Plug>AlwaysEnd
-imap <expr> <CR> (pumvisible() ? "\<C-Y>\<CR>\<Plug>DiscretionaryEnd" : "\<CR>\<Plug>DiscretionaryEnd")
 
 " nmap <silent> <leader>tt :TestNearest<CR>
 " nmap <silent> <leader>tf :TestFile<CR>
