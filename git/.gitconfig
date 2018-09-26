@@ -45,6 +45,12 @@
 [url "git@gitlab.com:"]
   pushInsteadOf = gl:
 
+[url "git@gitlab.com:alexcastano/"]
+  insteadOf = gla:
+
+[url "git@gitlab.com:alexcastano/"]
+  pushInsteadOf = gla:
+
 [url "git@gitlab.com:eagerflow/"]
   insteadOf = gle:
 

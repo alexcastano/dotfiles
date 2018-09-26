@@ -1,5 +1,6 @@
 call plug#begin('~/.vim/plugged')
 
+Plug '/usr/local/opt/fzf'
 Plug 'AndrewRadev/splitjoin.vim'
 Plug 'KabbAmine/zeavim.vim'
 Plug 'SirVer/ultisnips'
@@ -8,10 +9,10 @@ Plug 'altercation/vim-colors-solarized'
 Plug 'benmills/vimux'
 Plug 'chrisbra/csv.vim'
 Plug 'christoomey/vim-tmux-navigator'
-Plug 'ctrlpvim/ctrlp.vim'
 Plug 'danro/rename.vim'
 Plug 'godlygeek/tabular'
 Plug 'janko-m/vim-test'
+Plug 'junegunn/fzf.vim'
 Plug 'kana/vim-textobj-entire'
 Plug 'kana/vim-textobj-user'
 Plug 'kchmck/vim-coffee-script'
@@ -351,7 +352,9 @@ autocmd FileType elixir nmap <leader>rT ;call VimuxRunCommand("mix test " . bufn
 autocmd FileType elixir nmap <leader>rt ;call VimuxRunCommand("mix test " . bufname("%") . ":" . line('.'))<CR>
 autocmd FileType elixir nmap <leader>ra ;call VimuxRunCommand("mix test")<CR>
 autocmd FileType elixir nmap <leader>rs ;call VimuxRunCommand("iex -S mix")<CR>
+
 autocmd FileType elixir nnoremap <silent> K :call LanguageClient#textDocument_hover()<CR>
+autocmd FileType elixir nnoremap <silent> <F2> :call LanguageClient#textDocument_references()<CR>
 autocmd FileType elixir nnoremap <silent> <F3> :call LanguageClient#textDocument_formatting()<CR>
 autocmd FileType elixir nnoremap <silent> gd :call LanguageClient#textDocument_definition()<CR>
 autocmd FileType elixir set formatexpr=LanguageClient#textDocument_rangeFormatting()
@@ -551,3 +554,40 @@ nmap <leader>tv ;TestVisit<CR>
 " nmap <silent> <leader>ta :TestSuite<CR>
 " nmap <silent> <leader>t. :TestLast<CR>
 " nmap <silent> <leader>tv :TestVisit<CR>
+"
+" This is the default extra key bindings
+let g:fzf_action = {
+  \ 'ctrl-t': 'tab split',
+  \ 'ctrl-x': 'split',
+  \ 'ctrl-v': 'vsplit' }
+
+" Default fzf layout
+" - down / up / left / right
+let g:fzf_layout = { 'down': '~40%' }
+
+" In Neovim, you can set up fzf window using a Vim command
+let g:fzf_layout = { 'window': 'enew' }
+let g:fzf_layout = { 'window': '-tabnew' }
+let g:fzf_layout = { 'window': '10split enew' }
+
+" Customize fzf colors to match your color scheme
+let g:fzf_colors =
+\ { 'fg':      ['fg', 'Normal'],
+  \ 'bg':      ['bg', 'Normal'],
+  \ 'hl':      ['fg', 'Comment'],
+  \ 'fg+':     ['fg', 'CursorLine', 'CursorColumn', 'Normal'],
+  \ 'bg+':     ['bg', 'CursorLine', 'CursorColumn'],
+  \ 'hl+':     ['fg', 'Statement'],
+  \ 'info':    ['fg', 'PreProc'],
+  \ 'border':  ['fg', 'Ignore'],
+  \ 'prompt':  ['fg', 'Conditional'],
+  \ 'pointer': ['fg', 'Exception'],
+  \ 'marker':  ['fg', 'Keyword'],
+  \ 'spinner': ['fg', 'Label'],
+  \ 'header':  ['fg', 'Comment'] }
+
+" Enable per-command history.
+" CTRL-N and CTRL-P will be automatically bound to next-history and
+" previous-history instead of down and up. If you don't like the change,
+" explicitly bind the keys to down and up in your $FZF_DEFAULT_OPTS.
+let g:fzf_history_dir = '~/.local/share/fzf-history'
