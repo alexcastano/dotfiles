@@ -111,8 +111,6 @@ bindkey '\e.' insert-last-word
 # rbenv auto completation
 eval "$(rbenv init -)"
 
-. ~/.nvm/nvm.sh
-
 unsetopt share_history
 
 # tabtab source for serverless package
