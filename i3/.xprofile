@@ -7,6 +7,6 @@
 
 start-pulseaudio-x11 &
 
-xautolock -time 5 -locker 'locker' &
+# xautolock -time 5 -locker 'locker' &
 
-feh --bg-scale ~/images/wallpaper.jpg &
+feh --bg-fill ~/images/wallpaper.jpg &
