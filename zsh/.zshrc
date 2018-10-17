@@ -122,3 +122,5 @@ unsetopt share_history
 . $HOME/.asdf/asdf.sh
 
 . $HOME/.asdf/completions/asdf.bash
+
+export FZF_DEFAULT_COMMAND='ag -l -g ""'

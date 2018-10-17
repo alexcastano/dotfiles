@@ -1,6 +1,5 @@
 call plug#begin('~/.vim/plugged')
 
-Plug '/usr/local/opt/fzf'
 Plug 'AndrewRadev/splitjoin.vim'
 Plug 'SirVer/ultisnips'
 Plug 'airblade/vim-gitgutter'
@@ -27,7 +26,7 @@ Plug 'pbrisbin/vim-mkdir'
 Plug 'plasticboy/vim-markdown'
 Plug 'powerman/vim-plugin-AnsiEsc'
 Plug 'sheerun/vim-polyglot'
-Plug 'slashmili/alchemist.vim'
+" Plug 'slashmili/alchemist.vim'
 Plug 'szw/vim-maximizer'
 Plug 'tmux-plugins/vim-tmux'
 Plug 'tommcdo/vim-exchange'
@@ -355,7 +354,8 @@ autocmd FileType elixir nmap <leader>rs ;call VimuxRunCommand("iex -S mix")<CR>
 autocmd FileType elixir nnoremap <silent> K :call LanguageClient#textDocument_hover()<CR>
 autocmd FileType elixir nnoremap <silent> <F2> :call LanguageClient#textDocument_references()<CR>
 autocmd FileType elixir nnoremap <silent> <F3> :call LanguageClient#textDocument_formatting()<CR>
-autocmd FileType elixir nnoremap <silent> gd :call LanguageClient#textDocument_definition()<CR>
+autocmd FileType elixir nnoremap <silent> g] :call LanguageClient#textDocument_definition()<CR>
+autocmd FileType elixir nnoremap <silent> <C-]> :call LanguageClient#textDocument_definition()<CR>
 autocmd FileType elixir set formatexpr=LanguageClient#textDocument_rangeFormatting()
 
 " autocmd! FileType qf nnoremap <buffer> <leader><Enter> <C-w><Enter><C-w>L
@@ -531,7 +531,7 @@ let g:fzf_action = {
 
 " Default fzf layout
 " - down / up / left / right
-let g:fzf_layout = { 'down': '~40%' }
+let g:fzf_layout = { 'up': '~40%' }
 
 " In Neovim, you can set up fzf window using a Vim command
 let g:fzf_layout = { 'window': 'enew' }
@@ -559,5 +559,5 @@ let g:fzf_colors =
 " previous-history instead of down and up. If you don't like the change,
 " explicitly bind the keys to down and up in your $FZF_DEFAULT_OPTS.
 let g:fzf_history_dir = '~/.local/share/fzf-history'
-let $FZF_DEFAULT_COMMAND = 'ag %s -l --nocolor -g ""'
-nmap <c-p> ;GFiles<cr>
+let $FZF_DEFAULT_COMMAND = 'ag -l --nocolor -g ""'
+nmap <c-p> ;Files<cr>
