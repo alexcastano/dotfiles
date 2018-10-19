@@ -26,7 +26,6 @@ Plug 'pbrisbin/vim-mkdir'
 Plug 'plasticboy/vim-markdown'
 Plug 'powerman/vim-plugin-AnsiEsc'
 Plug 'sheerun/vim-polyglot'
-" Plug 'slashmili/alchemist.vim'
 Plug 'szw/vim-maximizer'
 Plug 'tmux-plugins/vim-tmux'
 Plug 'tommcdo/vim-exchange'
@@ -34,7 +33,7 @@ Plug 'tpope/vim-abolish'
 Plug 'tpope/vim-bundler'
 Plug 'tpope/vim-commentary'
 Plug 'tpope/vim-dispatch'
-Plug 'tpope/vim-endwise'
+" Plug 'tpope/vim-endwise'
 Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-obsession'
 Plug 'tpope/vim-rails'
@@ -62,15 +61,13 @@ if has('nvim')
 
   " IMPORTANTE: :help Ncm2PopupOpen for more information
   set completeopt=noinsert,menuone,noselect
+  inoremap <silent> <expr> <CR> (pumvisible() ? "\<c-y>\<cr>" : "\<CR>")
 
-  " NOTE: you need to install completion sources to get completions. Check
-  " our wiki page for a list of sources: https://github.com/ncm2/ncm2/wiki
-  Plug 'ncm2/ncm2-bufword'
-  Plug 'ncm2/ncm2-tmux'
-  Plug 'ncm2/ncm2-path'
+  Plug 'ncm2/ncm2-bufword'  " ncm2 plugin for completing words present in current buffer
+  Plug 'ncm2/ncm2-path'     " ncm2 plugin for completing file paths
+  Plug 'ncm2/ncm2-tmux'     " ncm2 plugin for completing words present in tmux buffers
 
-  " suppress the annoying 'match x of y', 'The only match' and 'Pattern not
-  " found' messages
+  " suppress the annoying 'match x of y', 'The only match' and 'Pattern not found' messages
   set shortmess+=c
 
   " CTRL-C doesn't trigger the InsertLeave autocmd . map to <ESC> instead.
@@ -79,9 +76,8 @@ if has('nvim')
   " When the <Enter> key is pressed while the popup menu is visible, it only
   " hides the menu. Use this mapping to close the menu and also start a new
   " line.
-  let g:endwise_no_mappings = 1
-  imap <C-X><CR>   <CR><Plug>AlwaysEnd
-  inoremap <expr> <CR> (pumvisible() ? "\<c-y>\<cr>" : "\<CR>")
+  " let g:endwise_no_mappings = 1
+  " imap <C-X><CR>   <CR><Plug>AlwaysEnd
 
 
   Plug 'Shougo/echodoc.vim'
@@ -95,11 +91,6 @@ if has('nvim')
 
   " call LanguageClient#setLoggingLevel('DEBUG')
 endif
-
-" if has('nvim')
-"   Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
-"   let g:deoplete#enable_at_startup = 1
-" endif
 
 if has('nvim')
   Plug 'iCyMind/NeoSolarized'
