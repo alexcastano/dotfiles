@@ -66,6 +66,11 @@ if has('nvim')
   Plug 'ncm2/ncm2-bufword'  " ncm2 plugin for completing words present in current buffer
   Plug 'ncm2/ncm2-path'     " ncm2 plugin for completing file paths
   Plug 'ncm2/ncm2-tmux'     " ncm2 plugin for completing words present in tmux buffers
+  Plug 'ncm2/ncm2-ultisnips'
+  let g:UltiSnipsExpandTrigger="<tab>"
+  let g:UltiSnipsJumpForwardTrigger	= "<c-j>"
+  let g:UltiSnipsJumpBackwardTrigger	= "<c-k>"
+  let g:UltiSnipsRemoveSelectModeMappings = 0
 
   " suppress the annoying 'match x of y', 'The only match' and 'Pattern not found' messages
   set shortmess+=c
