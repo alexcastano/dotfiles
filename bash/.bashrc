@@ -82,8 +82,8 @@ xhost +local: &> /dev/null
 [[ -r $NVM_DIR/bash_completion ]] && . $NVM_DIR/bash_completion
 
 #export PATH=$PWD/bin:~/bin:$HOME/.rbenv/bin:/usr/local/bin:/usr/lib/ccache/bin/:/usr/lib/icecream/bin/:/usr/bin/vendor_perl/:${PATH}
-export PATH=~/bin:$HOME/.rbenv/bin:${PATH}
+# export PATH=~/bin:$HOME/.rbenv/bin:${PATH}
 
-# rbenv
-eval "$(rbenv init -)"
+# # rbenv
+# eval "$(rbenv init -)"
 export SHUTDOWN_VIPS="true"

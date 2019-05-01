@@ -346,6 +346,7 @@ autocmd FileType elixir nmap <leader>rT ;call VimuxRunCommand("mix test " . bufn
 autocmd FileType elixir nmap <leader>rt ;call VimuxRunCommand("mix test " . bufname("%") . ":" . line('.'))<CR>
 autocmd FileType elixir nmap <leader>ra ;call VimuxRunCommand("mix test")<CR>
 autocmd FileType elixir nmap <leader>rs ;call VimuxRunCommand("iex -S mix")<CR>
+autocmd FileType elixir nmap <leader>rb ;call VimuxRunCommand("mix compile")<CR>
 
 autocmd FileType elixir nnoremap <silent> K :call LanguageClient#textDocument_hover()<CR>
 autocmd FileType elixir nnoremap <silent> <F2> :call LanguageClient#textDocument_references()<CR>
@@ -470,10 +471,10 @@ nmap <Down> <C-W>+
 let g:indent_guides_enable_on_vim_startup = 1
 
 " grep word under cursor
-nnoremap <leader>gg :grep! "\b<C-R><C-W>\b"<CR>:cw<CR>
-nnoremap <leader>gt :grep! "TODO\\|FIXME"<CR>:cw<CR><CR>
-nnoremap <leader>gs :grep! "" \| cw<Left><Left><Left><Left><Left><Left>
-vnoremap <leader>g "gy:grep! "<C-R>g"<CR>:cw<CR>
+nnoremap <leader>gg :Ack! "\b<C-R><C-W>\b"<CR>
+nnoremap <leader>gt :Ack! "TODO\\|FIXME"<CR>
+nnoremap <leader>gs :Ack! "" \| cw<Left><Left><Left><Left><Left><Left>
+vnoremap <leader>g "gy:Ack! "<C-R>g"<CR>
 
 let g:maximizer_set_default_mapping = 0
 nnoremap <leader>z :MaximizerToggle<CR>
