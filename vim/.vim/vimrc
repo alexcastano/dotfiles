@@ -48,6 +48,9 @@ Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
 Plug 'wesQ3/vim-windowswap'
 
+
+
+
 if has('nvim')
   Plug 'autozimu/LanguageClient-neovim', {
         \ 'branch': 'next',
@@ -95,10 +98,18 @@ if has('nvim')
   let g:LanguageClient_diagnosticsList = "location"
 
   " call LanguageClient#setLoggingLevel('DEBUG')
+
+  " Live substitution
+  set inccommand=split
+
+
+  Plug 'machakann/vim-highlightedyank'
+  let g:highlightedyank_highlight_duration = 500
 endif
 
 if has('nvim')
   Plug 'iCyMind/NeoSolarized'
+  Plug 'lifepillar/vim-solarized8'
 else
   Plug 'altercation/vim-colors-solarized'
 endif
@@ -107,6 +118,7 @@ call plug#end()
 if has('nvim')
   colorscheme NeoSolarized
   set termguicolors
+  colorscheme solarized8
 else
   let g:solarized_termcolors=16
   let g:solarized_termtrans = 1
@@ -114,7 +126,8 @@ else
 end
 
 set t_Co=16
-set background=light
+" set background=light
+set background=dark
 
 autocmd BufReadPost *.ex setlocal filetype=elixir
 autocmd BufReadPost *.exs setlocal filetype=elixir
