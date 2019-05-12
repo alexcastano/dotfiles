@@ -1,3 +1,4 @@
+alias vim='nvim'
 alias git-graph='git log --graph --all --decorate'
 
 alias ins='aurman -S --noconfirm '
