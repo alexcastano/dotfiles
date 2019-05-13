@@ -312,12 +312,6 @@ noremap  <buffer> <silent> j gj
 " noremap  <buffer> <silent> 0 g0
 " noremap  <buffer> <silent> $ g$
 
-" Faster windows movement
-nnoremap <C-j> <C-w>j
-nnoremap <C-k> <C-w>k
-nnoremap <C-l> <C-w>l
-nnoremap <C-h> <C-w>h
-
 " highligth extre spaces
 highlight ExtraWhitespace ctermbg=darkgreen guibg=darkgreen
 match ExtraWhitespace /\s\+$/
@@ -573,13 +567,30 @@ let g:fzf_history_dir = '~/.local/share/fzf-history'
 let $FZF_DEFAULT_COMMAND = 'ag -l --nocolor -g ""'
 nmap <c-p> ;Files<cr>
 
-tnoremap <Esc> <C-\><C-n>
+" tnoremap <Esc> <C-\><C-n>
 
-tnoremap <C-h> <C-\><C-N><C-w>h
-tnoremap <C-j> <C-\><C-N><C-w>j
-tnoremap <C-k> <C-\><C-N><C-w>k
-tnoremap <C-l> <C-\><C-N><C-w>l
-inoremap <C-h> <C-\><C-N><C-w>h
-inoremap <C-j> <C-\><C-N><C-w>j
-inoremap <C-k> <C-\><C-N><C-w>k
-inoremap <C-l> <C-\><C-N><C-w>l
+" Faster windows movement
+nnoremap <C-j> <C-w>j
+nnoremap <C-k> <C-w>k
+nnoremap <C-l> <C-w>l
+nnoremap <C-h> <C-w>h
+
+" augroup vimrc_term
+"   autocmd!
+"   autocmd WinEnter term://* nohlsearch
+"   autocmd WinEnter term://* startinsert
+
+"   tnoremap <C-h> <C-\><C-N><C-w>h
+"   tnoremap <C-j> <C-\><C-N><C-w>j
+"   tnoremap <C-k> <C-\><C-N><C-w>k
+"   tnoremap <C-l> <C-\><C-N><C-w>l
+" augroup END
+
+" augroup vimrc_term_fzf
+"   autocmd!
+"   autocmd FileType fzf tunmap <buffer> <Esc>
+"   autocmd FileType fzf tunmap <buffer> <C-h>
+"   autocmd FileType fzf tunmap <buffer> <C-j>
+"   autocmd FileType fzf tunmap <buffer> <C-k>
+"   autocmd FileType fzf tunmap <buffer> <C-l>
+" augroup END
