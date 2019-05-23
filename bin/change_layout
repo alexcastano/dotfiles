@@ -3,9 +3,9 @@
 current=$(setxkbmap -print | awk -F"+" '/xkb_symbols/ {print $2}')
 
 if [[ $current == 'us' ]]; then
-  setxkbmap es
+  setxkbmap es -option ctrl:nocaps
 else
-  setxkbmap us
+  setxkbmap us -option ctrl:nocaps
 fi
 
-xmodmap ~/.Xmodmap
+# xmodmap ~/.Xmodmap
