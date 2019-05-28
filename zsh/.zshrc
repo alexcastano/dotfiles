@@ -62,6 +62,10 @@ plugins=(git
          tmuxinator
          urltools
          web-search
+         mix
+         docker
+         docker-compose
+         kubectl
 )
 
 # Tmux configuration
