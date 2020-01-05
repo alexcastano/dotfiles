@@ -1,10 +1,16 @@
 #!/bin/sh
 
-rfkill unblock bluetooth
-
-# enable bluetooth
 sudo systemctl start bluetooth
 
-~/bin/_connect-bt
-# run the program bluez
-echo -e 'power on\nconnect \t \nquit' | bluetoothctl
+rfkill unblock bluetooth
+bluetoothctl power on
+bluetoothctl agent on
+bluetoothctl default-agent
+bluetoothctl connect 38:18:4C:7D:5A:28
+
+# # enable bluetooth
+# sudo systemctl start bluetooth
+
+# ~/bin/_connect-bt
+# # run the program bluez
+# echo -e 'power on\nconnect \t \nquit' | bluetoothctl
