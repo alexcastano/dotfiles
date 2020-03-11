@@ -66,6 +66,7 @@ plugins=(git
          docker
          docker-compose
          kubectl
+         mix
 )
 
 # Tmux configuration

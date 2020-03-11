@@ -22,6 +22,8 @@
   lol = log --graph --decorate --pretty=oneline --abbrev-commit
   lola = log --graph --decorate --pretty=oneline --abbrev-commit --all
   ls = ls-files
+  stag = tag -l --sort=v:refname
+
 
 [user]
   name = Alex Castaño

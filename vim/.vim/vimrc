@@ -224,6 +224,12 @@ set laststatus=2  " Always show status line.
 
 " Fold
 " set foldmethod=indent
+autocmd Syntax c,cpp,vim,xml,html,xhtml,elixir setlocal foldmethod=syntax
+" set foldmethod=syntax
+set foldnestmax=10
+" set nofoldenable
+set foldlevel=2
+set foldlevelstart=1
 
 set relativenumber
 set number
