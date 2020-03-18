@@ -1,8 +1,0 @@
-#!/bin/bash
-
-
-ID=$(aws ec2 describe-instances --filters 'Name=instance.group-name,Values=app-stg-cluster-instance' --query 'Reservations[0].Instances[0].PrivateDnsName')
-ID=${ID//\"}
-echo $ID
-
-ssh -tt -o ProxyCommand='ssh -W %h:%p "oly-stg-bastion"' $ID "$*"

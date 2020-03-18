@@ -1,3 +1,0 @@
-#!/bin/bash
-
-oly-stg 'docker exec -it $(docker ps | grep "ecs-app-stg" | cut -f 1 -d " ") bin/boot.sh remote_console'
