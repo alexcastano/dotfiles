@@ -2,4 +2,5 @@ vim/.vim_tmp/*
 vim/.vim/plugged
 vim/.vim/.netrwhist
 vim/.vim/spell
-i3/.tmux/plugins
+shell/.tmux/plugins
+shell/.config/base16-shell

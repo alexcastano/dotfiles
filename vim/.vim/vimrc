@@ -53,6 +53,49 @@ Plug 'wesQ3/vim-windowswap'
 Plug 'elixir-editors/vim-elixir'
 
 
+Plug 'tpope/vim-projectionist'
+
+let g:projectionist_heuristics = {}
+
+" function! s:loadProjection(name, file)
+"   let l:json_path = s:projections_base_dir . \"/" . a:file
+"   let l:json = readfile(l:json_path)
+"   let l:dict = projectionist#json_parse(l:json)
+"   call projectionist#append(a:name, l:dict)
+" endfunction
+
+let g:projectionist_heuristics['mix.exs'] = {
+            \ 'apps/*/mix.exs': { 'type': 'mix' },
+            \ 'lib/*.ex': {
+            \   'type': 'lib',
+            \   'alternate': 'test/{}_test.exs',
+            \   'template': ['defmodule {camelcase|capitalize|dot} do', 'end'],
+            \ },
+            \ 'test/*_test.exs': {
+            \   'type': 'test',
+            \   'alternate': 'lib/{}.ex',
+            \   'template': ['defmodule {camelcase|capitalize|dot}Test do', '  use ExUnit.Case', '', '  alias {camelcase|capitalize|dot}, as: Subject', '', '  doctest Subject', 'end'],
+            \ },
+            \ 'mix.exs': { 'type': 'mix' },
+            \ 'config/*.exs': { 'type': 'config' },
+            \ 'apps/*/application.ex': {
+            \   'type': 'app'
+            \ },
+            \ '*.ex': {
+            \   'makery': {
+            \     'lint': { 'compiler': 'credo' },
+            \     'test': { 'compiler': 'exunit' },
+            \     'build': { 'compiler': 'mix' }
+            \   }
+            \ },
+            \ '*.exs': {
+            \   'makery': {
+            \     'lint': { 'compiler': 'credo' },
+            \     'test': { 'compiler': 'exunit' },
+            \     'build': { 'compiler': 'mix' }
+            \   }
+            \ }
+            \ }
 
 
 if has('nvim')
@@ -117,6 +160,8 @@ endif
 
 Plug 'chriskempson/base16-vim'
 call plug#end()
+
+" call s:loadProjection("mix.exs", \"elixir_projections.json")
 
 colorscheme base16-default-dark
 Plug 'chriskempson/base16-vim'
