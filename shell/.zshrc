@@ -59,14 +59,13 @@ plugins=(git
          ssh-agent
          systemd
          tmux
-         tmuxinator
          urltools
          web-search
-         mix
          docker
          docker-compose
          kubectl
          mix
+         zsh-interactive-cd
 )
 
 # Tmux configuration
@@ -84,10 +83,14 @@ source $ZSH/oh-my-zsh.sh
 # You may need to manually set your language environment
 export LANG=en_US.UTF-8
 
-export EDITOR='nvim'
-
-# Compilation flags
-# export ARCHFLAGS="-arch x86_64"
+# nvim: avoid run nvin inside nvim
+if (( ${+NVIM_LISTEN_ADDRESS} )); then
+  export VISUAL="nvr -cc vsplit --remote-wait +'set bufhidden=wipe'"
+  export EDITOR="nvr -cc vsplit --remote-wait +'set bufhidden=wipe'"
+else
+  export EDITOR='nvim'
+  export VISUAL='nvim'
+fi
 
 # ssh
 export SSH_KEY_PATH="~/.ssh/dsa_id"
@@ -111,9 +114,6 @@ bindkey '^R' history-incremental-pattern-search-backward
 
 # Alt+. behaviour
 bindkey '\e.' insert-last-word
-
-# rbenv auto completation
-# eval "$(rbenv init -)"
 
 unsetopt share_history
 

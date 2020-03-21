@@ -96,17 +96,33 @@ Plug 'tmux-plugins/vim-tmux'
 Plug 'benmills/vimux'
 
 " =================================
-" TEST
+" Term
 " =================================
+
+tnoremap <Esc> <C-\><C-n>
+tnoremap <C-v><Esc> <C-\><C-n>
+
+" executes in the current neovim instance
+let $VISUAL="nvr -cc vsplit --remote-wait +'set bufhidden=wipe'"
+let $EDITOR="nvr -cc vsplit --remote-wait +'set bufhidden=wipe'"
+
+
+" Different color term cursor
+" TODO better colors
+highlight! link TermCursor Cursor
+highlight! TermCursorNC guibg=red guifg=white ctermbg=1 ctermfg=15
+
 
 Plug 'kassio/neoterm'
 
 let g:term_vert_size = 110
 let g:term_hor_size = 20
 let g:neoterm_size = g:term_vert_size
-let g:neoterm_default_mod = 'vertical'
+let g:neoterm_default_mod = 'vertical botright'
 let g:neoterm_autoscroll = 1
 let g:neoterm_fixedsize = 1
+let g:neoterm_autoinsert = 1
+let g:neoterm_command_prefix = ''
 
 " Create some commands that makes the splits easy
 
@@ -122,12 +138,28 @@ function! OpenTermH()
   let g:neoterm_size = g:term_vert_size
 endfunction
 
-nnoremap <silent> <leader><cr> :<c-u>exec v:count.'Ttoggle'<cr>
+function! ShowTerm()
+  let l:autoinsert = g:neoterm_autoinsert
+  let g:neoterm_autoinsert = 0
+  execute 'Ttoggle'
+  let g:neoterm_autoinsert = l:autoinsert
+endfunction
+
+" toggle main neoterm
+inoremap <silent> <A-CR> <c-\><c-n>:<c-u>exec v:count.'Ttoggle'<cr>
+tnoremap <silent> <A-CR> <c-\><c-n>:<c-u>exec v:count.'Ttoggle'<cr>
+nnoremap <silent> <A-CR> :<c-u>exec v:count.'Ttoggle'<cr>
+" without autointert
+nnoremap <silent> <leader>ts :call ShowTerm()<cr>
+
+" new terms
+nnoremap <silent> <leader>tn :tab Tnew<cr>
+nnoremap <silent> <leader>th :call OpenTermH()<cr>
+nnoremap <silent> <leader>tv :call OpenTermV()<cr>
+
 nnoremap <silent> <leader>tl :<c-u>exec v:count.'Tclear'<cr>
 nnoremap <silent> <leader>tk :<c-u>exec v:count.'Tkill'<cr>
 nnoremap <silent> <leader>tK :<c-u>exec v:count.'Tkill'<cr>:<c-u>exec v:count.'Tkill'<cr>
-nnoremap <silent> <leader>th :call OpenTermH()<cr>
-nnoremap <silent> <leader>tv :call OpenTermV()<cr>
 
 " :TREPLSetTerm {term-id}                                          *:TREPLSetTerm*
 " Chooses, or changes, the current neoterm to run the REPL commands.
@@ -143,6 +175,10 @@ autocmd FileType elixir nnoremap <leader>rl :T mix credo<cr>
 autocmd FileType elixir nnoremap <leader>rd :T mix deps.get<cr>
 autocmd FileType elixir nnoremap <leader>re :T mix do ecto.drop, ecto.create, ecto.migrate; MIX_ENV=test mix do ecto.drop, ecto.create, ecto.migrate<cr>
 autocmd FileType elixir nnoremap <leader>rp :T iex -S mix phx.server<cr>
+
+" =================================
+" Test
+" =================================
 
 Plug 'janko-m/vim-test'
 let test#strategy = "neoterm"
@@ -428,15 +464,8 @@ let g:rails_default_file='config/database.yml'
 set showmatch  " Show matching brackets.
 set mat=5  " Bracket blinking.
 
-" Backups
-if has("vms")
-  set nobackup " do not keep a backup file, use versions instead
-else
-  set backup   " keep a backup file
-endif
-
+set nobackup " do not keep a backup file, use versions instead
 set backupdir=~/.vim_backups " Where backups will go.
-
 set directory=~/.vim_tmp     " Where temporary files will go.
 
 " Reload vim after save this file
