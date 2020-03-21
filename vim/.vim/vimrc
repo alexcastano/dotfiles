@@ -1,57 +1,175 @@
+" Use Vim settings, rather than Vi settings (much better!).
+" This must be first, because it changes other options as a side effect.
+set nocompatible
+
+" leader key is space
+nnoremap <Space> <Nop>
+let mapleader = "\<Space>"
+
 call plug#begin('~/.vim/plugged')
 
-Plug 'AndrewRadev/splitjoin.vim'
-Plug 'SirVer/ultisnips'
 Plug 'airblade/vim-gitgutter'
-Plug 'altercation/vim-colors-solarized'
-Plug 'benmills/vimux'
-Plug 'chrisbra/csv.vim'
-Plug 'christoomey/vim-tmux-navigator'
-Plug 'danro/rename.vim'
+Plug 'chrisbra/csv.vim', {'for': 'csv'}
 Plug 'godlygeek/tabular'
-Plug 'janko-m/vim-test'
 Plug 'junegunn/fzf.vim'
 Plug 'kana/vim-textobj-entire'
 Plug 'kana/vim-textobj-user'
-Plug 'kchmck/vim-coffee-script'
 Plug 'majutsushi/tagbar'
+
 Plug 'mileszs/ack.vim'
-Plug 'moll/vim-bbye'
-Plug 'nathanaelkane/vim-indent-guides'
-Plug 'nelstrom/vim-textobj-rubyblock'
+
+
+Plug 'nelstrom/vim-textobj-rubyblock', {'for': 'ruby'}
+
 Plug 'nelstrom/vim-visual-star-search'
-Plug 'neomake/neomake'
-Plug 'nicwest/QQ.vim'
-Plug 'pbrisbin/vim-mkdir'
-Plug 'plasticboy/vim-markdown'
+
+Plug 'nicwest/QQ.vim' " Postman in vim
+Plug 'plasticboy/vim-markdown', {'for': 'markdown'}
+
 Plug 'powerman/vim-plugin-AnsiEsc'
 " Plug 'pseewald/anyfold'
 Plug 'sheerun/vim-polyglot'
 Plug 'szw/vim-maximizer'
-Plug 'tmux-plugins/vim-tmux'
 Plug 'tommcdo/vim-exchange'
 Plug 'tpope/vim-abolish'
-Plug 'tpope/vim-bundler'
 Plug 'tpope/vim-commentary'
-Plug 'tpope/vim-dispatch'
-" Run Dispatch command in terminal
-Plug 'radenling/vim-dispatch-neovim'
 " Plug 'tpope/vim-endwise'
 Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-obsession'
-Plug 'tpope/vim-rails'
-Plug 'tpope/vim-rake'
-Plug 'tpope/vim-rbenv'
+
 Plug 'tpope/vim-repeat'
 Plug 'tpope/vim-rsi'
 Plug 'tpope/vim-speeddating'
 Plug 'tpope/vim-surround'
 Plug 'tpope/vim-unimpaired'
+
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
-Plug 'wesQ3/vim-windowswap'
-Plug 'elixir-editors/vim-elixir'
 
+
+" =================================
+" Visual plugins
+" =================================
+
+
+Plug 'nathanaelkane/vim-indent-guides' " margin vertical lines
+let g:indent_guides_enable_on_vim_startup = 1
+let g:indent_guides_exclude_filetypes = ['help', 'nerdtree', 'neoterm', 'terminal']
+
+" =================================
+" Text plugins
+" =================================
+
+Plug 'machakann/vim-highlightedyank' " highlight yanked text
+let g:highlightedyank_highlight_duration = 500
+
+Plug 'AndrewRadev/splitjoin.vim' " change from one line to multiple line form and viceversa gS gJ
+" Plug 'SirVer/ultisnips'
+" Plug 'ncm2/ncm2-ultisnips'
+" let g:UltiSnipsExpandTrigger="<tab>"
+" let g:UltiSnipsJumpForwardTrigger	= "<c-j>"
+" let g:UltiSnipsJumpBackwardTrigger	= "<c-k>"
+" let g:UltiSnipsRemoveSelectModeMappings = 0
+
+
+" =================================
+" Window plugins
+" =================================
+
+Plug 'moll/vim-bbye'        " close buffer but not window :Bd
+Plug 'wesQ3/vim-windowswap' " exchange two windows <leader>ww
+
+" =================================
+" File plugins
+" =================================
+
+Plug 'pbrisbin/vim-mkdir' " mkdir directories automatically with filename
+Plug 'danro/rename.vim'   " rename the file without writting the full path
+
+
+" =================================
+" Tmux
+" =================================
+
+Plug 'christoomey/vim-tmux-navigator'
+Plug 'tmux-plugins/vim-tmux'
+Plug 'benmills/vimux'
+
+" =================================
+" TEST
+" =================================
+
+Plug 'kassio/neoterm'
+
+let g:term_vert_size = 110
+let g:term_hor_size = 20
+let g:neoterm_size = g:term_vert_size
+let g:neoterm_default_mod = 'vertical'
+let g:neoterm_autoscroll = 1
+let g:neoterm_fixedsize = 1
+
+" Create some commands that makes the splits easy
+
+function! OpenTermV()
+  let g:neoterm_size = g:term_vert_size
+  execute 'vert Tnew'
+  let g:neoterm_size = g:term_vert_size
+endfunction
+
+function! OpenTermH()
+  let g:neoterm_size = g:term_hor_size
+  execute 'belowright Tnew'
+  let g:neoterm_size = g:term_vert_size
+endfunction
+
+nnoremap <silent> <leader><cr> :<c-u>exec v:count.'Ttoggle'<cr>
+nnoremap <silent> <leader>tl :<c-u>exec v:count.'Tclear'<cr>
+nnoremap <silent> <leader>tk :<c-u>exec v:count.'Tkill'<cr>
+nnoremap <silent> <leader>tK :<c-u>exec v:count.'Tkill'<cr>:<c-u>exec v:count.'Tkill'<cr>
+nnoremap <silent> <leader>th :call OpenTermH()<cr>
+nnoremap <silent> <leader>tv :call OpenTermV()<cr>
+
+" :TREPLSetTerm {term-id}                                          *:TREPLSetTerm*
+" Chooses, or changes, the current neoterm to run the REPL commands.
+nnoremap <leader>s <Plug>(neoterm-repl-send)
+xnoremap <leader>s <Plug>(neoterm-repl-send)
+nnoremap <leader>ss <Plug>(neoterm-repl-send-line)
+nnoremap <leader>sf :TREPLSendFile<cr>
+
+autocmd FileType elixir nnoremap <leader>rc :T iex -S mix<cr>
+autocmd FileType elixir nnoremap <leader>rb :T mix compile<cr>
+autocmd FileType elixir nnoremap <leader>rx :T mix do clean, compile<cr>
+autocmd FileType elixir nnoremap <leader>rl :T mix credo<cr>
+autocmd FileType elixir nnoremap <leader>rd :T mix deps.get<cr>
+autocmd FileType elixir nnoremap <leader>re :T mix do ecto.drop, ecto.create, ecto.migrate; MIX_ENV=test mix do ecto.drop, ecto.create, ecto.migrate<cr>
+autocmd FileType elixir nnoremap <leader>rp :T iex -S mix phx.server<cr>
+
+Plug 'janko-m/vim-test'
+let test#strategy = "neoterm"
+
+function! RunTestSuite()
+  Tclear
+  if filereadable('bin/test_suite')
+    T echo 'bin/test_suite'
+    T bin/test_suite
+  elseif filereadable("bin/test")
+    T echo 'bin/test'
+    T bin/test
+  else
+    TestSuite
+  endif
+endfunction
+
+nnoremap <leader>tt :TestNearest<cr>
+nnoremap <leader>tf :TestFile<cr>
+nnoremap <leader>ta :call RunTestSuite()<cr>
+nnoremap <leader>t. :TestLast<cr>
+nnoremap <leader>tf :TestVisit<cr>
+
+
+" =================================
+" Projectionist
+" =================================
 
 Plug 'tpope/vim-projectionist'
 
@@ -98,76 +216,85 @@ let g:projectionist_heuristics['mix.exs'] = {
             \ }
 
 
-if has('nvim')
-  Plug 'autozimu/LanguageClient-neovim', {
-        \ 'branch': 'next',
-        \ 'do': 'bash install.sh',
-        \ }
+" =================================
+" Ruby
+" =================================
 
-  Plug 'roxma/nvim-yarp'
-  Plug 'ncm2/ncm2'
-  " enable ncm2 for all buffers
-  autocmd BufEnter * call ncm2#enable_for_buffer()
-
-  " IMPORTANTE: :help Ncm2PopupOpen for more information
-  set completeopt=noinsert,menuone,noselect
-  inoremap <silent> <expr> <CR> (pumvisible() ? "\<c-y>\<cr>" : "\<CR>")
-
-  Plug 'ncm2/ncm2-bufword'  " ncm2 plugin for completing words present in current buffer
-  Plug 'ncm2/ncm2-path'     " ncm2 plugin for completing file paths
-  Plug 'ncm2/ncm2-tmux'     " ncm2 plugin for completing words present in tmux buffers
-  Plug 'ncm2/ncm2-ultisnips'
-  let g:UltiSnipsExpandTrigger="<tab>"
-  let g:UltiSnipsJumpForwardTrigger	= "<c-j>"
-  let g:UltiSnipsJumpBackwardTrigger	= "<c-k>"
-  let g:UltiSnipsRemoveSelectModeMappings = 0
-
-  " suppress the annoying 'match x of y', 'The only match' and 'Pattern not found' messages
-  set shortmess+=c
-
-  " CTRL-C doesn't trigger the InsertLeave autocmd . map to <ESC> instead.
-  inoremap <c-c> <ESC>
-
-  " When the <Enter> key is pressed while the popup menu is visible, it only
-  " hides the menu. Use this mapping to close the menu and also start a new
-  " line.
-  " let g:endwise_no_mappings = 1
-  " imap <C-X><CR>   <CR><Plug>AlwaysEnd
+Plug 'tpope/vim-rails', {'for': 'ruby'}
+Plug 'tpope/vim-rake', {'for': 'ruby'}
+Plug 'tpope/vim-rbenv', {'for': 'ruby'}
+Plug 'tpope/vim-bundler', {'for': 'ruby'}
 
 
-  Plug 'Shougo/echodoc.vim'
 
-  let g:LanguageClient_serverCommands = {
-        \ 'elixir': ['/home/alex/elixir/elixir-ls/release/language_server.sh'],
-        \ }
-  let g:LanguageClient_autoStart = 1
-  let g:LanguageClient_diagnosticsEnable = 1
-  let g:LanguageClient_diagnosticsList = "location"
-
-  " call LanguageClient#setLoggingLevel('DEBUG')
-
-  " Live substitution
-  set inccommand=split
+set splitright " open vsplit in the right side
+set splitbelow " open split in the bottom side
 
 
-  Plug 'machakann/vim-highlightedyank'
-  let g:highlightedyank_highlight_duration = 500
-endif
+Plug 'autozimu/LanguageClient-neovim', {
+      \ 'branch': 'next',
+      \ 'do': 'bash install.sh',
+      \ }
 
-" Color schema
-" Plug 'iCyMind/NeoSolarized'
-" Plug 'lifepillar/vim-solarized8'
+Plug 'roxma/nvim-yarp'
+Plug 'ncm2/ncm2'
+" enable ncm2 for all buffers
+autocmd BufEnter * call ncm2#enable_for_buffer()
+
+" IMPORTANTE: :help Ncm2PopupOpen for more information
+set completeopt=noinsert,menuone,noselect
+inoremap <silent> <expr> <cr> (pumvisible() ? "\<c-y>\<cr>" : "\<cr>")
+
+Plug 'ncm2/ncm2-bufword'  " ncm2 plugin for completing words present in current buffer
+Plug 'ncm2/ncm2-path'     " ncm2 plugin for completing file paths
+Plug 'ncm2/ncm2-tmux'     " ncm2 plugin for completing words present in tmux buffers
+
+" suppress the annoying 'match x of y', 'The only match' and 'Pattern not found' messages
+set shortmess+=c
+
+" CTRL-C doesn't trigger the InsertLeave autocmd . map to <ESC> instead.
+inoremap <c-c> <ESC>
+
+" When the <Enter> key is pressed while the popup menu is visible, it only
+" hides the menu. Use this mapping to close the menu and also start a new
+" line.
+" let g:endwise_no_mappings = 1
+" imap <C-X><cr>   <cr><Plug>AlwaysEnd
+
+
+Plug 'Shougo/echodoc.vim'
+
+let g:LanguageClient_serverCommands = {
+      \ 'elixir': ['/home/alex/elixir/elixir-ls/release/language_server.sh'],
+      \ }
+let g:LanguageClient_autoStart = 1
+let g:LanguageClient_diagnosticsEnable = 1
+let g:LanguageClient_diagnosticsList = "location"
+
+" call LanguageClient#setLoggingLevel('DEBUG')
+"
+autocmd FileType elixir nnoremap <silent> K :call LanguageClient#textDocument_hover()<cr>
+autocmd FileType elixir nnoremap <silent> <F2> :call LanguageClient#textDocument_references()<cr>
+autocmd FileType elixir nnoremap <silent> <F3> :call LanguageClient#textDocument_formatting()<cr>
+autocmd FileType elixir nnoremap <silent> g] :call LanguageClient#textDocument_definition()<cr>
+autocmd FileType elixir nnoremap <silent> <C-]> :call LanguageClient#textDocument_definition()<cr>
+autocmd FileType elixir set formatexpr=LanguageClient#textDocument_rangeFormatting()
+
+
+" Live substitution
+set inccommand=split
+
+
 
 Plug 'chriskempson/base16-vim'
+
 call plug#end()
 
-" call s:loadProjection("mix.exs", \"elixir_projections.json")
-
 colorscheme base16-default-dark
-Plug 'chriskempson/base16-vim'
-" colorscheme NeoSolarized
+
+ " call s:loadProjection("mix.exs", \"elixir_projections.json")
+
 set termguicolors
-" colorscheme solarized8
 
 if filereadable(expand("~/.vimrc_background"))
   " let base16colorspace=256
@@ -181,62 +308,43 @@ set t_Co=256
 " set background=light
 " set background=dark
 
-" Use Vim settings, rather than Vi settings (much better!).
-" This must be first, because it changes other options as a side effect.
-set nocompatible
 
 " allow backspacing over everything in insert mode
 set history=500    " keep 50 lines of command line history
 
-" Switch syntax highlighting on, when the terminal has colors
-" Also switch on highlighting the last used search pattern.
-if &t_Co > 2 || has("gui_running")
-  syntax on
-  set hlsearch
-  set guifont=Monospace\ 9
-endif
 
-" Only do this part when compiled with support for autocommands.
-if has("autocmd")
+" Enable file type detection.
+" Use the default filetype settings, so that mail gets 'tw' set to 72,
+" 'cindent' is on in C files, etc.
+" Also load indent files, to automatically do language-dependent indenting.
+filetype plugin indent on
 
-  " Enable file type detection.
-  " Use the default filetype settings, so that mail gets 'tw' set to 72,
-  " 'cindent' is on in C files, etc.
-  " Also load indent files, to automatically do language-dependent indenting.
-  filetype plugin indent on
+runtime macros/matchit.vim
 
-  runtime macros/matchit.vim
+" Put these in an autocmd group, so that we can delete them easily.
+augroup vimrcEx
+  au!
 
-  " Put these in an autocmd group, so that we can delete them easily.
-  augroup vimrcEx
-    au!
+  " For all text files set 'textwidth' to 78 characters.
+  autocmd FileType text setlocal textwidth=78
 
-    " For all text files set 'textwidth' to 78 characters.
-    autocmd FileType text setlocal textwidth=78
+  " When editing a file, always jump to the last known cursor position.
+  " Don't do it when the position is invalid or when inside an event handler
+  " (happens when dropping a file on gvim).
+  " Also don't do it when the mark is in the first line, that is the default
+  " position when opening a file.
+  autocmd BufReadPost *
+        \ if line("'\"") > 0 && line("'\"") <= line("$") |
+        \   exe "normal! g`\"" |
+        \ endif
 
-    " When editing a file, always jump to the last known cursor position.
-    " Don't do it when the position is invalid or when inside an event handler
-    " (happens when dropping a file on gvim).
-    " Also don't do it when the mark is in the first line, that is the default
-    " position when opening a file.
-    autocmd BufReadPost *
-          \ if line("'\"") > 0 && line("'\"") <= line("$") |
-          \   exe "normal! g`\"" |
-          \ endif
-
-    autocmd FileType text,markdown,html setlocal wrap linebreak nolist number
-    au BufRead,BufNewFile *.md set filetype=markdown
+  autocmd FileType text,markdown,html setlocal wrap linebreak nolist number
+  au BufRead,BufNewFile *.md set filetype=markdown
 
 
-    " autocmd BufNewFile,BufReadPost *.coffee setl foldmethod=indent
+  " autocmd BufNewFile,BufReadPost *.coffee setl foldmethod=indent
 
-  augroup END
-
-else
-
-  set autoindent    " always set autoindenting on
-
-endif " has("autocmd")
+augroup END
 
 " Convenient command to see the difference between the current buffer and the
 " file it was loaded from, thus the changes you made.
@@ -331,10 +439,6 @@ set backupdir=~/.vim_backups " Where backups will go.
 
 set directory=~/.vim_tmp     " Where temporary files will go.
 
-" leader key is space
-nnoremap <Space> <Nop>
-let mapleader = "\<Space>"
-
 " Reload vim after save this file
 " autocmd BufWritePost vimrc source %
 
@@ -345,8 +449,8 @@ vnoremap ; :
 vnoremap : ;
 
 " sessions
-map <leader>ss ;mksession! ~/.vim_tmp/last_session<cr>
-map <leader>sl ;source ~/.vim_tmp/last_session<cr>
+" map <leader>ss ;mksession! ~/.vim_tmp/last_session<cr>
+" map <leader>sl ;source ~/.vim_tmp/last_session<cr>
 
 " This is to set the current directory
 cnoremap %% <C-R>=fnameescape(expand('%:h')).'/'<cr>
@@ -381,71 +485,10 @@ map Y y$
 " disabling Q
 map Q <Nop>
 
-" Vimux
-" If text is selected, save it in the v buffer and send that buffer it to tmux
-vmap <leader>r "vy ;call VimuxSendText(@v)<CR>']
-" VimuxSendKeys("'" . escape(@k, "'") . "'")
-
-" Select current paragraph and send it to tmux
-nmap <leader>rr vip<leader>r
-
-" Run the nearest test with rspec
-autocmd FileType ruby nmap <leader>rT ;call VimuxRunCommand("bin/rspec " . bufname("%"))<CR>
-
-" Run the current file with rspec
-autocmd FileType ruby nmap <leader>rt ;call VimuxRunCommand("bin/rspec " . bufname("%") . ":" . line('.'))<CR>
-
-" Run all the tests with rspec
-autocmd FileType ruby nmap <leader>ra ;call VimuxRunCommand("bin/rspec")<CR>
-
-" Run the nearest test with minitest
-autocmd FileType ruby nmap <leader>rM ;call VimuxRunCommand("m " . bufname("%"))<CR>
-
-" Run the current file with rspec
-autocmd FileType ruby nmap <leader>rm ;call VimuxRunCommand("m " . bufname("%") . ":" . line('.'))<CR>
-
-autocmd FileType elixir nmap <leader>rT ;call VimuxRunCommand("mix test " . bufname("%"))<CR>
-autocmd FileType elixir nmap <leader>rt ;call VimuxRunCommand("mix test " . bufname("%") . ":" . line('.'))<CR>
-autocmd FileType elixir nmap <leader>ra ;call VimuxRunCommand("mix test")<CR>
-autocmd FileType elixir nmap <leader>rs ;call VimuxRunCommand("iex -S mix")<CR>
-autocmd FileType elixir nmap <leader>rb ;call VimuxRunCommand("mix compile")<CR>
-
-autocmd FileType elixir nnoremap <silent> K :call LanguageClient#textDocument_hover()<CR>
-autocmd FileType elixir nnoremap <silent> <F2> :call LanguageClient#textDocument_references()<CR>
-autocmd FileType elixir nnoremap <silent> <F3> :call LanguageClient#textDocument_formatting()<CR>
-autocmd FileType elixir nnoremap <silent> g] :call LanguageClient#textDocument_definition()<CR>
-autocmd FileType elixir nnoremap <silent> <C-]> :call LanguageClient#textDocument_definition()<CR>
-autocmd FileType elixir set formatexpr=LanguageClient#textDocument_rangeFormatting()
-
-" autocmd! FileType qf nnoremap <buffer> <leader><Enter> <C-w><Enter><C-w>L
-
-" Prompt for a command to run
-nmap <leader>rc ;VimuxPromptCommand<CR>
-
-" Run last command executed by VimuxRunCommand
-nmap <leader>r. ;VimuxRunLastCommand<CR>
-
-" Inspect runner pane
-nmap <leader>ri ;VimuxInspectRunner<CR>
-
-" Close vim tmux runner opened by VimuxRunCommand
-nmap <leader>rq ;VimuxCloseRunner<CR>
-
-" Interrupt any command running in the runner pane
-nmap <leader>rx ;VimuxInterruptRunner<CR>
-
-" Zoom the runner pane (use <bind-key> z to restore runner pane)
-nmap <leader>rz ;call VimuxZoomRunner()<CR>
-
-" Send exit to the pane
-nmap <leader>re ;call VimuxSendKeys("C-d")<CR>
-
-" Previous command using Control-p Enter
-nmap <leader>rp ;call VimuxSendKeys("C-p Enter")<CR>
 
 " Pretty json
 nmap <leader>pj vip<leader>pj
-vmap <leader>pj ;!python -m json.tool<CR>
+vmap <leader>pj ;!python -m json.tool<cr>
 
 " Pretty xml
 function! DoPrettyXML()
@@ -477,7 +520,7 @@ function! DoPrettyXML()
 endfunction
 command! PrettyXML call DoPrettyXML()
 
-nmap <leader>px ;PrettyXML<CR>
+nmap <leader>px ;PrettyXML<cr>
 
 " Vim Airline
 let g:airline#extensions#tabline#enabled = 1
@@ -503,16 +546,16 @@ set undolevels=1000         " How many undos
 set undoreload=10000        " number of lines to save for undo
 
 " Align with tabular
-nmap <leader>a= ;Tabularize /=<CR>
-vmap <leader>a= ;Tabularize /=<CR>
-nmap <leader>a: ;Tabularize /:\zs<CR>
-vmap <leader>a: ;Tabularize /:\zs<CR>
-nmap <leader>a# ;Tabularize /#<CR>
-vmap <leader>a# ;Tabularize /#<CR>
-nmap <leader>a\| ;Tabularize /\|<CR>
-vmap <leader>a\| ;Tabularize /\|<CR>
-nmap <leader>a" ;Tabularize /"<CR>
-vmap <leader>a" ;Tabularize /"<CR>
+nmap <leader>a= ;Tabularize /=<cr>
+vmap <leader>a= ;Tabularize /=<cr>
+nmap <leader>a: ;Tabularize /:\zs<cr>
+vmap <leader>a: ;Tabularize /:\zs<cr>
+nmap <leader>a# ;Tabularize /#<cr>
+vmap <leader>a# ;Tabularize /#<cr>
+nmap <leader>a\| ;Tabularize /\|<cr>
+vmap <leader>a\| ;Tabularize /\|<cr>
+nmap <leader>a" ;Tabularize /"<cr>
+vmap <leader>a" ;Tabularize /"<cr>
 
 vmap R "_dP // Replace the selected text with the clipboard without overwritting
 set wildignore+=*/tmp/*,*/node_modules/*
@@ -529,17 +572,14 @@ nmap <Right> <C-W>>
 nmap <Up> <C-W>-
 nmap <Down> <C-W>+
 
-" Indent plugin
-let g:indent_guides_enable_on_vim_startup = 1
-
 " grep word under cursor
-nnoremap <leader>gg :Ack! "\b<C-R><C-W>\b"<CR>
-nnoremap <leader>gt :Ack! "TODO\\|FIXME"<CR>
+nnoremap <leader>gg :Ack! "\b<C-R><C-W>\b"<cr>
+nnoremap <leader>gt :Ack! "TODO\\|FIXME"<cr>
 nnoremap <leader>gs :Ack! "" \| cw<Left><Left><Left><Left><Left><Left>
-vnoremap <leader>g "gy:Ack! "<C-R>g"<CR>
+vnoremap <leader>g "gy:Ack! "<C-R>g"<cr>
 
 let g:maximizer_set_default_mapping = 0
-nnoremap <leader>z :MaximizerToggle<CR>
+nnoremap <leader>z :MaximizerToggle<cr>
 
 ab riex require IEx; IEx.pry
 ab rpry require 'pry'; binding.pry
@@ -567,21 +607,6 @@ command! RRm call delete(expand('%'))
 command! RRM call delete(expand('%')) | bdelete!
 
 
-" let test#strategy = "neovim"
-let test#strategy = "dispatch"
-" let g:dispatch_compilers = {'elixir': 'exunit'}
-
-nmap <leader>tt ;TestNearest<CR>
-nmap <leader>tf ;TestFile<CR>
-nmap <leader>ta ;TestSuite<CR>
-nmap <leader>t. ;TestLast<CR>
-nmap <leader>tv ;TestVisit<CR>
-
-" nmap <silent> <leader>tt :TestNearest<CR>
-" nmap <silent> <leader>tf :TestFile<CR>
-" nmap <silent> <leader>ta :TestSuite<CR>
-" nmap <silent> <leader>t. :TestLast<CR>
-" nmap <silent> <leader>tv :TestVisit<CR>
 "
 " This is the default extra key bindings
 let g:fzf_action = {
@@ -630,6 +655,7 @@ nnoremap <C-k> <C-w>k
 nnoremap <C-l> <C-w>l
 nnoremap <C-h> <C-w>h
 
+nnoremap <leader>R ;so $MYVIMRC<cr> " ;echo "Vim Reloaded"
 " augroup vimrc_term
 "   autocmd!
 "   autocmd WinEnter term://* nohlsearch
