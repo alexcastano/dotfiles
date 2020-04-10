@@ -70,8 +70,8 @@ plugins=(git
 
 # Tmux configuration
 
-ZSH_TMUX_AUTOSTART=true
-ZSH_TMUX_AUTOCONNECT=true
+ZSH_TMUX_AUTOSTART=false
+ZSH_TMUX_AUTOCONNECT=false
 
 # User configuration
 
@@ -131,3 +131,5 @@ export FZF_DEFAULT_COMMAND='ag -l -g ""'
 
 BASE16_SHELL=$HOME/.config/base16-shell/
 [ -n "$PS1" ] && [ -s $BASE16_SHELL/profile_helper.sh ] && eval "$($BASE16_SHELL/profile_helper.sh)"
+
+# if ! [[ -v NVIM_LISTEN_ADDRESS ]]; then nvim +term; fi

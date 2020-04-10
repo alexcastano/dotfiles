@@ -8,18 +8,118 @@ let mapleader = "\<Space>"
 
 call plug#begin('~/.vim/plugged')
 
+" FZF {{{1
+Plug 'junegunn/fzf.vim'
+"
+" This is the default extra key bindings
+let g:fzf_action = {
+  \ 'ctrl-t': 'tab split',
+  \ 'ctrl-x': 'split',
+  \ 'ctrl-v': 'vsplit' }
+
+" Default fzf layout
+" - down / up / left / right
+let g:fzf_layout = { 'up': '~40%' }
+
+" In Neovim, you can set up fzf window using a Vim command
+let g:fzf_layout = { 'window': 'enew' }
+let g:fzf_layout = { 'window': '-tabnew' }
+let g:fzf_layout = { 'window': '10split enew' }
+
+" Customize fzf colors to match your color scheme
+let g:fzf_colors =
+\ { 'fg':      ['fg', 'Normal'],
+  \ 'bg':      ['bg', 'Normal'],
+  \ 'hl':      ['fg', 'Comment'],
+  \ 'fg+':     ['fg', 'CursorLine', 'CursorColumn', 'Normal'],
+  \ 'bg+':     ['bg', 'CursorLine', 'CursorColumn'],
+  \ 'hl+':     ['fg', 'Statement'],
+  \ 'info':    ['fg', 'PreProc'],
+  \ 'border':  ['fg', 'Ignore'],
+  \ 'prompt':  ['fg', 'Conditional'],
+  \ 'pointer': ['fg', 'Exception'],
+  \ 'marker':  ['fg', 'Keyword'],
+  \ 'spinner': ['fg', 'Label'],
+  \ 'header':  ['fg', 'Comment'] }
+
+" Enable per-command history.
+" CTRL-N and CTRL-P will be automatically bound to next-history and
+" previous-history instead of down and up. If you don't like the change,
+" explicitly bind the keys to down and up in your $FZF_DEFAULT_OPTS.
+let g:fzf_history_dir = '~/.local/share/fzf-history'
+let $FZF_DEFAULT_COMMAND = 'ag -l --nocolor -g ""'
+nnoremap <c-p> :Files<cr>
+
+augroup fzf_group
+  autocmd!
+  autocmd FileType fzf tnoremap <buffer> <esc> <C-c>
+augroup END
+
+
+" TextObjects {{{1
+
+Plug 'kana/vim-textobj-user'
+Plug 'kana/vim-textobj-entire'
+Plug 'nelstrom/vim-textobj-rubyblock', {'for': 'ruby'}
+
+Plug 'aoswalt/vim-textobj-elixir', {'for': 'elixir'}
+let g:vim_textobj_elixir_mapping = 'b'
+
+Plug 'sgur/vim-textobj-parameter' " function parameter
+let g:vim_textobj_parameter_mapping = ','
+
+" next and last ()
+onoremap in( :<c-u>execute "normal! /(\r:nohlsearch\rvi("<cr>
+onoremap il( :<c-u>execute "normal! ?)\r:nohlsearch\rvi("<cr>
+onoremap an( :<c-u>execute "normal! /(\r:nohlsearch\rva("<cr>
+onoremap al( :<c-u>execute "normal! ?)\r:nohlsearch\rva("<cr>
+
+onoremap in) :<c-u>execute "normal! /(\r:nohlsearch\rvi("<cr>
+onoremap il) :<c-u>execute "normal! ?)\r:nohlsearch\rvi("<cr>
+onoremap an) :<c-u>execute "normal! /(\r:nohlsearch\rva("<cr>
+onoremap al) :<c-u>execute "normal! ?)\r:nohlsearch\rva("<cr>
+
+" next and last []
+onoremap in[ :<c-u>execute "normal! /[\r:nohlsearch\rvi]"<cr>
+onoremap il[ :<c-u>execute "normal! ?[\r:nohlsearch\rvi]"<cr>
+onoremap an[ :<c-u>execute "normal! /[\r:nohlsearch\rva]"<cr>
+onoremap al[ :<c-u>execute "normal! ?[\r:nohlsearch\rva]"<cr>
+
+onoremap in] :<c-u>execute "normal! /[\r:nohlsearch\rvi]"<cr>
+onoremap il] :<c-u>execute "normal! ?[\r:nohlsearch\rvi]"<cr>
+onoremap an] :<c-u>execute "normal! /[\r:nohlsearch\rva]"<cr>
+onoremap al] :<c-u>execute "normal! ?[\r:nohlsearch\rva]"<cr>
+
+" next and last {}
+onoremap in{ :<c-u>execute "normal! /{\r:nohlsearch\rvi}"<cr>
+onoremap il{ :<c-u>execute "normal! ?{\r:nohlsearch\rvi}"<cr>
+onoremap an{ :<c-u>execute "normal! /{\r:nohlsearch\rva}"<cr>
+onoremap al{ :<c-u>execute "normal! ?{\r:nohlsearch\rva}"<cr>
+
+onoremap in} :<c-u>execute "normal! /{\r:nohlsearch\rvi}"<cr>
+onoremap il} :<c-u>execute "normal! ?{\r:nohlsearch\rvi}"<cr>
+onoremap an} :<c-u>execute "normal! /{\r:nohlsearch\rva}"<cr>
+onoremap al} :<c-u>execute "normal! ?{\r:nohlsearch\rva}"<cr>
+
+augroup text_objects_elixir
+  autocmd!
+  " FIXME this should be in elixir file ftplugin?
+
+  " FIXME no funciona por el %
+  " functions
+  " autocmd FileType elixir onoremap <buffer> af :<c-u>execute "normal! ?^\\s\\+defp\\=\\ \r:nohlsearch\rV$%"<cr>
+augroup END
+
+
+
+" TODO {{{1
 Plug 'airblade/vim-gitgutter'
 Plug 'chrisbra/csv.vim', {'for': 'csv'}
 Plug 'godlygeek/tabular'
-Plug 'junegunn/fzf.vim'
-Plug 'kana/vim-textobj-entire'
-Plug 'kana/vim-textobj-user'
 Plug 'majutsushi/tagbar'
 
 Plug 'mileszs/ack.vim'
 
-
-Plug 'nelstrom/vim-textobj-rubyblock', {'for': 'ruby'}
 
 Plug 'nelstrom/vim-visual-star-search'
 
@@ -50,6 +150,7 @@ Plug 'vim-airline/vim-airline-themes'
 " =================================
 " Visual plugins
 " =================================
+" Visual {{{1
 
 
 Plug 'nathanaelkane/vim-indent-guides' " margin vertical lines
@@ -91,16 +192,38 @@ Plug 'danro/rename.vim'   " rename the file without writting the full path
 " Tmux
 " =================================
 
-Plug 'christoomey/vim-tmux-navigator'
-Plug 'tmux-plugins/vim-tmux'
-Plug 'benmills/vimux'
+" Plug 'christoomey/vim-tmux-navigator'
+" Plug 'tmux-plugins/vim-tmux'
+" Plug 'benmills/vimux'
 
-" =================================
-" Term
-" =================================
+" FIXME move to a proper site
+autocmd! FileType help :wincmd L | :vert resize 80
+
+" autocmd! FileType help :wincmd L | :vert resize 80
+
+" Term {{{1
 
 tnoremap <Esc> <C-\><C-n>
 tnoremap <C-v><Esc> <C-\><C-n>
+tnoremap <expr> <C-v><C-r> '<C-\><C-N>"'.nr2char(getchar()).'pi'
+
+augroup term_group
+  autocmd!
+  " Buffer-local options
+  " autocmd TermOpen * setlocal bufhidden=hide
+  autocmd TermOpen * setlocal noswapfile
+  " autocmd TermOpen * setlocal nobuflisted
+  autocmd TermOpen * setlocal nomodified
+
+  " Window-local options
+  autocmd TermOpen * setlocal nolist
+  autocmd TermOpen * setlocal nowrap
+  autocmd TermOpen * setlocal nospell
+  autocmd TermOpen * setlocal nonumber
+  autocmd TermOpen * setlocal norelativenumber
+  autocmd TermOpen * setlocal nofoldenable
+  autocmd TermOpen * setlocal foldcolumn=0
+augroup END
 
 " executes in the current neovim instance
 let $VISUAL="nvr -cc vsplit --remote-wait +'set bufhidden=wipe'"
@@ -109,14 +232,25 @@ let $EDITOR="nvr -cc vsplit --remote-wait +'set bufhidden=wipe'"
 
 " Different color term cursor
 " TODO better colors
-highlight! link TermCursor Cursor
-highlight! TermCursorNC guibg=red guifg=white ctermbg=1 ctermfg=15
+" highlight! link TermCursor Cursor
+" highlight! TermCursorNC guibg=red guifg=white ctermbg=1 ctermfg=15
 
+" Plug 'Lenovsky/nuake'
+Plug '~/vim/nuake'
+
+let g:nuake_position = 'right'
+let g:close_if_last_standing = 0
+
+inoremap <silent> <A-CR> <c-\><c-n>:Nuake<cr>
+tnoremap <silent> <A-CR> <c-\><c-n>:Nuake<cr>
+nnoremap <silent> <A-CR> :Nuake<cr>
 
 Plug 'kassio/neoterm'
 
-let g:term_vert_size = 110
-let g:term_hor_size = 20
+" let g:term_vert_size = 110
+" let g:term_hor_size = 20
+let g:term_vert_size = ''
+let g:term_hor_size = ''
 let g:neoterm_size = g:term_vert_size
 let g:neoterm_default_mod = 'vertical botright'
 let g:neoterm_autoscroll = 1
@@ -145,21 +279,92 @@ function! ShowTerm()
   let g:neoterm_autoinsert = l:autoinsert
 endfunction
 
+" tabs
+" Go to tab by number
+nnoremap <A-1> 1gt
+nnoremap <A-2> 2gt
+nnoremap <A-3> 3gt
+nnoremap <A-4> 4gt
+nnoremap <A-5> 5gt
+nnoremap <A-6> 6gt
+nnoremap <A-7> 7gt
+nnoremap <A-8> 8gt
+nnoremap <A-9> 9gt
+nnoremap <A-0> :tablast<cr>
+
+nnoremap <C-tab> gt
+nnoremap <C-S-tab> gT
+nnoremap <S-C-tab> gT
+nnoremap <A-tab> gt
+nnoremap <A-S-tab> gT
+" because previous map doesnt work we just simplify
+nnoremap <S-tab> gT
+
+" inoremap <A-tab> gt
+" inoremap <A-S-tab> gT
+" " because previous map doesnt work we just simplify
+" inoremap <S-tab> gT
+
+tnoremap <A-tab> <C-\><C-n>gt
+tnoremap <A-S-tab> <C-\><C-n>gT
+" because previous map doesnt work we just simplify
+" tnoremap <S-tab> <C-\><C-n>gT
+
+
+" fzf esc quits
+" FIXME It doesn't work
+" augroup vimrc_term_fzf
+"   autocmd!
+"   autocmd FileType fzf tnoremap <Esc> <C-c>
+" augroup END
+
+" Insert automatically in terminal a no numbers
+augroup vimrc_term_autoinsert
+  " FIXME Incompatible with vim-test
+  " autocmd BufWinEnter,WinEnter,TabEnter term://* startinsert
+  " autocmd TermOpen * setlocal nonumber norelativenumber " | \ startinsert
+augroup END
+
+tnoremap <A-j> <C-\><C-n><C-w>j
+tnoremap <A-k> <C-\><C-n><C-w>k
+tnoremap <A-l> <C-\><C-n><C-w>l
+tnoremap <A-h> <C-\><C-n><C-w>h
+
+inoremap <A-j> <C-w>j
+inoremap <A-k> <C-w>k
+inoremap <A-l> <C-w>l
+inoremap <A-h> <C-w>h
+
+nnoremap <A-j> <C-w>j
+nnoremap <A-k> <C-w>k
+nnoremap <A-l> <C-w>l
+nnoremap <A-h> <C-w>h
+
 " toggle main neoterm
-inoremap <silent> <A-CR> <c-\><c-n>:<c-u>exec v:count.'Ttoggle'<cr>
-tnoremap <silent> <A-CR> <c-\><c-n>:<c-u>exec v:count.'Ttoggle'<cr>
-nnoremap <silent> <A-CR> :<c-u>exec v:count.'Ttoggle'<cr>
-" without autointert
+" inoremap <silent> <A-CR> <esc>:<c-u>exec v:count.'Ttoggle'<cr>
+" tnoremap <silent> <A-CR> <c-\><c-n>:<c-u>exec v:count.'Ttoggle'<cr>
+" nnoremap <silent> <A-CR> :<c-u>exec v:count.'Ttoggle'<cr>
+" without autoinsert
 nnoremap <silent> <leader>ts :call ShowTerm()<cr>
+nnoremap <silent> <A-s> :call ShowTerm()<cr>
 
 " new terms
-nnoremap <silent> <leader>tn :tab Tnew<cr>
-nnoremap <silent> <leader>th :call OpenTermH()<cr>
-nnoremap <silent> <leader>tv :call OpenTermV()<cr>
+nnoremap <silent> <c-space>n :tab Tnew<cr>
+nnoremap <silent> <c-space>h :call OpenTermH()<cr>
+nnoremap <silent> <c-space>v :call OpenTermV()<cr>
 
-nnoremap <silent> <leader>tl :<c-u>exec v:count.'Tclear'<cr>
-nnoremap <silent> <leader>tk :<c-u>exec v:count.'Tkill'<cr>
-nnoremap <silent> <leader>tK :<c-u>exec v:count.'Tkill'<cr>:<c-u>exec v:count.'Tkill'<cr>
+tnoremap <silent> <c-space>n <c-\><c-n>:tab Tnew<cr>
+tnoremap <silent> <c-space>h <c-\><c-n>:call OpenTermH()<cr>
+tnoremap <silent> <c-space>v <c-\><c-n>:call OpenTermV()<cr>
+
+nnoremap <silent> <A-t> :tab Tnew<cr>
+nnoremap <silent> <A--> :call OpenTermH()<cr>
+nnoremap <silent> <A-\> :call OpenTermV()<cr>
+
+nnoremap <silent> <leader>tl :call nuake#SendCommand("")
+" FIXME
+nnoremap <silent> <leader>tk :call nuake#SendCommand("")
+nnoremap <silent> <leader>tK :call nuake#SendCommand("")
 
 " :TREPLSetTerm {term-id}                                          *:TREPLSetTerm*
 " Chooses, or changes, the current neoterm to run the REPL commands.
@@ -168,29 +373,41 @@ xnoremap <leader>s <Plug>(neoterm-repl-send)
 nnoremap <leader>ss <Plug>(neoterm-repl-send-line)
 nnoremap <leader>sf :TREPLSendFile<cr>
 
-autocmd FileType elixir nnoremap <leader>rc :T iex -S mix<cr>
-autocmd FileType elixir nnoremap <leader>rb :T mix compile<cr>
-autocmd FileType elixir nnoremap <leader>rx :T mix do clean, compile<cr>
-autocmd FileType elixir nnoremap <leader>rl :T mix credo<cr>
-autocmd FileType elixir nnoremap <leader>rd :T mix deps.get<cr>
-autocmd FileType elixir nnoremap <leader>re :T mix do ecto.drop, ecto.create, ecto.migrate; MIX_ENV=test mix do ecto.drop, ecto.create, ecto.migrate<cr>
-autocmd FileType elixir nnoremap <leader>rp :T iex -S mix phx.server<cr>
+" TODO
+" tnoremap <leader>cd Apwd\|xclip -selection clipboard<CR><C-\><C-n>:cd <C-r>+<CR>i
+" inoremap <leader>cd pwd\|xclip -selection clipboard<CR><C-\><C-n>:cd <C-r>+<CR>i
+nnoremap <leader>cd Apwd\|xclip -selection clipboard<CR><C-\><C-n>:cd <C-r>+<CR>
+" :cd <C-r>+<CR>i
 
+augroup elixir_run
+  autocmd!
+  autocmd FileType elixir nnoremap <leader>rc :Ndo iex -S mix<cr>
+  autocmd FileType elixir nnoremap <leader>rb :Ndo mix compile<cr>
+  autocmd FileType elixir nnoremap <leader>rx :Ndo mix do clean, compile<cr>
+  autocmd FileType elixir nnoremap <leader>rl :Ndo mix credo<cr>
+  autocmd FileType elixir nnoremap <leader>rd :Ndo mix deps.get<cr>
+  autocmd FileType elixir nnoremap <leader>re :Ndo mix do ecto.drop, ecto.create, ecto.migrate; MIX_ENV=test mix do ecto.drop, ecto.create, ecto.migrate<cr>
+  autocmd FileType elixir nnoremap <leader>rp :Ndo iex -S mix phx.server<cr>
+
+  autocmd FileType fzf nnoremap <buffer> <esc> <C-c>
+augroup END
 " =================================
 " Test
 " =================================
 
 Plug 'janko-m/vim-test'
-let test#strategy = "neoterm"
+let g:test#custom_strategies = {'nuake': {cmd -> nuake#SendCommand("" . cmd . "\n")}}
+let g:test#strategy = 'nuake'
+
 
 function! RunTestSuite()
-  Tclear
+  call nuake#SendCommand("")
   if filereadable('bin/test_suite')
-    T echo 'bin/test_suite'
-    T bin/test_suite
+    Ndo echo 'bin/test_suite'
+    Ndo bin/test_suite
   elseif filereadable("bin/test")
-    T echo 'bin/test'
-    T bin/test
+    Ndo echo 'bin/test'
+    Ndo bin/test
   else
     TestSuite
   endif
@@ -200,7 +417,7 @@ nnoremap <leader>tt :TestNearest<cr>
 nnoremap <leader>tf :TestFile<cr>
 nnoremap <leader>ta :call RunTestSuite()<cr>
 nnoremap <leader>t. :TestLast<cr>
-nnoremap <leader>tf :TestVisit<cr>
+nnoremap <leader>tv :TestVisit<cr>
 
 
 " =================================
@@ -267,54 +484,137 @@ set splitright " open vsplit in the right side
 set splitbelow " open split in the bottom side
 
 
-Plug 'autozimu/LanguageClient-neovim', {
-      \ 'branch': 'next',
-      \ 'do': 'bash install.sh',
-      \ }
+" LanguageServer {{{1
 
-Plug 'roxma/nvim-yarp'
-Plug 'ncm2/ncm2'
-" enable ncm2 for all buffers
-autocmd BufEnter * call ncm2#enable_for_buffer()
+" Use release branch (Recommend)
+Plug 'neoclide/coc.nvim', {'branch': 'release'}
 
-" IMPORTANTE: :help Ncm2PopupOpen for more information
-set completeopt=noinsert,menuone,noselect
-inoremap <silent> <expr> <cr> (pumvisible() ? "\<c-y>\<cr>" : "\<cr>")
+let g:coc_global_extensions = [
+      \'coc-actions',
+      \'coc-css',
+      \'coc-elixir',
+      \'coc-html',
+      \'coc-json',
+      \'coc-vimlsp',
+      \'coc-xml',
+      \'coc-yaml',
+      \]
 
-Plug 'ncm2/ncm2-bufword'  " ncm2 plugin for completing words present in current buffer
-Plug 'ncm2/ncm2-path'     " ncm2 plugin for completing file paths
-Plug 'ncm2/ncm2-tmux'     " ncm2 plugin for completing words present in tmux buffers
+" Some servers have issues with backup files, see #649.
+set nobackup " do not keep a backup file, use versions instead
+set nowritebackup " do not keep a backup file, use versions instead
+" Give more space for displaying messages.
+set cmdheight=2
 
-" suppress the annoying 'match x of y', 'The only match' and 'Pattern not found' messages
+" Having longer updatetime (default is 4000 ms = 4 s) leads to noticeable
+" delays and poor user experience.
+set updatetime=300
+
+" Don't pass messages to |ins-completion-menu|.
 set shortmess+=c
 
-" CTRL-C doesn't trigger the InsertLeave autocmd . map to <ESC> instead.
-inoremap <c-c> <ESC>
+" Always show the signcolumn, otherwise it would shift the text each time
+" diagnostics appear/become resolved.
+set signcolumn=yes
 
-" When the <Enter> key is pressed while the popup menu is visible, it only
-" hides the menu. Use this mapping to close the menu and also start a new
-" line.
-" let g:endwise_no_mappings = 1
-" imap <C-X><cr>   <cr><Plug>AlwaysEnd
+" Use tab for trigger completion with characters ahead and navigate.
+" NOTE: Use command ':verbose imap <tab>' to make sure tab is not mapped by
+" other plugin before putting this into your config.
+inoremap <silent><expr> <TAB>
+      \ pumvisible() ? "\<C-n>" :
+      \ <SID>check_back_space() ? "\<TAB>" :
+      \ coc#refresh()
+inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
+
+function! s:check_back_space() abort
+  let col = col('.') - 1
+  return !col || getline('.')[col - 1]  =~# '\s'
+endfunction
+
+" Use `[g` and `]g` to navigate diagnostics
+nmap <silent> [g <Plug>(coc-diagnostic-prev)
+nmap <silent> ]g <Plug>(coc-diagnostic-next)
+
+" GoTo code navigation.
+nmap <silent> gd <Plug>(coc-definition)
+nmap <silent> gy <Plug>(coc-type-definition)
+nmap <silent> gi <Plug>(coc-implementation)
+nmap <silent> gr <Plug>(coc-references)
+
+" Use K to show documentation in preview window.
+nnoremap <silent> K :call <SID>show_documentation()<CR>
 
 
-Plug 'Shougo/echodoc.vim'
+function! s:show_documentation()
+  if (index(['vim','help'], &filetype) >= 0)
+    execute 'h '.expand('<cword>')
+  else
+    call CocAction('doHover')
+  endif
+endfunction
 
-let g:LanguageClient_serverCommands = {
-      \ 'elixir': ['/home/alex/elixir/elixir-ls/release/language_server.sh'],
-      \ }
-let g:LanguageClient_autoStart = 1
-let g:LanguageClient_diagnosticsEnable = 1
-let g:LanguageClient_diagnosticsList = "location"
+" Highlight the symbol and its references when holding the cursor.
+autocmd CursorHold * silent call CocActionAsync('highlight')
 
-" call LanguageClient#setLoggingLevel('DEBUG')
-"
-autocmd FileType elixir nnoremap <silent> K :call LanguageClient#textDocument_hover()<cr>
-autocmd FileType elixir nnoremap <silent> <F2> :call LanguageClient#textDocument_references()<cr>
-autocmd FileType elixir nnoremap <silent> <F3> :call LanguageClient#textDocument_formatting()<cr>
-autocmd FileType elixir nnoremap <silent> g] :call LanguageClient#textDocument_definition()<cr>
-autocmd FileType elixir nnoremap <silent> <C-]> :call LanguageClient#textDocument_definition()<cr>
-autocmd FileType elixir set formatexpr=LanguageClient#textDocument_rangeFormatting()
+" Add `:Format` command to format current buffer.
+command! -nargs=0 Format :call CocAction('format')
+nnoremap <leader>F :Format<cr>
+
+" Add `:Fold` command to fold current buffer.
+command! -nargs=? Fold :call     CocAction('fold', <f-args>)
+
+" Add `:OR` command for organize imports of the current buffer.
+command! -nargs=0 OR   :call     CocAction('runCommand', 'editor.action.organizeImport')
+
+
+" Plug 'autozimu/LanguageClient-neovim', {
+"       \ 'branch': 'next',
+"       \ 'do': 'bash install.sh',
+"       \ }
+" 
+" Plug 'roxma/nvim-yarp'
+" Plug 'ncm2/ncm2'
+" " enable ncm2 for all buffers
+" autocmd BufEnter * call ncm2#enable_for_buffer()
+" 
+" " IMPORTANTE: :help Ncm2PopupOpen for more information
+" set completeopt=noinsert,menuone,noselect
+" inoremap <silent> <expr> <cr> (pumvisible() ? "\<c-y>\<cr>" : "\<cr>")
+" 
+" Plug 'ncm2/ncm2-bufword'  " ncm2 plugin for completing words present in current buffer
+" Plug 'ncm2/ncm2-path'     " ncm2 plugin for completing file paths
+" " Plug 'ncm2/ncm2-tmux'     " ncm2 plugin for completing words present in tmux buffers
+" 
+" " suppress the annoying 'match x of y', 'The only match' and 'Pattern not found' messages
+" set shortmess+=c
+" 
+" " CTRL-C doesn't trigger the InsertLeave autocmd . map to <ESC> instead.
+" " inoremap <c-c> <ESC>
+" 
+" " When the <Enter> key is pressed while the popup menu is visible, it only
+" " hides the menu. Use this mapping to close the menu and also start a new
+" " line.
+" " let g:endwise_no_mappings = 1
+" " imap <C-X><cr>   <cr><Plug>AlwaysEnd
+" 
+" 
+" Plug 'Shougo/echodoc.vim'
+" 
+" let g:LanguageClient_serverCommands = {
+"       \ 'elixir': ['/home/alex/elixir/elixir-ls/release/language_server.sh'],
+"       \ }
+" let g:LanguageClient_autoStart = 1
+" let g:LanguageClient_diagnosticsEnable = 1
+" let g:LanguageClient_diagnosticsList = "location"
+" 
+" " call LanguageClient#setLoggingLevel('DEBUG')
+" "
+" autocmd FileType elixir nnoremap <silent> K :call LanguageClient#textDocument_hover()<cr>
+" autocmd FileType elixir nnoremap <silent> <F2> :call LanguageClient#textDocument_references()<cr>
+" autocmd FileType elixir nnoremap <silent> <F3> :call LanguageClient#textDocument_formatting()<cr>
+" autocmd FileType elixir nnoremap <silent> g] :call LanguageClient#textDocument_definition()<cr>
+" autocmd FileType elixir nnoremap <silent> <C-]> :call LanguageClient#textDocument_definition()<cr>
+" autocmd FileType elixir set formatexpr=LanguageClient#textDocument_rangeFormatting()
 
 
 " Live substitution
@@ -410,10 +710,13 @@ set hidden             " Hide buffers when they are abandoned
 set cf  " Enable error files & error jumping.
 set autowrite  " Writes on make/shell commands
 set ruler  " Ruler on
-set nowrap  " Line wrapping off
+set wrap  " Line wrapping off
 set timeoutlen=1000  " Time to wait after ESC (default causes an annoying delay)
 set ttimeoutlen=-1
 set laststatus=2  " Always show status line.
+
+set showmatch  " Show matching brackets.
+set matchtime=5  "  Tenths of a second to show the matching paren
 
 " Fold
 " set foldmethod=indent
@@ -442,8 +745,6 @@ set nocp incsearch
 set cinoptions=:0,p0,t0
 set cinwords=if,else,while,do,for,switch,case
 set formatoptions=tcqr
-abbr #i #include
-abbr #d #define
 
 " Completion commands with tab
 set wildmode=longest,list,full
@@ -461,10 +762,7 @@ let g:rails_default_file='config/database.yml'
 
 "
 " Visual
-set showmatch  " Show matching brackets.
-set mat=5  " Bracket blinking.
 
-set nobackup " do not keep a backup file, use versions instead
 set backupdir=~/.vim_backups " Where backups will go.
 set directory=~/.vim_tmp     " Where temporary files will go.
 
@@ -516,8 +814,8 @@ map Q <Nop>
 
 
 " Pretty json
-nmap <leader>pj vip<leader>pj
-vmap <leader>pj ;!python -m json.tool<cr>
+nnoremap <leader>pj vip:!python -m json.tool<cr>
+vnoremap <leader>pj :!python -m json.tool<cr>
 
 " Pretty xml
 function! DoPrettyXML()
@@ -549,7 +847,7 @@ function! DoPrettyXML()
 endfunction
 command! PrettyXML call DoPrettyXML()
 
-nmap <leader>px ;PrettyXML<cr>
+nnoremap <leader>px :PrettyXML<cr>
 
 " Vim Airline
 let g:airline#extensions#tabline#enabled = 1
@@ -575,31 +873,27 @@ set undolevels=1000         " How many undos
 set undoreload=10000        " number of lines to save for undo
 
 " Align with tabular
-nmap <leader>a= ;Tabularize /=<cr>
-vmap <leader>a= ;Tabularize /=<cr>
-nmap <leader>a: ;Tabularize /:\zs<cr>
-vmap <leader>a: ;Tabularize /:\zs<cr>
-nmap <leader>a# ;Tabularize /#<cr>
-vmap <leader>a# ;Tabularize /#<cr>
-nmap <leader>a\| ;Tabularize /\|<cr>
-vmap <leader>a\| ;Tabularize /\|<cr>
-nmap <leader>a" ;Tabularize /"<cr>
-vmap <leader>a" ;Tabularize /"<cr>
+" nnoremap <leader>a= :Tabularize /=<cr>
+" vnoremap <leader>a= :Tabularize /=<cr>
+" nnoremap <leader>a: :Tabularize /:\zs<cr>
+" vnoremap <leader>a: :Tabularize /:\zs<cr>
+" nnoremap <leader>a# :Tabularize /#<cr>
+" vnoremap <leader>a# :Tabularize /#<cr>
+" nnoremap <leader>a\| :Tabularize /\|<cr>
+" vnoremap <leader>a\| :Tabularize /\|<cr>
+" nnoremap <leader>a" :Tabularize /"<cr>
+" vnoremap <leader>a" :Tabularize /"<cr>
 
-vmap R "_dP // Replace the selected text with the clipboard without overwritting
+vnoremap R "_dP
+
 set wildignore+=*/tmp/*,*/node_modules/*
 
-noremap <Up> <NOP>
-noremap <Down> <NOP>
-noremap <Left> <NOP>
-noremap <Right> <NOP>
-
 " resize horzontal split window
-nmap <Left> <C-W><
-nmap <Right> <C-W>>
+nnoremap <Left> <C-W><
+nnoremap <Right> <C-W>>
 " resize vertical split window
-nmap <Up> <C-W>-
-nmap <Down> <C-W>+
+nnoremap <Up> <C-W>-
+nnoremap <Down> <C-W>+
 
 " grep word under cursor
 nnoremap <leader>gg :Ack! "\b<C-R><C-W>\b"<cr>
@@ -635,72 +929,10 @@ command! RRm call delete(expand('%'))
 " Remove current file and buffer
 command! RRM call delete(expand('%')) | bdelete!
 
+" VIMRC {{{1
+" FIXME when updating to nvim init => nnoremap <leader>V :vsplit $MYVIMRC<cr>
+nnoremap <leader>V :vsplit ~/.vim/vimrc<cr>
+nnoremap <leader>R :so $MYVIMRC<cr> " :echo "Vim Reloaded"
 
-"
-" This is the default extra key bindings
-let g:fzf_action = {
-  \ 'ctrl-t': 'tab split',
-  \ 'ctrl-x': 'split',
-  \ 'ctrl-v': 'vsplit' }
-
-" Default fzf layout
-" - down / up / left / right
-let g:fzf_layout = { 'up': '~40%' }
-
-" In Neovim, you can set up fzf window using a Vim command
-let g:fzf_layout = { 'window': 'enew' }
-let g:fzf_layout = { 'window': '-tabnew' }
-let g:fzf_layout = { 'window': '10split enew' }
-
-" Customize fzf colors to match your color scheme
-let g:fzf_colors =
-\ { 'fg':      ['fg', 'Normal'],
-  \ 'bg':      ['bg', 'Normal'],
-  \ 'hl':      ['fg', 'Comment'],
-  \ 'fg+':     ['fg', 'CursorLine', 'CursorColumn', 'Normal'],
-  \ 'bg+':     ['bg', 'CursorLine', 'CursorColumn'],
-  \ 'hl+':     ['fg', 'Statement'],
-  \ 'info':    ['fg', 'PreProc'],
-  \ 'border':  ['fg', 'Ignore'],
-  \ 'prompt':  ['fg', 'Conditional'],
-  \ 'pointer': ['fg', 'Exception'],
-  \ 'marker':  ['fg', 'Keyword'],
-  \ 'spinner': ['fg', 'Label'],
-  \ 'header':  ['fg', 'Comment'] }
-
-" Enable per-command history.
-" CTRL-N and CTRL-P will be automatically bound to next-history and
-" previous-history instead of down and up. If you don't like the change,
-" explicitly bind the keys to down and up in your $FZF_DEFAULT_OPTS.
-let g:fzf_history_dir = '~/.local/share/fzf-history'
-let $FZF_DEFAULT_COMMAND = 'ag -l --nocolor -g ""'
-nmap <c-p> ;Files<cr>
-
-" tnoremap <Esc> <C-\><C-n>
-
-" Faster windows movement
-nnoremap <C-j> <C-w>j
-nnoremap <C-k> <C-w>k
-nnoremap <C-l> <C-w>l
-nnoremap <C-h> <C-w>h
-
-nnoremap <leader>R ;so $MYVIMRC<cr> " ;echo "Vim Reloaded"
-" augroup vimrc_term
-"   autocmd!
-"   autocmd WinEnter term://* nohlsearch
-"   autocmd WinEnter term://* startinsert
-
-"   tnoremap <C-h> <C-\><C-N><C-w>h
-"   tnoremap <C-j> <C-\><C-N><C-w>j
-"   tnoremap <C-k> <C-\><C-N><C-w>k
-"   tnoremap <C-l> <C-\><C-N><C-w>l
-" augroup END
-
-" augroup vimrc_term_fzf
-"   autocmd!
-"   autocmd FileType fzf tunmap <buffer> <Esc>
-"   autocmd FileType fzf tunmap <buffer> <C-h>
-"   autocmd FileType fzf tunmap <buffer> <C-j>
-"   autocmd FileType fzf tunmap <buffer> <C-k>
-"   autocmd FileType fzf tunmap <buffer> <C-l>
-" augroup END
+" Modeline {{{1
+" vim: ts=4 sw=2 sts=2 et foldenable foldmethod=marker

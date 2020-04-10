@@ -1,0 +1,4 @@
+{
+  "elixir.pathToElixirLS": "~/elixir/elixir-ls/release/language_server.sh",
+  "coc.preferences.formatOnSaveFiletypes": ["elixir", "eelixir"]
+}
