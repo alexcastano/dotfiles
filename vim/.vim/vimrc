@@ -129,6 +129,7 @@ Plug 'plasticboy/vim-markdown', {'for': 'markdown'}
 Plug 'powerman/vim-plugin-AnsiEsc'
 " Plug 'pseewald/anyfold'
 Plug 'sheerun/vim-polyglot'
+Plug 'alexcastano/nextflow.vim'
 Plug 'szw/vim-maximizer'
 Plug 'tommcdo/vim-exchange'
 Plug 'tpope/vim-abolish'
@@ -710,7 +711,7 @@ set hidden             " Hide buffers when they are abandoned
 set cf  " Enable error files & error jumping.
 set autowrite  " Writes on make/shell commands
 set ruler  " Ruler on
-set wrap  " Line wrapping off
+set nowrap  " Line wrapping off
 set timeoutlen=1000  " Time to wait after ESC (default causes an annoying delay)
 set ttimeoutlen=-1
 set laststatus=2  " Always show status line.
