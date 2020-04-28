@@ -39,3 +39,6 @@ alias appc='appb rails c'
 alias appt='docker-compose run --rm -e RAILS_ENV=test app bash'
 
 alias tmuxfix='tmux unbind -n n \; unbind -n N'
+
+alias gsam="gcloud config configurations activate default"
+alias gdev="gcloud config configurations activate dev"

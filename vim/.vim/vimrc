@@ -55,6 +55,8 @@ augroup fzf_group
   autocmd FileType fzf tnoremap <buffer> <esc> <C-c>
 augroup END
 
+" MovePlugins {{{1
+nnoremap # m`:keepjumps normal! *``b<cr>
 
 " TextObjects {{{1
 
@@ -118,7 +120,36 @@ Plug 'chrisbra/csv.vim', {'for': 'csv'}
 Plug 'godlygeek/tabular'
 Plug 'majutsushi/tagbar'
 
+" {{{2
 Plug 'mileszs/ack.vim'
+
+if executable('rg')
+  let g:ackprg = 'rg --vimgrep'
+elseif executable('ag')
+  let g:ackprg = 'ag --vimgrep'
+endif
+" grep word under cursor
+nnoremap <leader>gg :silent execute "Ack! " . shellescape(expand("<cword>")) <cr>
+
+nnoremap <leader>g :set operatorfunc=GrepOperator<cr>g@
+vnoremap <leader>g :<c-u>call GrepOperator(visualmode())<cr>
+
+function! GrepOperator(type)
+  echom a:type
+  if a:type ==# 'v'
+    normal! `<v`>"gy
+  elseif a:type ==# 'char'
+    normal! `[v`]"gy
+  else
+    return
+  endif
+
+  silent execute "Ack! " . shellescape(@g)
+endfunction
+" nnoremap <leader>gg :Ack! "\b<C-R><C-W>\b"<cr>
+" nnoremap <leader>gt :Ack! "TODO\\|FIXME"<cr>
+" nnoremap <leader>gs :Ack! "" \| cw<Left><Left><Left><Left><Left><Left>
+" vnoremap <leader>g "gy:Ack! "<C-R>g"<cr>
 
 
 Plug 'nelstrom/vim-visual-star-search'
@@ -154,9 +185,9 @@ Plug 'vim-airline/vim-airline-themes'
 " Visual {{{1
 
 
-Plug 'nathanaelkane/vim-indent-guides' " margin vertical lines
-let g:indent_guides_enable_on_vim_startup = 1
-let g:indent_guides_exclude_filetypes = ['help', 'nerdtree', 'neoterm', 'terminal']
+" Plug 'nathanaelkane/vim-indent-guides' " margin vertical lines
+" let g:indent_guides_enable_on_vim_startup = 1
+" let g:indent_guides_exclude_filetypes = ['help', 'nerdtree', 'neoterm', 'terminal']
 
 " =================================
 " Text plugins
@@ -189,24 +220,13 @@ Plug 'pbrisbin/vim-mkdir' " mkdir directories automatically with filename
 Plug 'danro/rename.vim'   " rename the file without writting the full path
 
 
-" =================================
-" Tmux
-" =================================
-
-" Plug 'christoomey/vim-tmux-navigator'
-" Plug 'tmux-plugins/vim-tmux'
-" Plug 'benmills/vimux'
-
 " FIXME move to a proper site
 autocmd! FileType help :wincmd L | :vert resize 80
 
-" autocmd! FileType help :wincmd L | :vert resize 80
-
 " Term {{{1
 
-tnoremap <Esc> <C-\><C-n>
-tnoremap <C-v><Esc> <C-\><C-n>
-tnoremap <expr> <C-v><C-r> '<C-\><C-N>"'.nr2char(getchar()).'pi'
+tnoremap <C-space><Esc> <C-\><C-n>
+tnoremap <expr> <C-space><C-r> '<C-\><C-N>"'.nr2char(getchar()).'pi'
 
 augroup term_group
   autocmd!
@@ -245,6 +265,11 @@ let g:close_if_last_standing = 0
 inoremap <silent> <A-CR> <c-\><c-n>:Nuake<cr>
 tnoremap <silent> <A-CR> <c-\><c-n>:Nuake<cr>
 nnoremap <silent> <A-CR> :Nuake<cr>
+
+nmap <leader>r <Plug>(nuake-send)
+xmap <leader>r <Plug>(nuake-send)
+nmap <leader>r. :call nuake#RepeatLastCommand()<cr>
+nmap <leader>rr <Plug>(nuake-send-line)
 
 Plug 'kassio/neoterm'
 
@@ -311,14 +336,6 @@ tnoremap <A-S-tab> <C-\><C-n>gT
 " because previous map doesnt work we just simplify
 " tnoremap <S-tab> <C-\><C-n>gT
 
-
-" fzf esc quits
-" FIXME It doesn't work
-" augroup vimrc_term_fzf
-"   autocmd!
-"   autocmd FileType fzf tnoremap <Esc> <C-c>
-" augroup END
-
 " Insert automatically in terminal a no numbers
 augroup vimrc_term_autoinsert
   " FIXME Incompatible with vim-test
@@ -346,8 +363,7 @@ nnoremap <A-h> <C-w>h
 " tnoremap <silent> <A-CR> <c-\><c-n>:<c-u>exec v:count.'Ttoggle'<cr>
 " nnoremap <silent> <A-CR> :<c-u>exec v:count.'Ttoggle'<cr>
 " without autoinsert
-nnoremap <silent> <leader>ts :call ShowTerm()<cr>
-nnoremap <silent> <A-s> :call ShowTerm()<cr>
+nnoremap <silent> <leader>ts :call nuake#ShowWindow()<cr>
 
 " new terms
 nnoremap <silent> <c-space>n :tab Tnew<cr>
@@ -362,10 +378,10 @@ nnoremap <silent> <A-t> :tab Tnew<cr>
 nnoremap <silent> <A--> :call OpenTermH()<cr>
 nnoremap <silent> <A-\> :call OpenTermV()<cr>
 
-nnoremap <silent> <leader>tl :call nuake#SendCommand("")
+nnoremap <silent> <leader>tl :call nuake#SendCommand("")<cr>
 " FIXME
-nnoremap <silent> <leader>tk :call nuake#SendCommand("")
-nnoremap <silent> <leader>tK :call nuake#SendCommand("")
+nnoremap <silent> <leader>tk :call nuake#SendCommand("")<cr>
+nnoremap <silent> <leader>tK :call nuake#SendCommand("")<cr>
 
 " :TREPLSetTerm {term-id}                                          *:TREPLSetTerm*
 " Chooses, or changes, the current neoterm to run the REPL commands.
@@ -377,20 +393,24 @@ nnoremap <leader>sf :TREPLSendFile<cr>
 " TODO
 " tnoremap <leader>cd Apwd\|xclip -selection clipboard<CR><C-\><C-n>:cd <C-r>+<CR>i
 " inoremap <leader>cd pwd\|xclip -selection clipboard<CR><C-\><C-n>:cd <C-r>+<CR>i
-nnoremap <leader>cd Apwd\|xclip -selection clipboard<CR><C-\><C-n>:cd <C-r>+<CR>
+" nnoremap <leader>cd Apwd\|xclip -selection clipboard<CR><C-\><C-n>:cd <C-r>+<CR>
 " :cd <C-r>+<CR>i
 
 augroup elixir_run
   autocmd!
-  autocmd FileType elixir nnoremap <leader>rc :Ndo iex -S mix<cr>
-  autocmd FileType elixir nnoremap <leader>rb :Ndo mix compile<cr>
-  autocmd FileType elixir nnoremap <leader>rx :Ndo mix do clean, compile<cr>
-  autocmd FileType elixir nnoremap <leader>rl :Ndo mix credo<cr>
-  autocmd FileType elixir nnoremap <leader>rd :Ndo mix deps.get<cr>
-  autocmd FileType elixir nnoremap <leader>re :Ndo mix do ecto.drop, ecto.create, ecto.migrate; MIX_ENV=test mix do ecto.drop, ecto.create, ecto.migrate<cr>
-  autocmd FileType elixir nnoremap <leader>rp :Ndo iex -S mix phx.server<cr>
+  " FIXME move to another place?
+  autocmd FileType elixir nnoremap <silent> <C-]> <Plug>(coc-definition)
 
-  autocmd FileType fzf nnoremap <buffer> <esc> <C-c>
+  autocmd FileType elixir nnoremap <leader>cc :Ndo iex -S mix<cr>
+  autocmd FileType elixir nnoremap <leader>cb :Ndo mix compile<cr>
+  autocmd FileType elixir nnoremap <leader>cx :Ndo mix do clean, compile<cr>
+  autocmd FileType elixir nnoremap <leader>cl :Ndo mix credo<cr>
+  autocmd FileType elixir nnoremap <leader>cd :Ndo mix deps.get<cr>
+  autocmd FileType elixir nnoremap <leader>ce :Ndo mix do ecto.drop, ecto.create, ecto.migrate; MIX_ENV=test mix do ecto.drop, ecto.create, ecto.migrate<cr>
+  autocmd FileType elixir nnoremap <leader>cp :Ndo iex -S mix phx.server<cr>
+
+  " TODO delete
+  " autocmd FileType fzf nnoremap <buffer> <esc> <C-c>
 augroup END
 " =================================
 " Test
@@ -556,6 +576,9 @@ endfunction
 
 " Highlight the symbol and its references when holding the cursor.
 autocmd CursorHold * silent call CocActionAsync('highlight')
+
+" FIXME
+" nmap <leader>rn <Plug>(coc-rename)
 
 " Add `:Format` command to format current buffer.
 command! -nargs=0 Format :call CocAction('format')
@@ -895,12 +918,6 @@ nnoremap <Right> <C-W>>
 " resize vertical split window
 nnoremap <Up> <C-W>-
 nnoremap <Down> <C-W>+
-
-" grep word under cursor
-nnoremap <leader>gg :Ack! "\b<C-R><C-W>\b"<cr>
-nnoremap <leader>gt :Ack! "TODO\\|FIXME"<cr>
-nnoremap <leader>gs :Ack! "" \| cw<Left><Left><Left><Left><Left><Left>
-vnoremap <leader>g "gy:Ack! "<C-R>g"<cr>
 
 let g:maximizer_set_default_mapping = 0
 nnoremap <leader>z :MaximizerToggle<cr>

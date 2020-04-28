@@ -51,10 +51,8 @@ plugins=(git
          bundler
          dirhistory
          docker
-         gem
          git-extras
          npm
-         rails
          redis-cli
          ssh-agent
          systemd
@@ -133,3 +131,4 @@ BASE16_SHELL=$HOME/.config/base16-shell/
 [ -n "$PS1" ] && [ -s $BASE16_SHELL/profile_helper.sh ] && eval "$($BASE16_SHELL/profile_helper.sh)"
 
 # if ! [[ -v NVIM_LISTEN_ADDRESS ]]; then nvim +term; fi
+[ -f /opt/miniconda3/etc/profile.d/conda.sh ] && source /opt/miniconda3/etc/profile.d/conda.sh
