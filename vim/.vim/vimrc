@@ -10,6 +10,7 @@ call plug#begin('~/.vim/plugged')
 
 " FZF {{{1
 Plug 'junegunn/fzf.vim'
+Plug 'antoinemadec/coc-fzf'
 "
 " This is the default extra key bindings
 let g:fzf_action = {
@@ -116,6 +117,7 @@ augroup END
 
 " TODO {{{1
 Plug 'airblade/vim-gitgutter'
+
 Plug 'chrisbra/csv.vim', {'for': 'csv'}
 Plug 'godlygeek/tabular'
 Plug 'majutsushi/tagbar'
@@ -378,10 +380,10 @@ nnoremap <silent> <A-t> :tab Tnew<cr>
 nnoremap <silent> <A--> :call OpenTermH()<cr>
 nnoremap <silent> <A-\> :call OpenTermV()<cr>
 
-nnoremap <silent> <leader>tl :call nuake#SendCommand("")<cr>
+nnoremap <silent> <leader>tl :call nuake#SendCommand([""])<cr>
 " FIXME
-nnoremap <silent> <leader>tk :call nuake#SendCommand("")<cr>
-nnoremap <silent> <leader>tK :call nuake#SendCommand("")<cr>
+nnoremap <silent> <leader>tk :call nuake#SendCommand([""])<cr>
+nnoremap <silent> <leader>tK :call nuake#SendCommand([""])<cr>
 
 " :TREPLSetTerm {term-id}                                          *:TREPLSetTerm*
 " Chooses, or changes, the current neoterm to run the REPL commands.
@@ -399,8 +401,9 @@ nnoremap <leader>sf :TREPLSendFile<cr>
 augroup elixir_run
   autocmd!
   " FIXME move to another place?
-  autocmd FileType elixir nnoremap <silent> <C-]> <Plug>(coc-definition)
+  autocmd FileType elixir nmap <silent> <C-]> <Plug>(coc-definition)
 
+  autocmd FileType elixir ab __pbt  IO.inspect(Process.info(self(), :current_stacktrace), label: "STACKTRACE")
   autocmd FileType elixir nnoremap <leader>cc :Ndo iex -S mix<cr>
   autocmd FileType elixir nnoremap <leader>cb :Ndo mix compile<cr>
   autocmd FileType elixir nnoremap <leader>cx :Ndo mix do clean, compile<cr>
@@ -417,12 +420,12 @@ augroup END
 " =================================
 
 Plug 'janko-m/vim-test'
-let g:test#custom_strategies = {'nuake': {cmd -> nuake#SendCommand("" . cmd . "\n")}}
+let g:test#custom_strategies = {'nuake': {cmd -> nuake#SendCommand(["" . cmd])}}
 let g:test#strategy = 'nuake'
 
 
 function! RunTestSuite()
-  call nuake#SendCommand("")
+  call nuake#SendCommand([""])
   if filereadable('bin/test_suite')
     Ndo echo 'bin/test_suite'
     Ndo bin/test_suite
@@ -555,6 +558,7 @@ endfunction
 " Use `[g` and `]g` to navigate diagnostics
 nmap <silent> [g <Plug>(coc-diagnostic-prev)
 nmap <silent> ]g <Plug>(coc-diagnostic-next)
+nmap <leader>d <Plug>(coc-diagnostic-info)
 
 " GoTo code navigation.
 nmap <silent> gd <Plug>(coc-definition)
@@ -578,7 +582,7 @@ endfunction
 autocmd CursorHold * silent call CocActionAsync('highlight')
 
 " FIXME
-" nmap <leader>rn <Plug>(coc-rename)
+nmap <leader>rn <Plug>(coc-rename)
 
 " Add `:Format` command to format current buffer.
 command! -nargs=0 Format :call CocAction('format')
@@ -810,7 +814,7 @@ map <leader>es ;sp %%
 map <leader>ev ;vsp %%
 map <leader>et ;tabe %%
 
-map <leader>d "_d
+" map <leader>d "_d
 
 " Each time you press S, the yanked text is _stamped_ over the current word.
 nnoremap S diw"0P
