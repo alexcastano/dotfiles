@@ -259,7 +259,8 @@ let $EDITOR="nvr -cc vsplit --remote-wait +'set bufhidden=wipe'"
 " highlight! TermCursorNC guibg=red guifg=white ctermbg=1 ctermfg=15
 
 " Plug 'Lenovsky/nuake'
-Plug '~/vim/nuake'
+Plug 'alexcastano/nuake'
+" Plug '~/vim/nuake'
 
 let g:nuake_position = 'right'
 let g:close_if_last_standing = 0
