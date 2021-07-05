@@ -6,6 +6,7 @@ export ZSH=/home/alex/.oh-my-zsh
 # Optionally, if you set this to "random", it'll load a random theme each
 # time that oh-my-zsh is loaded.
 ZSH_THEME="agnoster"
+export BAT_THEME="base16"
 
 # Uncomment the following line to use case-sensitive completion.
 # CASE_SENSITIVE="true"
@@ -45,13 +46,18 @@ COMPLETION_WAITING_DOTS="true"
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(git
-         git-flow-avh
+plugins=(
          archlinux
          bundler
          dirhistory
          docker
+         docker-compose
+         fzf
+         git
          git-extras
+         git-flow-avh
+         kubectl
+         mix
          npm
          redis-cli
          ssh-agent
@@ -59,11 +65,6 @@ plugins=(git
          tmux
          urltools
          web-search
-         docker
-         docker-compose
-         kubectl
-         mix
-         zsh-interactive-cd
 )
 
 # Tmux configuration
@@ -109,29 +110,22 @@ source ~/.zsh_aliases
 # default user to don't show in the prompt
 DEFAULT_USER=alex
 
-# Reverse history
-bindkey '^R' history-incremental-search-backward
-bindkey '^R' history-incremental-pattern-search-backward
-
 # Alt+. behaviour
 bindkey '\e.' insert-last-word
 
 unsetopt share_history
 
-# tabtab source for serverless package
-# uninstall by removing these lines or running `tabtab uninstall serverless`
-[[ -f /home/alex/.config/yarn/global/node_modules/tabtab/.completions/serverless.zsh ]] && . /home/alex/.config/yarn/global/node_modules/tabtab/.completions/serverless.zsh
-# tabtab source for sls package
-# uninstall by removing these lines or running `tabtab uninstall sls`
-[[ -f /home/alex/.config/yarn/global/node_modules/tabtab/.completions/sls.zsh ]] && . /home/alex/.config/yarn/global/node_modules/tabtab/.completions/sls.zsh
 . $HOME/.asdf/asdf.sh
-
 . $HOME/.asdf/completions/asdf.bash
 
-export FZF_DEFAULT_COMMAND='ag -l -g ""'
+# export FZF_DEFAULT_COMMAND='ag -l -g ""'
+export FZF_DEFAULT_COMMAND='fd --type file --follow --hidden --exclude .git'
+export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
+export FZF_DEFAULT_OPTS="--color --bind alt-a:select-all,alt-d:deselect-all,alt-t:toggle-all"
+[ -f ~/.fzf.colors ] && source ~/.fzf.colors
 
-BASE16_SHELL=$HOME/.config/base16-shell/
+BASE16_SHELL=$HOME/.base16-manager/chriskempson/base16-shell/
 [ -n "$PS1" ] && [ -s $BASE16_SHELL/profile_helper.sh ] && eval "$($BASE16_SHELL/profile_helper.sh)"
 
 # if ! [[ -v NVIM_LISTEN_ADDRESS ]]; then nvim +term; fi
-[ -f /opt/miniconda3/etc/profile.d/conda.sh ] && source /opt/miniconda3/etc/profile.d/conda.sh
+# [ -f /opt/miniconda3/etc/profile.d/conda.sh ] && source /opt/miniconda3/etc/profile.d/conda.sh

@@ -1,0 +1,7 @@
+#!/bin/zsh
+
+# base16-manager list-themes \
+#   | fzf | awk '{print $1}' \
+#   | xargs -o -I % base16-manager set %
+
+base16-manager set $(base16-manager list-themes | fzf)

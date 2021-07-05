@@ -55,7 +55,8 @@ font-1 = Material Design Icons:style=Regular:size=12;2
 
 modules-left = i3
 modules-center = player
-modules-right = fs_root fs_home xbacklight pulseaudio nvidia xkeyboard memory cpu wlan eth bluetooth battery temperature date
+; modules-right = fs_root fs_home xbacklight pulseaudio nvidia xkeyboard memory cpu wlan eth bluetooth battery temperature date
+modules-right = fs_root xbacklight pulseaudio nvidia xkeyboard memory cpu wlan eth bluetooth battery temperature date
 
 tray-position = right
 tray-padding = 2
@@ -225,7 +226,8 @@ ramp-used-8 = %{F#bd2c40}
 
 [module/wlan]
 type = internal/network
-interface = ${env:DEFAULT_NETWORK_INTERFACE:wlp*}
+; interface = ${env:DEFAULT_NETWORK_INTERFACE:wlp*}
+interface = wlan0
 interval = 3.0
 
 format-connected = <ramp-signal> <label-connected>
@@ -242,7 +244,8 @@ ramp-signal-foreground = ${colors.foreground-alt}
 
 [module/eth]
 type = internal/network
-interface = vethd3665e2
+; interface = vethd3665e2
+interface = enp3s0
 interval = 3.0
 
 format-connected-prefix = " "
