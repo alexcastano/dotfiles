@@ -55,8 +55,8 @@ font-1 = Material Design Icons:style=Regular:size=12;2
 
 modules-left = i3
 modules-center = player
-; modules-right = fs_root fs_home xbacklight pulseaudio nvidia xkeyboard memory cpu wlan eth bluetooth battery temperature date
-modules-right = fs_root xbacklight pulseaudio nvidia xkeyboard memory cpu wlan eth bluetooth battery temperature date
+modules-right = fs_root fs_home xbacklight pulseaudio nvidia xkeyboard memory cpu wlan eth bluetooth battery temperature date
+; modules-right = fs_root xbacklight pulseaudio nvidia xkeyboard memory cpu wlan eth bluetooth battery temperature date
 
 tray-position = right
 tray-padding = 2

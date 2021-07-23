@@ -1,1 +1,1 @@
-colorscheme base16-tomorrow-night-eighties
+colorscheme base16-solarized-light

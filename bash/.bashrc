@@ -87,3 +87,4 @@ xhost +local: &> /dev/null
 # # rbenv
 # eval "$(rbenv init -)"
 export SHUTDOWN_VIPS="true"
+[ -f ~/.fzf.colors ] && source ~/.fzf.colors
