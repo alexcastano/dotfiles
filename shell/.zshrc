@@ -48,21 +48,17 @@ COMPLETION_WAITING_DOTS="true"
 # Add wisely, as too many plugins slow down shell startup.
 plugins=(
          archlinux
-         bundler
          dirhistory
          docker
          docker-compose
          fzf
          git
          git-extras
-         git-flow-avh
          kubectl
          mix
          npm
-         redis-cli
          ssh-agent
          systemd
-         tmux
          urltools
          web-search
 )

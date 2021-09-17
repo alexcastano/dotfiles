@@ -2,6 +2,8 @@
 " This must be first, because it changes other options as a side effect.
 set nocompatible
 
+set virtualedit+=onemore
+
 " leader key is space
 nnoremap <Space> <Nop>
 let mapleader = "\<Space>"
