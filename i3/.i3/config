@@ -229,6 +229,12 @@ workspace 8 output eDP-1
 workspace 9 output eDP-1
 workspace 10 output eDP-1
 
+# Dunst
+bindsym ctrl+space exec dunstctl close
+bindsym ctrl+shift+space exec dunstctl close-all
+bindsym ctrl+grave exec dunstctl history-pop
+bindsym ctrl+shift+period exec dunstctl context
+
 # Spotify
 # Play/Pause
 bindsym $mod+o exec dbus-send --print-reply --dest=org.mpris.MediaPlayer2.spotify /org/mpris/MediaPlayer2 org.mpris.MediaPlayer2.Player.PlayPause
@@ -240,7 +246,7 @@ bindsym $mod+p exec dbus-send --print-reply --dest=org.mpris.MediaPlayer2.spotif
 bindsym $mod+i exec dbus-send --print-reply --dest=org.mpris.MediaPlayer2.spotify /org/mpris/MediaPlayer2 org.mpris.MediaPlayer2.Player.Previous
 
 # Change layout
-bindsym $mod+q exec ~/bin/change_layout
+bindsym $mod+q exec --no-startup-id ~/bin/change_layout
 
 bindsym $mod+Shift+Pause exec killall chromium
 
