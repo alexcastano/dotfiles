@@ -429,6 +429,7 @@ nnoremap <leader>tf :TestFile<cr>
 nnoremap <leader>ta :call RunTestSuite()<cr>
 nnoremap <leader>t. :TestLast<cr>
 nnoremap <leader>tv :TestVisit<cr>
+autocmd FileType elixir nnoremap <leader>tF :Ndo mix test --failed<cr>
 
 
 " =================================
