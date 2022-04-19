@@ -52,6 +52,7 @@ plugins=(
          docker
          docker-compose
          fzf
+         gcloud
          git
          git-extras
          kubectl

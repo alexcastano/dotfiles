@@ -397,6 +397,7 @@ augroup elixir_run
   autocmd FileType elixir nnoremap <leader>cd :Ndo mix deps.get<cr>
   autocmd FileType elixir nnoremap <leader>ce :Ndo mix do ecto.drop, ecto.create, ecto.migrate; MIX_ENV=test mix do ecto.drop, ecto.create, ecto.migrate<cr>
   autocmd FileType elixir nnoremap <leader>cp :Ndo iex -S mix phx.server<cr>
+  autocmd FileType elixir nnoremap <leader>tF :Ndo mix test --failed<cr>
 
   " TODO delete
   " autocmd FileType fzf nnoremap <buffer> <esc> <C-c>
