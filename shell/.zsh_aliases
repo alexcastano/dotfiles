@@ -22,23 +22,17 @@ alias pg='ps aux | grep'
 alias pythonweb='python -m http.server'
 alias cal='cal -m'
 
-alias be='bundle exec'
-alias bes='bundle exec spring'
-
 alias gg='surfraw google'
 
-alias weather='curl http://wttr.in/Barcelona'
+alias weather='curl http://wttr.in/Encamp'
 alias myip='curl canihazip.com/s'
 
 alias mem_process="ps aux | awk '{print \$2, \$4, \$11}' | sort -k2rn | head -n 20"
 
-alias app='docker-compose run --service-ports --rm app'
-alias appb='docker-compose run --rm app bundle exec'
-alias appm='appb rails db:drop db:create db:migrate db:seed'
-alias appc='appb rails c'
-alias appt='docker-compose run --rm -e RAILS_ENV=test app bash'
-
-alias tmuxfix='tmux unbind -n n \; unbind -n N'
-
 alias gsam="gcloud config configurations activate default"
 alias gdev="gcloud config configurations activate dev"
+
+alias proxyprod="cloud_sql_proxy -instances=janus-156310:europe-west1:tw-production-emea-3=tcp:5434"
+alias proxystg="cloud_sql_proxy -instances fcm-platform-stg-a3dc:europe-west1:fcm-platform-elixir-stg-euw1-29231c44=tcp:5434"
+alias proxymad="cloud_sql_proxy -instances fcm-platform-stg-a3dc:europe-west1:fcm-platform-elixir-stg-mad-euw1-af952070=tcp:5434"
+alias proxyreadprod="cloud_sql_proxy -instances janus-156310:europe-west1:itinerary-core-migration=tcp:5434"
