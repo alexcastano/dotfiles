@@ -232,6 +232,8 @@ for_window [window_role="task_dialog"] floating enable
 floating_minimum_size 450 x 450
 floating_maximum_size 1500 x 1500
 
+for_window [class="^.*"] border pixel 0
+
 workspace 1 output eDP-1
 workspace 8 output eDP-1
 workspace 9 output eDP-1
