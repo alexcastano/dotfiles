@@ -1,5 +1,5 @@
 {
-  // "elixir.pathToElixirLS": "~/elixir/elixir-ls/release/language_server.sh",
+  "elixir.pathToElixirLS": "~/elixir/elixir-ls/release/language_server.sh",
   "codeLens.enable": true,
   "coc.preferences.formatOnSaveFiletypes": ["elixir", "eelixir"],
   "signature.hideOnTextChange": true,

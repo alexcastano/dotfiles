@@ -110,6 +110,8 @@ DEFAULT_USER=alex
 # Alt+. behaviour
 bindkey '\e.' insert-last-word
 
+export LESS="-SRXF"
+
 unsetopt share_history
 
 . $HOME/.asdf/asdf.sh
