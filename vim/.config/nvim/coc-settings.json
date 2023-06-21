@@ -3,5 +3,6 @@
   "codeLens.enable": true,
   "coc.preferences.formatOnSaveFiletypes": ["elixir", "eelixir"],
   "signature.hideOnTextChange": true,
-  "suggest.noselect": true
+  "suggest.noselect": true,
+  "snippets.ultisnips.pythonPrompt": false
 }
