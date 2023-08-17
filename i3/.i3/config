@@ -30,6 +30,7 @@ focus_follows_mouse no
 # start a terminal
 # bindsym $mod+Return exec sakura
 bindsym $mod+Return exec alacritty
+bindsym $mod+b exec firefox -p
 # bindsym $mod+Return exec i3-sensible-terminal
 
 # kill focused window
