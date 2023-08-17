@@ -1,6 +1,10 @@
 #!/bin/sh
 
-sudo systemctl start bluetooth
+systemctl status bluetooth | grep Running > /dev/null
+
+if [ $? -ne 0 ]; then
+  sudo systemctl start bluetooth
+fi
 
 rfkill unblock bluetooth
 bluetoothctl power on
