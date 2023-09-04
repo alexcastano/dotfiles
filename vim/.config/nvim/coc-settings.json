@@ -1,7 +1,7 @@
 {
   "elixir.pathToElixirLS": "~/elixir/elixir-ls/release/language_server.sh",
   "codeLens.enable": true,
-  "coc.preferences.formatOnSaveFiletypes": ["elixir", "eelixir"],
+  "coc.preferences.formatOnSave": ["elixir", "eelixir"],
   "signature.hideOnTextChange": true,
   "suggest.noselect": true,
   "snippets.ultisnips.pythonPrompt": false
