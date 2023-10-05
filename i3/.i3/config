@@ -224,8 +224,12 @@ assign [class="Spotify"] 10
 assign [class="Slack"] 9
 assign [class="Franz"] 9
 assign [class="Rambox"] 9
+assign [class="Ferdium"] 9
 assign [class="zoom "] 8
 assign [class="zoom"] 8
+assign [class="microsoft teams - preview"] 7
+assign [class="Microsoft Teams - Preview"] 7
+for_window [class="microsoft teams - preview"] move to workspace 7
 
 for_window [window_role="pop-up"] floating enable
 for_window [window_role="task_dialog"] floating enable
