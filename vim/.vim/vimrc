@@ -10,6 +10,8 @@ let mapleader = "\<Space>"
 
 call plug#begin('~/.vim/plugged')
 
+Plug 'github/copilot.vim'
+
 " FZF {{{1
 Plug 'junegunn/fzf.vim'
 "
