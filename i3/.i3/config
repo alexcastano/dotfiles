@@ -226,6 +226,7 @@ assign [class="Franz"] 9
 assign [class="Rambox"] 9
 assign [class="Ferdium"] 9
 assign [title="Zoom.*"] 8
+assign [title="zoom"] 8
 assign [class="zoom"] 8
 
 for_window [window_role="pop-up"] floating enable

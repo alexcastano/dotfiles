@@ -28,6 +28,7 @@
 [user]
   name = Alex Castaño
   email = alexcastanodev@gmail.com
+	signingkey = /home/alex/.ssh/id_rsa.pub
 
 [url "git@github.com:"]
   insteadOf = gh:
@@ -69,3 +70,7 @@
 	templatedir = ~/.git_template
 [pull]
 	ff = only
+[gpg]
+	format = ssh
+[commit]
+	gpgsign = true
