@@ -1,3 +1,4 @@
+
 [font]
 size = 8
 
@@ -63,3 +64,6 @@ mods = "Control"
 action = "IncreaseFontSize"
 key = "Plus"
 mods = "Control"
+
+[general]
+import = ["~/.config/alacritty/colors.toml"]

@@ -688,29 +688,28 @@ nnoremap <silent><nowait> \p  :<C-u>CocListResume<CR>
 " Live substitution
 set inccommand=split
 
-Plug 'chriskempson/base16-vim'
-
 call plug#end()
 
-colorscheme base16-default-dark
+let theme_script_path = expand("~/.local/share/tinted-theming/tinty/base16-vim-colors-file.vim")
 
- " call s:loadProjection("mix.exs", \"elixir_projections.json")
+function! FileExists(file_path)
+  return filereadable(a:file_path) == 1
+endfunction
 
-set termguicolors
-set winblend=10
+function! HandleFocusGained()
+  if FileExists(g:theme_script_path)
+    execute 'source ' . g:theme_script_path
+  endif
+endfunction
 
-if filereadable(expand("~/.config/nvim/colorscheme.vim"))
-  " let base16colorspace=256
-  let base16colorspace=16
-  source ~/.config/nvim/colorscheme.vim
+if FileExists(theme_script_path)
+  set termguicolors
+  let g:tinted_colorspace = 256
+  execute 'source ' . theme_script_path
+  autocmd FocusGained * call HandleFocusGained()
 endif
 
-" set t_Co=256
-" set t_Co=16
-
-" set background=light
-" set background=dark
-
+ " call s:loadProjection("mix.exs", \"elixir_projections.json")
 
 " allow backspacing over everything in insert mode
 set history=500    " keep 50 lines of command line history
