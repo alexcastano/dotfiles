@@ -158,3 +158,6 @@ if [ -n "$(command -v 'tinty')" ]; then
 
   alias tinty=tinty_source_shell_theme
 fi
+
+# Created by `pipx` on 2025-02-04 16:01:44
+export PATH="$PATH:/home/alex/.local/bin"
