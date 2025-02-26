@@ -4,3 +4,4 @@ vim/.vim/.netrwhist
 vim/.vim/spell
 shell/.tmux/plugins
 shell/.config/base16-shell
+bin/tsc

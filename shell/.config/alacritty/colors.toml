@@ -1,37 +1,37 @@
-# base16 Mocha - alacritty color config
-# Chris Kempson (http://chriskempson.com)
+# base16 Solarized Dark - alacritty color config
+# Ethan Schoonover (modified by aramisgithub)
 
 [colors]
 draw_bold_text_with_bright_colors = false
 
 # Default colors
 [colors.primary]
-background = '0x3b3228'
-foreground = '0xd0c8c6'
+background = '0x002b36'
+foreground = '0x93a1a1'
 
 # Colors the cursor will use if `custom_cursor_colors` is true
 [colors.cursor]
-text = '0x3b3228'
-cursor = '0xd0c8c6'
+text = '0x002b36'
+cursor = '0x93a1a1'
 
 # Normal colors
 [colors.normal]
-black = '0x3b3228'
-red = '0xcb6077'
-green = '0xbeb55b'
-yellow = '0xf4bc87'
-blue = '0x8ab3b5'
-magenta = '0xa89bb9'
-cyan = '0x7bbda4'
-white = '0xd0c8c6'
+black = '0x002b36'
+red = '0xdc322f'
+green = '0x859900'
+yellow = '0xb58900'
+blue = '0x268bd2'
+magenta = '0x6c71c4'
+cyan = '0x2aa198'
+white = '0x93a1a1'
 
 # Bright colors
 [colors.bright]
-black = '0x645240'
-red = '0xd28b71'
-green = '0x534636'
-yellow = '0x645240'
-blue = '0xb8afad'
-magenta = '0xe9e1dd'
-cyan = '0xbb9584'
-white = '0xf5eeeb'
+black = '0x586e75'
+red = '0xcb4b16'
+green = '0x073642'
+yellow = '0x586e75'
+blue = '0x839496'
+magenta = '0xeee8d5'
+cyan = '0xd33682'
+white = '0xfdf6e3'

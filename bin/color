@@ -1,3 +1,0 @@
-#!/bin/zsh
-
-tinty apply $(tinty list | fzf)

@@ -98,12 +98,6 @@ export ERL_AFLAGS="-kernel shell_history enabled"
 
 export KERL_BUILD_DOCS="yes"
 
-# Set personal aliases, overriding those provided by oh-my-zsh libs,
-# plugins, and themes. Aliases can be placed here, though oh-my-zsh
-# users are encouraged to define aliases within the ZSH_CUSTOM folder.
-# For a full list of active aliases, run `alias`.
-source ~/.zsh_aliases
-
 # default user to don't show in the prompt
 DEFAULT_USER=alex
 
@@ -161,3 +155,9 @@ fi
 
 # Created by `pipx` on 2025-02-04 16:01:44
 export PATH="$PATH:/home/alex/.local/bin"
+
+# Set personal aliases, overriding those provided by oh-my-zsh libs,
+# plugins, and themes. Aliases can be placed here, though oh-my-zsh
+# users are encouraged to define aliases within the ZSH_CUSTOM folder.
+# For a full list of active aliases, run `alias`.
+source ~/.zsh_aliases

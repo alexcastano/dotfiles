@@ -15,15 +15,15 @@ Plug 'github/copilot.vim'
 " FZF {{{1
 Plug 'junegunn/fzf.vim'
 "
-" Default fzf layout
-" - down / up / left / right
-let g:fzf_layout = { 'window': '10split enew' }
-
 " Enable per-command history.
 " CTRL-N and CTRL-P will be automatically bound to next-history and
 " previous-history instead of down and up. If you don't like the change,
 " explicitly bind the keys to down and up in your $FZF_DEFAULT_OPTS.
 let g:fzf_history_dir = '~/.local/share/fzf-history'
+
+" Default fzf layout
+" - down / up / left / right
+" let g:fzf_layout = { 'window': '10split enew' }
 
 augroup fzf_group
   autocmd!
@@ -36,6 +36,9 @@ nnoremap <silent><nowait> <leader>fl :BLines<cr>
 nnoremap <silent><nowait> <leader>fs :Rg<space>
 
 let g:fzf_layout = { 'window': { 'width': 0.9, 'height': 0.9 } }
+set pumblend=15
+set winblend=15
+hi PmenuSel blend=0
 
 
 " MovePlugins {{{1

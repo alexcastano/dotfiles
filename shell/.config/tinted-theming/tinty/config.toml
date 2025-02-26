@@ -1,0 +1,25 @@
+[[items]]
+path = "https://github.com/tinted-theming/tinted-alacritty"
+name = "tinted-alacritty"
+themes-dir = "colors" # or "colors-256"
+hook = "cp -f %f ~/.config/alacritty/colors.toml && touch ~/.config/alacritty/alacritty.toml"
+
+[[items]]
+path = "https://github.com/tinted-theming/tinted-fzf"
+name = "tinted-fzf"
+hook = ". %f"
+themes-dir = "sh"
+# Or for fish shell
+# themes-dir = "fish"
+
+[[items]]
+path = "https://github.com/tinted-theming/base16-vim"
+name = "base16-vim"
+themes-dir = "colors"
+
+[[items]]
+path = "https://github.com/tinted-theming/base16-dunst"
+name = "base16-dunst"
+themes-dir = "themes"
+# hook = "cp -f %f ~/.config/dunst/dunstrc && systemctl --user restart dunst"
+hook = "cp -f %f ~/.config/dunst/dunstrc"
