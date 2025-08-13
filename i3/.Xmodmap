@@ -1,9 +1,0 @@
-! Clear Lock modifier
-clear Lock
-! Make caps lock acts as control
-! Assigns capslock key control_l sym
-keycode 66 = Control_L
-! Assigns menu key control_l sym
-keycode 135 = Control_R
-! Add to control modifier the keys sym Control_L and Control_R
-add Control = Control_L Control_R

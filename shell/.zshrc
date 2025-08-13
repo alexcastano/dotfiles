@@ -108,14 +108,11 @@ export LESS="-SRXF"
 
 unsetopt share_history
 
-. $HOME/.asdf/asdf.sh
-. $HOME/.asdf/completions/asdf.bash
-
 export USE_GKE_GCLOUD_AUTH_PLUGIN=True
 
 # export FZF_DEFAULT_COMMAND='ag -l -g ""'
 export FZF_DEFAULT_COMMAND='fd --type file --follow --hidden --exclude .git'
-export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
+# export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
 export FZF_DEFAULT_OPTS="--color --bind alt-a:select-all,alt-d:deselect-all,alt-t:toggle-all"
 [ -f ~/.fzf.colors ] && source ~/.fzf.colors
 
@@ -155,6 +152,8 @@ fi
 
 # Created by `pipx` on 2025-02-04 16:01:44
 export PATH="$PATH:/home/alex/.local/bin"
+
+source /usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 
 # Set personal aliases, overriding those provided by oh-my-zsh libs,
 # plugins, and themes. Aliases can be placed here, though oh-my-zsh
