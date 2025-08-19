@@ -12,6 +12,8 @@ call plug#begin('~/.vim/plugged')
 
 Plug 'github/copilot.vim'
 
+Plug 'jparise/vim-graphql'
+
 " FZF {{{1
 Plug 'junegunn/fzf.vim'
 "

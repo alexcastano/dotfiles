@@ -8,6 +8,8 @@ export ZSH=/home/alex/.oh-my-zsh
 ZSH_THEME="agnoster"
 export BAT_THEME="base16"
 
+[ -f ~/.zshrc.local ] && source ~/.zshrc.local
+
 # Uncomment the following line to use case-sensitive completion.
 # CASE_SENSITIVE="true"
 
@@ -64,16 +66,8 @@ plugins=(
          web-search
 )
 
-# Tmux configuration
-
-ZSH_TMUX_AUTOSTART=false
-ZSH_TMUX_AUTOCONNECT=false
-
-# User configuration
-
 # export PATH="/home/alex/bin:/usr/local/sbin:/usr/local/bin:/usr/bin:/opt/android-sdk/platform-tools:/usr/lib/jvm/default/bin:/usr/bin/site_perl:/usr/bin/vendor_perl:/usr/bin/core_perl"
 export PATH="/home/alex/bin:/usr/local/sbin:/usr/local/bin:/usr/bin:/usr/lib/jvm/default/bin:/usr/bin/site_perl:/usr/bin/vendor_perl:/usr/bin/core_perl:/opt/miniconda3/bin:/opt/google-cloud-cli/bin/"
-# export MANPATH="/usr/local/man:$MANPATH"
 
 source $ZSH/oh-my-zsh.sh
 
@@ -88,9 +82,6 @@ else
   export EDITOR='nvim'
   export VISUAL='nvim'
 fi
-
-# ssh
-# export SSH_KEY_PATH="~/.ssh/dsa_id"
 
 export ACKRC=".ackrc"
 
@@ -109,6 +100,7 @@ export LESS="-SRXF"
 unsetopt share_history
 
 export USE_GKE_GCLOUD_AUTH_PLUGIN=True
+ASDF_DATA_DIR=/home/alex/.asdf
 
 # export FZF_DEFAULT_COMMAND='ag -l -g ""'
 export FZF_DEFAULT_COMMAND='fd --type file --follow --hidden --exclude .git'
@@ -150,8 +142,9 @@ if [ -n "$(command -v 'tinty')" ]; then
   alias tinty=tinty_source_shell_theme
 fi
 
-# Created by `pipx` on 2025-02-04 16:01:44
 export PATH="$PATH:/home/alex/.local/bin"
+export PATH="$PATH:/home/alex/.rover/bin"
+export PATH="${ASDF_DATA_DIR:-$HOME/.asdf}/shims:$PATH"
 
 source /usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 
