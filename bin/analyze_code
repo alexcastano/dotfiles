@@ -1,0 +1,121 @@
+#!/bin/bash
+
+#
+# Script to analyze lines of code for specified languages using cloc.
+# It calculates total lines, file count, min, max, average, and key percentiles.
+#
+
+# --- Configuration & Defaults ---
+SCAN_DIR="."
+declare -a LANGUAGES=() # Array to hold language arguments
+
+# --- Dependency Check ---
+command -v cloc >/dev/null 2>&1 || { echo >&2 "Error: 'cloc' is not installed. Please install it to continue."; exit 1; }
+
+# --- Usage Information ---
+usage() {
+    echo "Usage: $0 [-f /path/to/scan] [Language1] [Language2] ..."
+    echo "Analyzes lines of code. Defaults to scanning the current directory for all languages."
+    echo
+    echo "Options:"
+    echo "  -f <directory>   Specify a different directory to scan."
+    echo "  -h, --help       Show this help message."
+    echo
+    echo "Examples:"
+    echo "  $0                # Analyze all code in the current directory."
+    echo "  $0 Ruby           # Analyze only Ruby files in the current directory."
+    echo "  $0 -f src Elixir  # Analyze only Elixir files in the 'src' directory."
+    exit 1
+}
+
+# --- Argument Parsing ---
+while [[ $# -gt 0 ]]; do
+  case "$1" in
+    -f)
+      SCAN_DIR="$2"
+      shift 2 # Consume -f and its value
+      ;;
+    -h|--help)
+      usage
+      ;;
+    *)
+      # Not a flag, so it must be a language
+      LANGUAGES+=("$1")
+      shift 1 # Consume the language argument
+      ;;
+  esac
+done
+
+# --- AWK Script for Statistical Analysis ---
+# This AWK script is the same as before. The filtering happens before the data gets here.
+read -r -d '' AWK_SCRIPT <<'EOF'
+{
+    count++;
+    lines = $1;
+    total += lines;
+    values[count] = lines;
+}
+END {
+    if (count > 0) {
+        min = values[1];        # First element of the sorted list is the minimum
+        max = values[count];    # Last element is the maximum
+        avg = total / count;
+
+        p50_index = int(count * 0.50);
+        p90_index = int(count * 0.90);
+        p95_index = int(count * 0.95);
+        if (p50_index < 1) p50_index = 1;
+        if (p90_index < 1) p90_index = 1;
+        if (p95_index < 1) p95_index = 1;
+
+        print "--- Lines of Code Analysis (via cloc) ---";
+        printf "Languages analyzed:\t%s\n", ENVIRON["LANG_DISPLAY"];
+        printf "Files analyzed:\t\t%d\n", count;
+        printf "Total lines of code:\t%d\n", total;
+        print "-------------------------------------------";
+        printf "Smallest file:\t\t%d lines\n", min;
+        printf "Largest file:\t\t%d lines\n", max;
+        printf "Average lines per file:\t%.2f lines\n", avg;
+        print "-------------------------------------------";
+        printf "P50 (Median):\t\t%d lines\n", values[p50_index];
+        printf "P90:\t\t\t%d lines\n", values[p90_index];
+        printf "P95:\t\t\t%d lines\n", values[p95_index];
+    } else {
+        printf "No files found for the specified languages/directory.\n";
+    }
+}
+EOF
+
+# --- Execution Pipeline ---
+if [ ! -d "$SCAN_DIR" ]; then
+    echo "Error: Directory '$SCAN_DIR' not found."
+    exit 1
+fi
+
+# The pipeline is built conditionally based on whether languages were specified.
+if [ ${#LANGUAGES[@]} -gt 0 ]; then
+    # Join language arguments with '|' for the grep pattern
+    OLD_IFS="$IFS"
+    IFS='|'
+    LANG_PATTERN="${LANGUAGES[*]}"
+    IFS="$OLD_IFS"
+
+    export LANG_DISPLAY="$LANG_PATTERN" # For the report
+    echo "Running analysis on '$SCAN_DIR' for languages: $LANG_DISPLAY"
+    echo "..."
+
+    cloc --by-file --csv "$SCAN_DIR" | \
+        grep -E "$LANG_PATTERN" | \
+        awk -F, 'NR > 0 && $2 != "" {print $5}' | \
+        sort -n | \
+        awk "$AWK_SCRIPT"
+else
+    export LANG_DISPLAY="All" # For the report
+    echo "Running analysis on '$SCAN_DIR' for all languages."
+    echo "..."
+
+    cloc --by-file --csv "$SCAN_DIR" | \
+        awk -F, 'NR > 1 && $2 != "" {print $5}' | \
+        sort -n | \
+        awk "$AWK_SCRIPT"
+fi
