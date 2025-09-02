@@ -15,7 +15,8 @@ status = check_output(['acpi'], universal_newlines=True)
 if not status:
     # stands for no battery found
     color = config.get("color_10", "red")
-    fulltext = "<span color='{}'><span font='FontAwesome'>\uf00d \uf240</span></span>".format(color)
+    # fulltext = "<span color='{}'><span font='FontAwesome'>\uf00d \uf240</span></span>".format(color)
+    fulltext = ""
     percentleft = 100
 else:
     # if there is more than one battery in one laptop, the percentage left is
