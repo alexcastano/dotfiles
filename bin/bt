@@ -12,7 +12,7 @@ bluetoothctl agent on
 bluetoothctl default-agent
 
 if [ $1 = "sony" ]; then
-  bluetoothctl connect 38:18:4C:7D:5A:28
+  bluetoothctl connect 58:18:62:17:69:14
 elif [ $1 = "bose" ]; then
   bluetoothctl connect 78:2B:64:89:AB:E6
 else
