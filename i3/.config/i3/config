@@ -197,13 +197,24 @@ mode "resize" {
 
 bindsym $mod+r mode "resize"
 
+mode "bluetooth" {
+    bindsym s exec --no-startup-id /home/alex/dotfiles/bin/bt sony; mode "default"
+    bindsym b exec --no-startup-id /home/alex/dotfiles/bin/bt bose; mode "default"
+    bindsym t exec --no-startup-id /home/alex/dotfiles/bin/bt-toogle; mode "default"
+
+    # back to normal: Enter or Escape
+    bindsym Return mode "default"
+    bindsym Escape mode "default"
+}
+
 
 ########################
 # Apps
 ########################
 # start a terminal
 bindsym $mod+Return exec --no-startup-id alacritty
-bindsym $mod+b exec --no-startup-id zen-browser --ProfileManager
+bindsym $mod+b mode "bluetooth"
+bindsym $mod+z exec --no-startup-id zen-browser --ProfileManager
 
 # Redirect sound to headphones
 bindsym $mod+Shift+p exec --no-startup-id /usr/local/bin/switch-audio-port
