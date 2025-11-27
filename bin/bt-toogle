@@ -1,0 +1,75 @@
+#!/bin/bash
+
+# --- CONFIGURATION ---
+# We use the MAC address, which is stable across all systems.
+CARD_MAC="58_18_62_17_69_14"
+# ---------------------
+
+# 1. Find the full card name (e.g., "bluez_card.58_18_62_17_69_14")
+# The "Name:" field is the one pactl uses.
+CARD_NAME=$(pactl list cards | grep -B 1 "device.string = \"$CARD_MAC\"" | grep "Name:" | awk '{print $2}')
+
+# Fallback for systems that don't use device.string (like your first PC)
+if [ -z "$CARD_NAME" ]; then
+    CARD_NAME=$(pactl list cards | grep "Name: bluez_card.$CARD_MAC" | awk '{print $2}')
+fi
+
+if [ -z "$CARD_NAME" ]; then
+    echo "Error: Could not find Bluetooth card with MAC $CARD_MAC."
+    echo "Please make sure your headphones are connected."
+    exit 1
+fi
+
+# 2. Get the entire text block for this specific card
+# This awk script finds the card by name, prints it, and stops at the next card
+CARD_BLOCK=$(pactl list cards | awk -v card="$CARD_NAME" '
+    /^Card #[0-9]+/ { if(in_card) exit; in_card=0 }
+    $1 == "Name:" && $2 == card { in_card=1 }
+    in_card { print }
+')
+
+# 3. Get the current active profile
+CURRENT_PROFILE=$(echo "$CARD_BLOCK" | grep "Active Profile:" | awk '{print $3}')
+
+if [ -z "$CURRENT_PROFILE" ]; then
+    echo "Error: Could not read active profile for $CARD_NAME."
+    exit 1
+fi
+
+# 4. Dynamically find the BEST A2DP (High Fidelity) profile
+# We extract the priority number, sort by it, and take the top one.
+PROFILE_A2DP=$(echo "$CARD_BLOCK" | grep -E 'a2dp.*sink' | \
+    sed 's/.*priority: \([0-9]*\).*/\1 \0/' | \
+    sort -nr | \
+    head -n 1 | \
+    awk '{print $2}' | \
+    tr -d ':')
+
+# 5. Dynamically find the BEST HFP (Handsfree) profile
+# Same logic: find all headset/handsfree profiles and pick the one with highest priority.
+PROFILE_HFP=$(echo "$CARD_BLOCK" | grep -E '(headset|handsfree)' | \
+    sed 's/.*priority: \([0-9]*\).*/\1 \0/' | \
+    sort -nr | \
+    head -n 1 | \
+    awk '{print $2}' | \
+    tr -d ':')
+
+# --- Debugging (uncomment these lines if it fails) ---
+# echo "Found Card: $CARD_NAME"
+# echo "Current Profile: $CURRENT_PROFILE"
+# echo "Found A2DP Profile: $PROFILE_A2DP"
+# echo "Found HFP Profile: $PROFILE_HFP"
+# ---
+
+# 6. The Toggle Logic
+# We check if the *current* profile is an A2DP profile.
+# This is more robust than checking for one specific name.
+if [[ "$CURRENT_PROFILE" == *a2dp* ]]; then
+    echo "Current: High Fidelity (A2DP). Switching to Handsfree (HFP)..."
+    pactl set-card-profile "$CARD_NAME" "$PROFILE_HFP"
+else
+    echo "Current: Handsfree (HFP). Switching to High Fidelity (A2DP)..."
+    pactl set-card-profile "$CARD_NAME" "$PROFILE_A2DP"
+fi
+
+echo "Switch complete."
