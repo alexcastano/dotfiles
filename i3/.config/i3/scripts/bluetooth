@@ -1,0 +1,90 @@
+#!/bin/sh
+
+# Handle click events
+if [ "$BLOCK_BUTTON" = "2" ]; then
+    # Middle click - disconnect all connected bluetooth devices
+    devices=$(bluetoothctl devices | grep Device | cut -d ' ' -f 2)
+    for device_mac in $devices; do
+        device_info=$(bluetoothctl info "$device_mac" 2>/dev/null)
+        if echo "$device_info" | grep -q "Connected: yes"; then
+            bluetoothctl disconnect "$device_mac" > /dev/null 2>&1
+        fi
+    done
+    # Show disconnected icon immediately
+    echo "󰂲"
+    # Trigger i3blocks refresh
+    sleep 0.5
+    pkill -RTMIN+10 i3blocks
+    exit 0
+fi
+
+# Check if bluetooth service is active
+if [ "$(systemctl is-active bluetooth.service)" != "active" ]; then
+    echo "󰂲"
+    exit 0
+fi
+
+# Check if bluetooth is powered on
+if ! bluetoothctl show | grep -q "Powered: yes"; then
+    echo "󰂲"
+    exit 0
+fi
+
+# Get all devices
+devices_paired=$(bluetoothctl devices | grep Device | cut -d ' ' -f 2)
+
+if [ -z "$devices_paired" ]; then
+    echo "󰂲"
+    exit 0
+fi
+
+# Check for connected devices
+connected_devices=""
+counter=0
+
+for device_mac in $devices_paired; do
+    if [ -z "$device_mac" ]; then
+        continue
+    fi
+    
+    device_info=$(bluetoothctl info "$device_mac" 2>/dev/null)
+    
+    if echo "$device_info" | grep -q "Connected: yes"; then
+        device_alias=$(echo "$device_info" | grep "Alias" | cut -d ' ' -f 2-)
+        
+        # Try to get battery percentage
+        battery=$(echo "$device_info" | grep "Battery Percentage:" | sed -n 's/.*(\([0-9]*\)).*/\1/p')
+        
+        # Check audio profile (HSP/HFP mode means microphone is active)
+        # Format the MAC address for pactl (replace : with _)
+        pactl_mac=$(echo "$device_mac" | tr ':' '_')
+        active_profile=$(pactl list cards | grep -A 100 "bluez_card.${pactl_mac}" | grep "Active Profile:" | head -1 | awk '{print $3}')
+        
+        # Check if in HSP/HFP mode (microphone enabled)
+        mic_indicator=""
+        if echo "$active_profile" | grep -q "headset-head-unit"; then
+            mic_indicator="<span foreground='#FFFF00'>󰍯</span>"
+        fi
+        
+        # Build device string with battery and mic indicator
+        if [ -n "$battery" ]; then
+            device_str="${device_alias} (${battery}%) ${mic_indicator}"
+        else
+            device_str="${device_alias} ${mic_indicator}"
+        fi
+        
+        if [ $counter -gt 0 ]; then
+            connected_devices="${connected_devices}, ${device_str}"
+        else
+            connected_devices="$device_str"
+        fi
+        
+        counter=$((counter + 1))
+    fi
+done
+
+if [ -n "$connected_devices" ]; then
+    printf "󰂯 %s\n" "$connected_devices"
+else
+    echo "󰂲"
+fi

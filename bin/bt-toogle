@@ -73,3 +73,6 @@ else
 fi
 
 echo "Switch complete."
+
+# Trigger immediate i3blocks bluetooth update
+pkill -RTMIN+10 i3blocks
