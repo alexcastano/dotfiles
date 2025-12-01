@@ -62,7 +62,7 @@ for device_mac in $devices_paired; do
         
         # Check if in HSP/HFP mode (microphone enabled)
         mic_indicator=""
-        if echo "$active_profile" | grep -q "headset-head-unit"; then
+        if echo "$active_profile" | grep -q -E "(headset-head-unit|handsfree_head_unit)"; then
             mic_indicator="<span foreground='#FFFF00'>󰍯</span>"
         fi
         
