@@ -1,0 +1,34 @@
+{
+
+  "$schema": "https://opencode.ai/config.json",
+  "provider": {
+    "fcm": {
+      "npm": "@ai-sdk/openai-compatible",
+      "name": "FCM LiteLLM",
+      "options": {
+        "baseURL": "https://litellm.fcm.digital/v1/",
+      },
+      "models": {
+        "gpt-4o": {
+          "name": "gpt-4o"
+        },
+        "gpt-4.1": {
+          "name": "gpt-4.1"
+        },
+        "gpt-4o-mini": {
+          "name": "gpt-4o-mini"
+        },
+        "claude-4-sonnet": {
+          "name": "claude-4-sonnet"
+        },
+        "claude-4-5-sonnet": {
+          "name": "claude-4-5-sonnet"
+        },
+        "gpt-5-mini": {
+          "name": "gpt-5-mini"
+        }
+      }
+    }
+  },
+  "model": "fcm/claude-4-5-sonnet"
+}
