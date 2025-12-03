@@ -1,0 +1,155 @@
+#!/usr/bin/env python3
+import argparse
+import json
+import sys
+import os
+
+from datetime import date, timedelta
+from urllib.parse import urlencode
+from urllib.request import Request, urlopen
+from urllib.error import HTTPError, URLError
+
+# --------------------------------------------------------
+# 🔐 HARDCODED KEYS
+# --------------------------------------------------------
+USER_KEY = os.environ['FCM_LITE_LLM_USER_KEY']
+ADMIN_KEY = os.environ['FCM_LITE_LLM_ADMIN_KEY']
+
+BASE_URL = "https://litellm.fcm.digital"
+PATH = "/user/daily/activity"
+
+
+def parse_args():
+    parser = argparse.ArgumentParser(
+        description="Show LiteLLM spend + token usage for a date range."
+    )
+
+    parser.add_argument("--start", help="Start date (YYYY-MM-DD)")
+    parser.add_argument("--end", help="End date (YYYY-MM-DD)")
+    parser.add_argument(
+        "--range",
+        choices=["today", "yesterday", "last7"],
+        help="Quick range shortcut (ignored if --start/--end given)",
+    )
+    parser.add_argument("--page-size", type=int, default=50)
+
+    return parser.parse_args()
+
+
+def resolve_dates(args):
+    # Explicit manual dates
+    if args.start and args.end:
+        return args.start, args.end
+
+    today = date.today()
+
+    if args.range == "yesterday":
+        d = today - timedelta(days=1)
+        return d.isoformat(), d.isoformat()
+
+    if args.range == "last7":
+        start = today - timedelta(days=6)
+        return start.isoformat(), today.isoformat()
+
+    # Default = today
+    return today.isoformat(), today.isoformat()
+
+
+def fetch_activity(start_date, end_date, page_size):
+    query = {
+        "start_date": start_date,
+        "end_date": end_date,
+        "api_key": USER_KEY,
+        "page": 1,
+        "page_size": page_size,
+    }
+
+    url = f"{BASE_URL.rstrip('/')}{PATH}?{urlencode(query)}"
+    req = Request(url, headers={
+        "accept": "application/json",
+        "x-litellm-api-key": ADMIN_KEY,
+    })
+
+    try:
+        with urlopen(req) as resp:
+            return json.loads(resp.read())
+    except HTTPError as e:
+        print(f"HTTP error: {e.code} → {e.reason}")
+        body = e.read().decode("utf-8", errors="ignore")
+        print(body)
+        sys.exit(1)
+    except URLError as e:
+        print("Connection error:", e)
+        sys.exit(1)
+
+
+def aggregate_models(results):
+    model_stats = {}
+
+    for day in results:
+        models = day.get("breakdown", {}).get("models", {})
+        for name, data in models.items():
+            m = data.get("metrics", {})
+            entry = model_stats.setdefault(
+                name,
+                {
+                    "spend": 0.0,
+                    "prompt_tokens": 0,
+                    "completion_tokens": 0,
+                    "total_tokens": 0,
+                    "api_requests": 0,
+                },
+            )
+            entry["spend"] += float(m.get("spend", 0))
+            entry["prompt_tokens"] += int(m.get("prompt_tokens", 0))
+            entry["completion_tokens"] += int(m.get("completion_tokens", 0))
+            entry["total_tokens"] += int(m.get("total_tokens", 0))
+            entry["api_requests"] += int(m.get("api_requests", 0))
+
+    return model_stats
+
+
+def n(n): return f"{n:,}"
+
+
+def main():
+    args = parse_args()
+    start_date, end_date = resolve_dates(args)
+
+    data = fetch_activity(start_date, end_date, args.page_size)
+    results = data.get("results", [])
+    meta = data.get("metadata", {})
+
+    # --- Totals ---
+    total_spend = float(meta.get("total_spend", 0))
+    total_prompt = int(meta.get("total_prompt_tokens", 0))
+    total_completion = int(meta.get("total_completion_tokens", 0))
+    total_tokens = int(meta.get("total_tokens", 0))
+    total_req = int(meta.get("total_api_requests", 0))
+
+    print(f"\n📅 Date range: {start_date} → {end_date}")
+    print(f"💰 Total spend: ${total_spend:.4f}")
+    print(
+        f"🔢 Total tokens: {n(total_tokens)} "
+        f"(prompt {n(total_prompt)} / completion {n(total_completion)})"
+    )
+    print(f"📨 Total requests: {n(total_req)}")
+
+    # --- Per model breakdown ---
+    models = aggregate_models(results)
+    if models:
+        print("\n📊 Per-model breakdown:")
+        for model, m in sorted(models.items(), key=lambda x: x[1]["spend"], reverse=True):
+            print(
+                f"- {model}: ${m['spend']:.4f} | "
+                f"{n(m['total_tokens'])} tokens "
+                f"(prompt {n(m['prompt_tokens'])}, completion {n(m['completion_tokens'])}) | "
+                f"{n(m['api_requests'])} requests"
+            )
+
+    print()
+
+
+if __name__ == "__main__":
+    main()
+
