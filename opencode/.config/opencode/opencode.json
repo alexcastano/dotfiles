@@ -24,11 +24,17 @@
         "claude-4-5-sonnet": {
           "name": "claude-4-5-sonnet"
         },
+        "claude-4-5-haiku": {
+          "name": "claude-4-5-haiku"
+        },
+        "claude-4-5-opus": {
+          "name": "claude-4-5-opus"
+        },
         "gpt-5-mini": {
           "name": "gpt-5-mini"
         }
       }
     }
   },
-  "model": "fcm/claude-4-5-sonnet"
+  "model": "fcm/claude-4-5-opus"
 }
