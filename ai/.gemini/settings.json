@@ -1,0 +1,32 @@
+{
+  "security": {
+    "auth": {
+      "selectedType": "oauth-personal"
+    }
+  },
+  "general": {
+    "vimMode": true,
+    "previewFeatures": true,
+    "disableAutoUpdate": true,
+    "enablePromptCompletion": false
+  },
+  "ui": {
+    "footer": {
+      "hideContextPercentage": false
+    },
+    "showMemoryUsage": true,
+    "showModelInfoInChat": true,
+    "showStatusInTitle": true
+  },
+  "tools": {
+    "shell": {
+      "showColor": true
+    }
+  },
+  "ide": {
+    "enabled": true
+  },
+  "output": {
+    "format": "text"
+  }
+}

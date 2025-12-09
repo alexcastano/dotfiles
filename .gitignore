@@ -7,9 +7,7 @@ shell/.config/base16-shell
 shell/.config/alacritty/colors.toml
 bin/tsc
 
-# Dentro de .config/opencode/
-opencode/.config/opencode/node_modules/
-opencode/.config/opencode/bun.lock
-opencode/.config/opencode/bun.lockb
-# Opcional: Si usas auth en ficheros locales que no quieres subir
-opencode/.config/opencode/auth.json
+ai/.config/opencode/node_modules/
+ai/.config/opencode/bun.lock
+ai/.config/opencode/bun.lockb
+ai/.config/opencode/auth.json
