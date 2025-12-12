@@ -15,6 +15,8 @@ if [ $1 = "sony" ]; then
   bluetoothctl connect 58:18:62:17:69:14
 elif [ $1 = "bose" ]; then
   bluetoothctl connect 78:2B:64:89:AB:E6
+elif [ $1 = "soundbar" ]; then
+  bluetoothctl connect 14:7F:67:23:D2:4B
 else
   echo "no argument"
 fi
