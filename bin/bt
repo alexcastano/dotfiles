@@ -1,6 +1,6 @@
 #!/bin/sh
 
-systemctl status bluetooth | grep Running > /dev/null
+systemctl status bluetooth | grep Running >/dev/null
 
 if [ $? -ne 0 ]; then
   sudo systemctl start bluetooth
@@ -12,7 +12,9 @@ bluetoothctl agent on
 bluetoothctl default-agent
 
 if [ $1 = "sony" ]; then
-  bluetoothctl connect 58:18:62:17:69:14
+  bluetoothctl connect 58:18:62:3A:1D:00
+elif [ $1 = "sony3" ]; then
+  bluetoothctl connect 38:18:4C:7D:5A:28
 elif [ $1 = "bose" ]; then
   bluetoothctl connect 78:2B:64:89:AB:E6
 elif [ $1 = "soundbar" ]; then
@@ -23,7 +25,6 @@ fi
 
 # Trigger immediate i3blocks bluetooth update
 pkill -RTMIN+10 i3blocks
-
 
 # # enable bluetooth
 # sudo systemctl start bluetooth
