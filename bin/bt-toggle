@@ -1,23 +1,38 @@
 #!/bin/bash
 
-# --- CONFIGURATION ---
-# We use the MAC address, which is stable across all systems.
-CARD_MAC="58_18_62_17_69_14"
-# ---------------------
+# Toggle Bluetooth audio profile between A2DP (high fidelity) and HFP (headset/mic)
+# Usage: bt-toggle [MAC_ADDRESS]
+#   If MAC_ADDRESS is provided (format: XX:XX:XX:XX:XX:XX or XX_XX_XX_XX_XX_XX), use that device
+#   Otherwise, auto-detect connected Bluetooth audio devices (uses first if multiple)
 
-# 1. Find the full card name (e.g., "bluez_card.58_18_62_17_69_14")
-# The "Name:" field is the one pactl uses.
-CARD_NAME=$(pactl list cards | grep -B 1 "device.string = \"$CARD_MAC\"" | grep "Name:" | awk '{print $2}')
+# 1. Determine which Bluetooth card to use
+if [ -n "$1" ]; then
+    # MAC provided as argument - normalize format (colons to underscores)
+    CARD_MAC=$(echo "$1" | tr ':' '_')
+    CARD_NAME=$(pactl list cards short | grep "bluez_card.$CARD_MAC" | awk '{print $2}')
 
-# Fallback for systems that don't use device.string (like your first PC)
-if [ -z "$CARD_NAME" ]; then
-    CARD_NAME=$(pactl list cards | grep "Name: bluez_card.$CARD_MAC" | awk '{print $2}')
-fi
+    if [ -z "$CARD_NAME" ]; then
+        echo "Error: Could not find Bluetooth card with MAC $1"
+        echo "Please make sure the device is connected."
+        exit 1
+    fi
+else
+    # Auto-detect: find all connected Bluetooth audio cards
+    CARDS=$(pactl list cards short | grep bluez_card | awk '{print $2}')
+    CARD_COUNT=$(echo "$CARDS" | grep -c .)
 
-if [ -z "$CARD_NAME" ]; then
-    echo "Error: Could not find Bluetooth card with MAC $CARD_MAC."
-    echo "Please make sure your headphones are connected."
-    exit 1
+    if [ "$CARD_COUNT" -eq 0 ]; then
+        echo "Error: No Bluetooth audio devices found."
+        echo "Please connect a Bluetooth audio device first."
+        exit 1
+    fi
+
+    # Use the first card found
+    CARD_NAME=$(echo "$CARDS" | head -n 1)
+
+    if [ "$CARD_COUNT" -gt 1 ]; then
+        echo "Note: Multiple Bluetooth devices found, using: $CARD_NAME"
+    fi
 fi
 
 # 2. Get the entire text block for this specific card
