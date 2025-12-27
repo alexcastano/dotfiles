@@ -1,7 +1,13 @@
 # Agent Guidelines for Dotfiles Repository
 
+## Important Rules
+- **Document discoveries**: When we discover important architectural decisions, configuration patterns, or system behaviors, document them in `docs/`. This preserves knowledge for future sessions.
+
 ## Repository Structure
-This is a dotfiles repository using GNU Stow for symlinking. Main directories: `bash/`, `git/`, `i3/`, `shell/`, `vim/`, `bin/`.
+This is a dotfiles repository using GNU Stow for symlinking. Main directories: `bash/`, `git/`, `hyprland/`, `i3/`, `shell/`, `vim/`, `bin/`.
+
+## Documentation Index
+- [docs/hyprland.md](docs/hyprland.md) - Hyprland/Omarchy architecture and what to track
 
 ## Testing & Validation
 - Test scripts manually: `~/.config/i3/scripts/<script_name>`

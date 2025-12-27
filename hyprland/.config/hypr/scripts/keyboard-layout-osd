@@ -1,0 +1,10 @@
+#!/bin/bash
+
+# Wait a moment for the layout switch to complete
+sleep 0.05
+
+# Get the new layout name
+layout=$(hyprctl devices -j | jq -r '.keyboards[0].active_keymap')
+
+# Show OSD with keyboard icon
+swayosd-client --custom-icon=input-keyboard --custom-message="$layout"
