@@ -1,0 +1,26 @@
+// Structural styles only - colors are read dynamically from omarchy theme
+
+.which-key-container {
+  border-radius: 8px;
+  padding: 16px 24px;
+  min-width: 200px;
+}
+
+.submap-title {
+  font-size: 16px;
+  font-weight: bold;
+  margin-bottom: 12px;
+}
+
+.key-entry {
+  margin: 4px 0;
+}
+
+.key {
+  font-weight: bold;
+  min-width: 30px;
+}
+
+.arrow {
+  margin: 0 8px;
+}

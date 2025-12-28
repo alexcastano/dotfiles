@@ -1,0 +1,36 @@
+; Which-key widget for Hyprland submaps
+; Reads colors dynamically from omarchy theme
+
+; Read colors from omarchy theme at startup (poll every 1h since theme changes are rare)
+(defpoll theme_bg :interval "1h"
+  `grep 'background-color' ~/.config/omarchy/current/theme/swayosd.css | grep -oE '#[0-9a-fA-F]+' || echo '#1a1b26'`)
+(defpoll theme_border :interval "1h"
+  `grep 'border-color' ~/.config/omarchy/current/theme/swayosd.css | grep -oE '#[0-9a-fA-F]+' || echo '#33ccff'`)
+(defpoll theme_text :interval "1h"
+  `grep '@define-color label' ~/.config/omarchy/current/theme/swayosd.css | grep -oE '#[0-9a-fA-F]+' || echo '#a9b1d6'`)
+
+(defvar submap_name "")
+(defvar keys "[]")
+
+(defwidget which-key []
+  (box :class "which-key-container"
+       :orientation "v"
+       :space-evenly false
+       :style "background-color: ${theme_bg}; border: 2px solid ${theme_border};"
+    (label :class "submap-title"
+           :text submap_name
+           :style "color: ${theme_border};")
+    (box :class "keys-list" :orientation "v" :space-evenly false
+      (for entry in keys
+        (box :class "key-entry" :orientation "h" :space-evenly false
+          (label :class "key" :text {entry.key} :style "color: ${theme_border};")
+          (label :class "arrow" :text "→" :style "color: ${theme_text};")
+          (label :class "desc" :text {entry.desc} :style "color: ${theme_text};"))))))
+
+(defwindow which-key
+  :monitor 0
+  :stacking "overlay"
+  :exclusive false
+  :focusable false
+  :geometry (geometry :x "0%" :y "0%" :width "0%" :height "0%" :anchor "center")
+  (which-key))

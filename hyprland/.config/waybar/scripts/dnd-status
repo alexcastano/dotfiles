@@ -1,0 +1,8 @@
+#!/bin/bash
+# Check mako DND status and output for waybar
+
+if makoctl mode | grep -q "do-not-disturb"; then
+    echo '{"text": "󰂛", "tooltip": "Do Not Disturb: ON", "class": "dnd-on"}'
+else
+    echo '{"text": "󰂚", "tooltip": "Notifications enabled", "class": "dnd-off"}'
+fi

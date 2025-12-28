@@ -66,6 +66,31 @@ Omarchy provides initial configs in `~/.config/` but you own them. Edits persist
 - `~/.config/omarchy/` - Omarchy's own management folder
 - `~/.local/share/omarchy/` - Omarchy system files
 
+## Omarchy Hooks
+
+Location: `~/.config/omarchy/hooks/`
+
+Hooks are shell scripts that run on specific events:
+
+| Hook | Trigger |
+|------|---------|
+| `theme-set` | After theme change |
+| `font-set` | After font change |
+| `post-update` | After omarchy update |
+
+Create by removing `.sample` extension from example files.
+
+## Submaps
+
+Sequential keybindings with which-key popup. Files in `~/.config/hypr/submaps/`:
+- `Super+B` → Bluetooth device control
+- `Super+R` → Window resize mode
+- `Super+,` → Notification control (mako)
+
+## Custom Waybar Modules
+
+- `custom/dnd` - Do Not Disturb indicator (signal 9)
+
 ## Stow Package Structure
 
 ```
@@ -77,10 +102,27 @@ hyprland/
     │   ├── input.conf
     │   ├── bindings.conf
     │   ├── looknfeel.conf
-    │   └── autostart.conf
-    └── waybar/
-        └── config.jsonc      # (optional, if customized)
+    │   ├── autostart.conf
+    │   ├── submaps.conf
+    │   ├── windowrules.conf
+    │   └── submaps/
+    │       ├── bluetooth.conf
+    │       ├── resize.conf
+    │       └── notifications.conf
+    ├── waybar/
+    │   ├── config.jsonc
+    │   ├── style.css
+    │   └── scripts/dnd-status
+    └── eww/
+        ├── eww.yuck
+        ├── eww.scss
+        └── which-key-daemon.sh
+
+bin/
+└── dnd-toggle
 ```
+
+**Theme integration pattern:** `waybar/style.css` uses `@import "../omarchy/current/theme/waybar.css"` to pull colors dynamically. This way the file is tracked but colors come from the current theme.
 
 ## Useful Commands
 

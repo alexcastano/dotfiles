@@ -8,6 +8,7 @@
   "modules-center": ["clock", "custom/update", "custom/screenrecording-indicator"],
   "modules-right": [
     "group/tray-expander",
+    "custom/dnd",
     "hyprland/language",
     "bluetooth",
     "network",
@@ -139,5 +140,12 @@
   "tray": {
     "icon-size": 12,
     "spacing": 17
+  },
+  "custom/dnd": {
+    "exec": "~/.config/waybar/scripts/dnd-status",
+    "return-type": "json",
+    "interval": "once",
+    "signal": 9,
+    "on-click": "~/bin/dnd-toggle"
   }
 }
