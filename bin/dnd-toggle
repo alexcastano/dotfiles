@@ -1,11 +1,22 @@
 #!/bin/bash
 # Toggle mako Do Not Disturb mode with OSD feedback and waybar refresh
 
-makoctl mode -t do-not-disturb
-pkill -RTMIN+9 waybar
+is_enabled=$(makoctl mode | grep -q "do-not-disturb" && echo 1 || echo 0)
 
-if makoctl mode | grep -q "do-not-disturb"; then
-    swayosd-client --custom-message="󰂛 Do Not Disturb"
-else
+case "$1" in
+    --enable)
+        [[ "$is_enabled" == "1" ]] && exit 0
+        ;;
+    --disable)
+        [[ "$is_enabled" == "0" ]] && exit 0
+        ;;
+esac
+
+makoctl mode -t do-not-disturb >/dev/null 2>&1
+pkill -RTMIN+9 waybar 2>/dev/null
+
+if [[ "$is_enabled" == "1" ]]; then
     swayosd-client --custom-message="󰂚 Notifications enabled"
+else
+    swayosd-client --custom-message="󰂛 Do Not Disturb"
 fi

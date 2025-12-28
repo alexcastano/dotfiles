@@ -7,5 +7,12 @@ return {
         width = 100, -- Fixed width in characters
       },
     },
+    picker = {
+      sources = {
+        files = {
+          hidden = true,
+        },
+      },
+    },
   },
 }
