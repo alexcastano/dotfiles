@@ -31,8 +31,11 @@
 }
 
 #cpu,
+#memory,
+#disk,
 #battery,
 #pulseaudio,
+#backlight,
 #custom-omarchy,
 #custom-screenrecording-indicator,
 #custom-update {

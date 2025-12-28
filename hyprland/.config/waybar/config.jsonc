@@ -13,7 +13,10 @@
     "bluetooth",
     "network",
     "pulseaudio",
+    "backlight",
     "cpu",
+    "memory",
+    "disk",
     "battery"
   ],
   "hyprland/workspaces": {
@@ -58,9 +61,22 @@
 
   "cpu": {
     "interval": 5,
-    "format": "󰍛",
+    "format": "󰍛 {icon}",
+    "format-icons": ["▁", "▂", "▃", "▄", "▅", "▆", "▇", "█"],
     "on-click": "omarchy-launch-or-focus-tui btop",
     "on-click-right": "alacritty"
+  },
+  "memory": {
+    "interval": 5,
+    "format": "󰑭 {icon}",
+    "format-icons": ["▁", "▂", "▃", "▄", "▅", "▆", "▇", "█"],
+    "on-click": "omarchy-launch-or-focus-tui btop"
+  },
+  "disk": {
+    "interval": 30,
+    "path": "/",
+    "format": "󰋊 {percentage_used}%",
+    "tooltip-format": "{used} / {total}"
   },
   "clock": {
     "format": "{:L%A %H:%M}",
@@ -82,9 +98,9 @@
     "on-click": "omarchy-launch-wifi"
   },
   "battery": {
-    "format": "{capacity}% {icon}",
-    "format-discharging": "{icon}",
-    "format-charging": "{icon}",
+    "format": "{icon} {capacity}%",
+    "format-discharging": "{icon} {capacity}%",
+    "format-charging": "{icon} {capacity}%",
     "format-plugged": "",
     "format-icons": {
       "charging": ["󰢜", "󰂆", "󰂇", "󰂈", "󰢝", "󰂉", "󰢞", "󰂊", "󰂋", "󰂅"],
@@ -103,21 +119,30 @@
   "bluetooth": {
     "format": "",
     "format-disabled": "󰂲",
-    "format-connected": "󰂱",
+    "format-connected": "󰂱 {device_alias} {device_battery_percentage}%",
+    "format-connected-battery": "󰂱 {device_alias} {device_battery_percentage}%",
     "format-no-controller": "",
-    "tooltip-format": "Devices connected: {num_connections}",
+    "tooltip-format": "{controller_alias}\n{num_connections} connected",
+    "tooltip-format-connected": "{device_enumerate}",
+    "tooltip-format-enumerate-connected-battery": "{device_alias} - {device_battery_percentage}%",
     "on-click": "omarchy-launch-bluetooth"
   },
   "pulseaudio": {
-    "format": "{icon}",
+    "format": "󰕿 {icon}",
     "on-click": "omarchy-launch-or-focus-tui wiremix",
     "on-click-right": "pamixer -t",
     "tooltip-format": "Playing at {volume}%",
     "scroll-step": 5,
-    "format-muted": "",
+    "format-muted": "󰖁 ",
     "format-icons": {
-      "default": ["", "", ""]
+      "default": ["▁", "▂", "▃", "▄", "▅", "▆", "▇", "█"]
     }
+  },
+  "backlight": {
+    "format": "󰃟 {icon}",
+    "format-icons": ["▁", "▂", "▃", "▄", "▅", "▆", "▇", "█"],
+    "tooltip-format": "Brightness: {percent}%",
+    "scroll-step": 5
   },
   "group/tray-expander": {
     "orientation": "inherit",
