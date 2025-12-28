@@ -91,6 +91,15 @@ Sequential keybindings with which-key popup. Files in `~/.config/hypr/submaps/`:
 
 - `custom/dnd` - Do Not Disturb indicator (signal 9)
 
+## Screen Sharing DND
+
+The `~/.config/hypr/scripts/screencast-dnd` daemon automatically enables Do Not Disturb mode when screen sharing starts and restores the previous state when it stops.
+
+- Monitors DBus for `org.freedesktop.portal.ScreenCast` events
+- Uses `dnd-toggle --enable/--disable` for consistent OSD feedback
+- Preserves manual DND state (only disables if it enabled)
+- Started via `autostart.conf`
+
 ## Stow Package Structure
 
 ```
@@ -105,10 +114,12 @@ hyprland/
     │   ├── autostart.conf
     │   ├── submaps.conf
     │   ├── windowrules.conf
-    │   └── submaps/
-    │       ├── bluetooth.conf
-    │       ├── resize.conf
-    │       └── notifications.conf
+    │   ├── submaps/
+    │   │   ├── bluetooth.conf
+    │   │   ├── resize.conf
+    │   │   └── notifications.conf
+    │   └── scripts/
+    │       └── screencast-dnd
     ├── waybar/
     │   ├── config.jsonc
     │   ├── style.css

@@ -1,26 +1,27 @@
 #!/bin/bash
 # Disable notifications during screen sharing
-# Listens to Hyprland's socket2 for screencast events and toggles mako's do-not-disturb mode
+# Monitors DBus for xdg-desktop-portal screencast events
 # Preserves user's manual DND state
 
-SOCKET="$XDG_RUNTIME_DIR/hypr/$HYPRLAND_INSTANCE_SIGNATURE/.socket2.sock"
 STATE_FILE="/tmp/screencast-dnd-state"
 
+dbus-monitor --session "interface='org.freedesktop.portal.ScreenCast'" \
+                       "interface='org.freedesktop.portal.Session'" 2>/dev/null | \
 while read -r line; do
     case "$line" in
-        screencast\>\>1,*)
-            # Screen sharing started - enable DND if not already enabled
+        *"interface=org.freedesktop.portal.ScreenCast; member=Start"*)
+            # Screen sharing started
             if ! makoctl mode | grep -q "do-not-disturb"; then
                 dnd-toggle --enable
                 touch "$STATE_FILE"
             fi
             ;;
-        screencast\>\>0,*)
-            # Screen sharing stopped - only disable DND if we enabled it
+        *"interface=org.freedesktop.portal.Session; member=Close"*)
+            # Screen sharing stopped
             if [[ -f "$STATE_FILE" ]]; then
                 dnd-toggle --disable
                 rm -f "$STATE_FILE"
             fi
             ;;
     esac
-done < <(socat -U - UNIX-CONNECT:"$SOCKET")
+done
