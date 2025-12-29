@@ -1,0 +1,8 @@
+[Desktop Entry]
+Name=Zen Open URL Handler
+Comment=Opens URLs in Zen Browser with correct container
+Exec=/home/alex/bin/zen-open-url %u
+Terminal=false
+Type=Application
+NoDisplay=true
+MimeType=x-scheme-handler/zen-open;

@@ -1,0 +1,22 @@
+#!/bin/bash
+# zen-open-url - Opens URLs in Zen Browser with the appropriate container
+# Used by open-in-zen extension via zen-open:// protocol handler
+
+INPUT="$1"
+
+if [[ -z "$INPUT" ]]; then
+    echo "Usage: zen-open-url <url>" >&2
+    exit 1
+fi
+
+# Strip zen-open:// protocol prefix if present
+URL="${INPUT#zen-open://}"
+
+# URL-decode (handle %XX encoded characters)
+URL=$(printf '%b' "${URL//%/\\x}")
+
+# Get container from environment, default to Personal
+CONTAINER="${WEBAPP_CONTEXT:-Personal}"
+
+# Open in Zen with the container (which auto-switches workspace)
+exec zen-browser "ext+container:name=$CONTAINER&url=$URL"
