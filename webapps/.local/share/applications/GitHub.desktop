@@ -1,0 +1,9 @@
+[Desktop Entry]
+Version=1.0
+Name=GitHub
+Comment=GitHub
+Exec=env WEBAPP_CONTEXT=Work omarchy-launch-webapp https://github.com/
+Terminal=false
+Type=Application
+Icon=/home/alex/.local/share/applications/icons/GitHub.png
+StartupNotify=true

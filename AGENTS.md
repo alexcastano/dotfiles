@@ -5,7 +5,7 @@
 - **NEVER modify `~/.local/share/omarchy/`**: This is omarchy's git repo. Changes will be lost on updates. Use hooks or dotfiles instead.
 
 ## Repository Structure
-This is a dotfiles repository using GNU Stow for symlinking. Main directories: `bash/`, `git/`, `hyprland/`, `i3/`, `shell/`, `vim/`, `bin/`, `chromium/`.
+This is a dotfiles repository using GNU Stow for symlinking. Main directories: `bash/`, `git/`, `hyprland/`, `i3/`, `shell/`, `vim/`, `bin/`, `webapps/`.
 
 ## Documentation Index
 - [docs/hyprland.md](docs/hyprland.md) - Hyprland/Omarchy architecture and what to track

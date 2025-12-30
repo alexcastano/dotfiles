@@ -1,0 +1,9 @@
+[Desktop Entry]
+Version=1.0
+Name=Tailscale Admin Console
+Comment=Tailscale Admin Console
+Exec=env WEBAPP_CONTEXT=Personal omarchy-launch-webapp https://login.tailscale.com/admin/machines
+Terminal=false
+Type=Application
+Icon=/home/alex/.local/share/applications/icons/Tailscale Admin Console.png
+StartupNotify=true

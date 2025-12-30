@@ -13,10 +13,10 @@ echo "Chromium Webapps + Zen Browser Setup"
 echo "========================================"
 echo ""
 
-# 1. Stow chromium dotfiles
-echo "[1/5] Stowing chromium dotfiles..."
+# 1. Stow webapps dotfiles
+echo "[1/5] Stowing webapps dotfiles..."
 cd "$DOTFILES_DIR"
-stow chromium 2>/dev/null || stow --restow chromium
+stow webapps 2>/dev/null || stow --restow webapps
 echo "      Done"
 
 # 2. Register zen-open:// protocol handler (idempotent)

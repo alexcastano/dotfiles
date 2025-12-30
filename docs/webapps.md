@@ -62,7 +62,7 @@ cd ~/.dotfiles
 ```
 
 The installer will:
-- Stow the chromium dotfiles (extension, config, protocol handler)
+- Stow the webapps dotfiles (extension, config, protocol handler, webapp .desktop files)
 - Register the `zen-open://` protocol handler
 - Offer to open Zen Browser to install the required extension
 - Verify all components are in place
@@ -108,7 +108,7 @@ exec omarchy-launch-webapp "$@"
 ├── install-webapps.sh            # Idempotent installer
 ├── bin/
 │   └── zen-open-url              # URL handler script
-├── chromium/
+├── webapps/
 │   ├── .config/
 │   │   ├── chromium-flags.conf   # Loads the extension
 │   │   └── chromium-extensions/
@@ -117,7 +117,13 @@ exec omarchy-launch-webapp "$@"
 │   │           ├── content.js
 │   │           └── icon.png
 │   └── .local/share/applications/
-│       └── zen-open-handler.desktop  # Protocol handler
+│       ├── zen-open-handler.desktop  # Protocol handler
+│       ├── WhatsApp.desktop          # Webapp .desktop files
+│       ├── ChatGPT.desktop
+│       ├── ...
+│       └── icons/
+│           ├── WhatsApp.png          # Webapp icons
+│           └── ...
 └── docs/
     └── webapps.md                # This file
 ```
@@ -178,12 +184,55 @@ If omarchy updates `chromium-flags.conf`, you may need to:
 1. Re-run `./install-webapps.sh`, or
 2. Manually re-add the extension path to `--load-extension=`
 
+## Adding New Webapps
+
+To add a new webapp to your dotfiles:
+
+1. **Create the .desktop file** in `~/.dotfiles/webapps/.local/share/applications/`:
+   ```desktop
+   [Desktop Entry]
+   Version=1.0
+   Name=AppName
+   Comment=AppName
+   Exec=env WEBAPP_CONTEXT=Personal omarchy-launch-webapp https://example.com/
+   Terminal=false
+   Type=Application
+   Icon=/home/alex/.local/share/applications/icons/AppName.png
+   StartupNotify=true
+   ```
+   Replace `Personal` with `Work` for work-related apps.
+
+2. **Add the icon** to `~/.dotfiles/webapps/.local/share/applications/icons/`:
+   - Provide an icon URL (PNG format, e.g., from https://dashboardicons.com)
+   - Download and save as `AppName.png`
+
+3. **Re-stow** to create symlinks:
+   ```bash
+   cd ~/.dotfiles && stow -R webapps
+   ```
+
+4. **Update desktop database**:
+   ```bash
+   update-desktop-database ~/.local/share/applications/
+   ```
+
+### Current Webapps
+
+| App | Container | URL |
+|-----|-----------|-----|
+| ChatGPT | Work | chatgpt.com |
+| GitHub | Work | github.com |
+| Google Photos | Personal | photos.google.com |
+| Tailscale Admin Console | Personal | login.tailscale.com/admin/machines |
+| WhatsApp | Personal | web.whatsapp.com |
+| YouTube | Personal | youtube.com |
+
 ## Uninstalling
 
 To remove this setup:
 ```bash
 # Remove stowed files
-cd ~/.dotfiles && stow -D chromium
+cd ~/.dotfiles && stow -D webapps
 
 # Remove protocol handler from mimeapps.list
 sed -i '/x-scheme-handler\/zen-open/d' ~/.config/mimeapps.list

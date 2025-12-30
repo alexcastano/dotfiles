@@ -1,0 +1,9 @@
+[Desktop Entry]
+Version=1.0
+Name=WhatsApp
+Comment=WhatsApp
+Exec=env WEBAPP_CONTEXT=Personal omarchy-launch-webapp https://web.whatsapp.com/
+Terminal=false
+Type=Application
+Icon=/home/alex/.local/share/applications/icons/WhatsApp.png
+StartupNotify=true
