@@ -12,6 +12,15 @@ return {
         end,
         desc = "Flash Next Match (was ;)",
       },
+      { "<c-space>", mode = { "n", "x", "o" }, false }, -- disable default
+      {
+        "<c-s-space>",
+        mode = { "n", "x", "o" },
+        function()
+          require("flash").treesitter()
+        end,
+        desc = "Flash Treesitter",
+      },
     },
     -- We update opts to ensure the internal engine recognizes the new keys
     opts = {

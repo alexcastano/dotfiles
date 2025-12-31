@@ -11,6 +11,7 @@ This is a dotfiles repository using GNU Stow for symlinking. Main directories: `
 - [docs/hyprland.md](docs/hyprland.md) - Hyprland/Omarchy architecture and what to track
 - [docs/which-key.md](docs/which-key.md) - Which-key popup for Hyprland submaps (eww-based)
 - [docs/webapps.md](docs/webapps.md) - Chromium webapps with Zen Browser integration (open-in-zen extension)
+- [docs/lazyvim.md](docs/lazyvim.md) - LazyVim architecture, plugin system, and customization patterns
 
 ## Testing & Validation
 - Test scripts manually: `~/.config/i3/scripts/<script_name>`
