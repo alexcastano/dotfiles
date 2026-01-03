@@ -89,3 +89,6 @@ xhost +local: &> /dev/null
 export SHUTDOWN_VIPS="true"
 [ -f ~/.fzf.colors ] && source ~/.fzf.colors
 source "/home/alex/.rover/env"
+
+# SSH Agent (systemd user service)
+export SSH_AUTH_SOCK="$XDG_RUNTIME_DIR/ssh-agent.socket"

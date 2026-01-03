@@ -24,5 +24,12 @@ return {
       mode = "x",
       desc = "Send selection to terminal",
     },
+    {
+      "<leader>rK",
+      function()
+        require("config.send-terminal").send_interrupt()
+      end,
+      desc = "Send Ctrl-C to terminal",
+    },
   },
 }

@@ -86,4 +86,9 @@ function M.send_visual()
   M.send(text, { newline = false })
 end
 
+--- Send interrupt signal (Ctrl-C) to terminal
+function M.send_interrupt()
+  M.send("\x03", { newline = false })
+end
+
 return M
