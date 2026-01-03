@@ -4,7 +4,14 @@ return {
     terminal = {
       win = {
         position = "right",
-        width = 100, -- Fixed width in characters
+        width = 80,
+      },
+    },
+    lazygit = {
+      win = {
+        position = "float",
+        width = 0.9,
+        height = 0.9,
       },
     },
     picker = {
