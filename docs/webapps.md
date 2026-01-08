@@ -141,7 +141,7 @@ The `open-in-zen` extension runs a content script on all pages that:
 
 The OS has `zen-open://` registered to `zen-open-handler.desktop`, which calls:
 ```bash
-~/bin/zen-open-url %u
+~/.local/bin/zen-open-url %u
 ```
 
 ### 3. Script Opens in Zen with Context

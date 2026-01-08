@@ -89,3 +89,5 @@ xhost +local: &> /dev/null
 export SHUTDOWN_VIPS="true"
 [ -f ~/.fzf.colors ] && source ~/.fzf.colors
 source "/home/alex/.rover/env"
+
+export PATH="$HOME/.local/bin:$PATH"

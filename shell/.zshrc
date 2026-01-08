@@ -67,7 +67,7 @@ plugins=(
 )
 
 # export PATH="/home/alex/bin:/usr/local/sbin:/usr/local/bin:/usr/bin:/opt/android-sdk/platform-tools:/usr/lib/jvm/default/bin:/usr/bin/site_perl:/usr/bin/vendor_perl:/usr/bin/core_perl"
-export PATH="/home/alex/bin:/usr/local/sbin:/usr/local/bin:/usr/bin:/usr/lib/jvm/default/bin:/usr/bin/site_perl:/usr/bin/vendor_perl:/usr/bin/core_perl:/opt/miniconda3/bin:/opt/google-cloud-cli/bin/"
+export PATH="/home/alex/.local/bin:/usr/local/sbin:/usr/local/bin:/usr/bin:/usr/lib/jvm/default/bin:/usr/bin/site_perl:/usr/bin/vendor_perl:/usr/bin/core_perl:/opt/miniconda3/bin:/opt/google-cloud-cli/bin/"
 
 source $ZSH/oh-my-zsh.sh
 
@@ -142,7 +142,7 @@ if [ -n "$(command -v 'tinty')" ]; then
   alias tinty=tinty_source_shell_theme
 fi
 
-export PATH="$PATH:/home/alex/.local/bin"
+
 export PATH="$PATH:/home/alex/.rover/bin"
 export PATH="${ASDF_DATA_DIR:-$HOME/.asdf}/shims:$PATH"
 

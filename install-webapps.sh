@@ -82,7 +82,7 @@ else
     echo "      [OK] Protocol handler registered"
 fi
 
-if [[ ! -x "$HOME/bin/zen-open-url" ]]; then
+if [[ ! -x "$HOME/.local/bin/zen-open-url" ]]; then
     echo "      [FAIL] zen-open-url script not found or not executable"
     ERRORS=$((ERRORS + 1))
 else
