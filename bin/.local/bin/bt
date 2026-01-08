@@ -29,6 +29,6 @@ pkill -RTMIN+10 i3blocks
 # # enable bluetooth
 # sudo systemctl start bluetooth
 
-# ~/bin/_connect-bt
+# ~/.local/bin/_connect-bt
 # # run the program bluez
 # echo -e 'power on\nconnect \t \nquit' | bluetoothctl

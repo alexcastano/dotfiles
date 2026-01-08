@@ -1,5 +1,0 @@
-#!/bin/sh
-
-xrandr --output HDMI-2 --auto --right-of eDP-1
-feh --bg-scale ~/images/wallpaper.jpg
-~/.config/polybar/launch.sh

@@ -2,6 +2,8 @@
 # see /usr/share/doc/bash/examples/startup-files (in the package bash-doc)
 # for examples
 
+export SSH_AUTH_SOCK="$XDG_RUNTIME_DIR/ssh-agent.socket"
+
 TERM=linux
 # If not running interactively, don't do anything
 [ -z "$PS1" ] && return
@@ -92,3 +94,4 @@ source "/home/alex/.rover/env"
 
 # SSH Agent (systemd user service)
 export SSH_AUTH_SOCK="$XDG_RUNTIME_DIR/ssh-agent.socket"
+export PATH="$HOME/.local/bin:$PATH"
