@@ -7,4 +7,4 @@ sleep 0.05
 layout=$(hyprctl devices -j | jq -r '.keyboards[0].active_keymap')
 
 # Show OSD with keyboard icon
-swayosd-client --custom-icon=input-keyboard --custom-message="$layout"
+swayosd-client --custom-icon=input-keyboard-symbolic --custom-message="$layout"
