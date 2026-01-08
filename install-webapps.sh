@@ -8,6 +8,12 @@ set -e
 
 DOTFILES_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
+# Ensure git is clean before starting
+if [[ -n "$(cd "$DOTFILES_DIR" && git status --porcelain)" ]]; then
+    echo "Error: Git working directory is dirty. Please commit or stash changes first."
+    exit 1
+fi
+
 echo "========================================"
 echo "Chromium Webapps + Zen Browser Setup"
 echo "========================================"
@@ -16,7 +22,8 @@ echo ""
 # 1. Stow webapps dotfiles
 echo "[1/5] Stowing webapps dotfiles..."
 cd "$DOTFILES_DIR"
-stow webapps 2>/dev/null || stow --restow webapps
+stow --adopt webapps
+git restore .
 echo "      Done"
 
 # 2. Register zen-open:// protocol handler (idempotent)
