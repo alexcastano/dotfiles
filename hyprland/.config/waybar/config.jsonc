@@ -5,7 +5,7 @@
   "spacing": 0,
   "height": 26,
   "modules-left": ["hyprland/workspaces"],
-  "modules-center": ["clock", "custom/update", "custom/screenrecording-indicator"],
+  "modules-center": ["clock", "custom/update", "custom/voxtype", "custom/screenrecording-indicator"],
   "modules-right": [
     "group/tray-expander",
     "hyprland/language",
@@ -162,12 +162,13 @@
   },
   "pulseaudio": {
     "format": "󰕿 {icon}",
-    "on-click": "omarchy-launch-or-focus-tui wiremix",
+    "on-click": "omarchy-launch-audio",
     "on-click-right": "pamixer -t",
     "tooltip-format": "Playing at {volume}%",
     "scroll-step": 5,
     "format-muted": "󰖁 ",
     "format-icons": {
+      "headphone": "",
       "default": ["▁", "▂", "▃", "▄", "▅", "▆", "▇", "█"]
     }
   },
@@ -208,6 +209,19 @@
     "signal": 8,
     "return-type": "json"
   },
+  "custom/voxtype": {
+    "exec": "omarchy-voxtype-status",
+    "return-type": "json",
+    "format": "{icon}",
+    "format-icons": {
+      "idle": "",
+      "recording": "󰍬",
+      "transcribing": "󰔟"
+    },
+    "tooltip": true,
+    "on-click-right": "omarchy-voxtype-config",
+    "on-click": "omarchy-voxtype-model"
+  },
   "tray": {
     "icon-size": 12,
     "spacing": 17
@@ -217,6 +231,6 @@
     "return-type": "json",
     "interval": "once",
     "signal": 9,
-    "on-click": "~/bin/dnd-toggle"
+    "on-click": "~/.local/bin/dnd-toggle"
   }
 }

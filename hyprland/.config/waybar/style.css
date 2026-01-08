@@ -68,7 +68,7 @@ tooltip {
 }
 
 #clock {
-  margin-left: 8.75px;
+  margin-left: 5px;
 }
 
 .hidden {
@@ -77,8 +77,9 @@ tooltip {
 
 #custom-screenrecording-indicator {
   min-width: 12px;
-  margin-left: 8.75px;
+  margin-left: 5px;
   font-size: 10px;
+  padding-bottom: 1px;
 }
 
 #custom-screenrecording-indicator.active {
@@ -94,4 +95,13 @@ tooltip {
   background-color: @foreground;
   color: @background;
   padding: 0 4px;
+}
+
+#custom-voxtype {
+  min-width: 12px;
+  margin: 0 0 0 7.5px;
+}
+
+#custom-voxtype.recording {
+  color: #a55555;
 }
