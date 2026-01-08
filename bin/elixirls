@@ -1,6 +1,0 @@
-#!/bin/sh
-
-# ASDF_ELIXIR_VERSION=1.6.0-rc.0 ERL_LIBS=/home/alex/elixir/elixir-ls/release mix elixir_ls.language_server
-#ERL_LIBS=/home/alex/elixir/elixir-ls/release mix elixir_ls.language_server
-
-/home/alex/elixir/elixir-ls/release/language_server.sh

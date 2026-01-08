@@ -1,4 +1,0 @@
-#!/bin/sh
-
-xrandr --output eDP1 --auto --output DP1 --off --output HDMI1 --off --output HDMI2 --off
-feh --bg-scale ~/images/wallpaper.jpg
