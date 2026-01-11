@@ -1,0 +1,9 @@
+[Desktop Entry]
+Version=1.0
+Name=Gemini
+Comment=Google Gemini AI
+Exec=env WEBAPP_CONTEXT=Personal omarchy-launch-webapp https://gemini.google.com/
+Terminal=false
+Type=Application
+Icon=/home/alex/.local/share/applications/icons/Gemini.png
+StartupNotify=true
