@@ -11,3 +11,5 @@ ai/.config/opencode/node_modules/
 ai/.config/opencode/bun.lock
 ai/.config/opencode/bun.lockb
 ai/.config/opencode/auth.json
+
+bin/.local/bin/voxtype
