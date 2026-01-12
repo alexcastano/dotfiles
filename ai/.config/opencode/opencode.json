@@ -34,7 +34,87 @@
           "name": "gpt-5-mini"
         }
       }
+    },
+    "ollama": {
+      "npm": "@ai-sdk/openai-compatible",
+      "name": "Ollama (local)",
+      "options": {
+        "baseURL": "http://localhost:11434/v1",
+        "num_ctx": 32768
+      },
+      "models": {
+        "devstral-2:123b": {
+          "name": "devstral-2:123b"
+        },
+        "qwen3:8b": {
+          "name": "qwen3:8b",
+          "options": {
+            "num_ctx": 131072
+          }
+        },
+        "qwen3:0.6b": {
+          "name": "qwen3:0.6b",
+          "options": {
+            "num_ctx": 131072
+          }
+        },
+        "qwen3-coder:30b": {
+          "name": "qwen3-coder:30b",
+          "options": {
+            "num_ctx": 262144
+          }
+        },
+        "gemma3:4b": {
+          "name": "gemma3:4b",
+          "options": {
+            "num_ctx": 131072
+          }
+        },
+        "deepseek-r1": {
+          "name": "deepseek-r1",
+          "options": {
+            "num_ctx": 131072
+          }
+        },
+        "deepseek-r1:8b": {
+          "name": "deepseek-r1:8b",
+          "options": {
+            "num_ctx": 131072
+          }
+        },
+        "llama3.2:1b": {
+          "name": "llama3.2:1b",
+          "options": {
+            "num_ctx": 131072
+          }
+        }
+      }
+    },
+    "zen": {
+      "npm": "@ai-sdk/openai-compatible",
+      "name": "OpenCode Zen",
+      "options": {
+        "baseURL": "https://api.opencode.ai/zen/v1"
+      },
+      "models": {
+        "minimax-m2.1": {
+          "name": "MiniMax M2.1"
+        }
+      }
     }
   },
-  "model": "fcm/claude-4-5-opus"
+  "model": "zen/minimax-m2.1",
+  "default_agent": "careful-builder",
+  "agent": {
+    "careful-builder": {
+      "description": "A careful agent that asks before writing files or running commands.",
+      "mode": "primary",
+      "model": "zen/minimax-m2.1",
+      "permission": {
+        "read": "allow",
+        "edit": "ask",
+        "bash": "ask"
+      }
+    }
+  }
 }
