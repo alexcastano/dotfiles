@@ -12,14 +12,14 @@ while read -r line; do
         *"interface=org.freedesktop.portal.ScreenCast; member=Start"*)
             # Screen sharing started
             if ! makoctl mode | grep -q "do-not-disturb"; then
-                dnd-toggle --enable
+                ~/.local/bin/dnd-toggle --enable
                 touch "$STATE_FILE"
             fi
             ;;
         *"interface=org.freedesktop.portal.Session; member=Close"*)
             # Screen sharing stopped
             if [[ -f "$STATE_FILE" ]]; then
-                dnd-toggle --disable
+                ~/.local/bin/dnd-toggle --disable
                 rm -f "$STATE_FILE"
             fi
             ;;
