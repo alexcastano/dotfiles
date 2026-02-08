@@ -1,0 +1,58 @@
+#!/bin/bash
+# List global Hyprland keybindings (no submaps).
+# Based on omarchy-menu-keybindings approach.
+
+hyprctl -j binds |
+  jq -r '.[] | select(.submap == "") | {modmask, key, keycode, description, dispatcher, arg} | "\(.modmask),\(.key)@\(.keycode),\(.description),\(.dispatcher),\(.arg)"' |
+  sed -r \
+    -e 's/null//' \
+    -e 's/@0//' \
+    -e 's/,@/,code:/' \
+    -e 's/^0,/,/' \
+    -e 's/^1,/SHIFT,/' \
+    -e 's/^4,/CTRL,/' \
+    -e 's/^5,/SHIFT CTRL,/' \
+    -e 's/^8,/ALT,/' \
+    -e 's/^9,/SHIFT ALT,/' \
+    -e 's/^12,/CTRL ALT,/' \
+    -e 's/^13,/SHIFT CTRL ALT,/' \
+    -e 's/^64,/SUPER,/' \
+    -e 's/^65,/SUPER SHIFT,/' \
+    -e 's/^68,/SUPER CTRL,/' \
+    -e 's/^69,/SUPER SHIFT CTRL,/' \
+    -e 's/^72,/SUPER ALT,/' \
+    -e 's/^73,/SUPER SHIFT ALT,/' \
+    -e 's/^76,/SUPER CTRL ALT,/' \
+    -e 's/^77,/SUPER SHIFT CTRL ALT,/' |
+  sort -u |
+  awk -F, '{
+    key_combo = $1 " + " $2
+    gsub(/^[ \t]*\+?[ \t]*/, "", key_combo)
+    gsub(/[ \t]+$/, "", key_combo)
+    gsub(/[ \t]+/, " ", key_combo)
+
+    action = $3
+    if (action == "") {
+        for (i = 4; i <= NF; i++) {
+            action = action $i (i < NF ? "," : "")
+        }
+        sub(/,$/, "", action)
+        gsub(/(^|,)[[:space:]]*exec[[:space:]]*,?/, "", action)
+        gsub(/^[ \t]+|[ \t]+$/, "", action)
+    }
+
+    if (action == "") next
+
+    # Format submap entry points nicely
+    if ($4 == "submap" && $5 != "reset") {
+        name = $5
+        sub(/^./, toupper(substr(name, 1, 1)), name)
+        gsub(/-/, " ", name)
+        printf "%-42s → %s (submap)\n", key_combo, name
+        next
+    }
+
+    if (index(action, "submap") == 0)
+        printf "%-42s → %s\n", key_combo, action
+  }' |
+  sort

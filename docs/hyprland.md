@@ -104,6 +104,9 @@ The `~/.config/hypr/scripts/screencast-dnd` daemon automatically enables Do Not 
 
 ```
 hyprland/
+├── .local/
+│   └── bin/
+│       └── hyprkeys
 └── .config/
     ├── hypr/
     │   ├── hyprland.conf
@@ -144,12 +147,14 @@ hyprctl reload
 # Check current monitors
 hyprctl monitors
 
-# List keybindings
-hyprctl binds
+# List global keybindings (no submaps)
+hyprkeys
 
 # Switch Omarchy theme
 omarchy theme <theme-name>
 ```
+
+`hyprkeys` is a custom script at `~/.local/bin/hyprkeys` (stowed from `hyprland/.local/bin/`). It wraps `hyprctl binds` filtering out submap entries and formatting the output like `omarchy-menu-keybindings --print` does.
 
 ## Source Order in hyprland.conf
 
