@@ -1,0 +1,9 @@
+[Desktop Entry]
+Version=1.0
+Name=Telegram
+Comment=Telegram Web
+Exec=env WEBAPP_CONTEXT=Personal omarchy-launch-webapp https://web.telegram.org/
+Terminal=false
+Type=Application
+Icon=/home/alex/.local/share/applications/icons/Telegram.png
+StartupNotify=true
