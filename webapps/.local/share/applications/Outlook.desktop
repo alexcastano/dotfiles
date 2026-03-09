@@ -1,0 +1,9 @@
+[Desktop Entry]
+Version=1.0
+Name=Outlook
+Comment=Microsoft Outlook Work Email
+Exec=env WEBAPP_CONTEXT=Work omarchy-launch-webapp https://outlook.office.com.mcas.ms/mail/0/
+Terminal=false
+Type=Application
+Icon=/home/alex/.local/share/applications/icons/Outlook.png
+StartupNotify=true

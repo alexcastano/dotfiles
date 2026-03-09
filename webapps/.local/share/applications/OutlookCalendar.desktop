@@ -1,0 +1,9 @@
+[Desktop Entry]
+Version=1.0
+Name=Outlook Calendar
+Comment=Microsoft Outlook Calendar
+Exec=env WEBAPP_CONTEXT=Work omarchy-launch-webapp https://outlook.office.com.mcas.ms/calendar/0/view/workweek
+Terminal=false
+Type=Application
+Icon=/home/alex/.local/share/applications/icons/OutlookCalendar.png
+StartupNotify=true

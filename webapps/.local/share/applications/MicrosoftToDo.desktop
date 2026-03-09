@@ -1,0 +1,9 @@
+[Desktop Entry]
+Version=1.0
+Name=Microsoft To Do
+Comment=Microsoft To Do List
+Exec=env WEBAPP_CONTEXT=Work omarchy-launch-webapp https://outlook.office.com.mcas.ms/host/0/0d5c91ee-5be2-4b79-81ed-23e6c4580427/ToDoId
+Terminal=false
+Type=Application
+Icon=/home/alex/.local/share/applications/icons/MicrosoftToDo.png
+StartupNotify=true

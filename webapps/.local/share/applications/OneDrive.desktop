@@ -1,0 +1,9 @@
+[Desktop Entry]
+Version=1.0
+Name=OneDrive
+Comment=Microsoft OneDrive
+Exec=env WEBAPP_CONTEXT=Work omarchy-launch-webapp https://outlook.office.com.mcas.ms/host/0/377c982d-9686-450e-9a7c-22aeaf1bc162/7211f19f-262a-42eb-a02e-289956491741
+Terminal=false
+Type=Application
+Icon=/home/alex/.local/share/applications/icons/OneDrive.png
+StartupNotify=true

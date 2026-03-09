@@ -1,0 +1,23 @@
+#!/bin/bash
+# Post-merge hook: re-stow packages that changed during git pull.
+# Only restows packages already stowed on this machine.
+
+STOW_DIR="$(git rev-parse --show-toplevel)"
+
+# Files changed between pre-pull and post-pull HEAD
+changed_files="$(git diff-tree -r --name-only --no-commit-id ORIG_HEAD HEAD)"
+
+# Extract unique top-level directories (potential stow packages)
+changed_packages="$(echo "$changed_files" | cut -d/ -f1 | sort -u)"
+
+for package in $changed_packages; do
+    # Skip non-directories (top-level files like .gitignore)
+    [[ -d "$STOW_DIR/$package" ]] || continue
+
+    # Check if this package is currently stowed by simulating an unstow.
+    # If it shows UNLINK lines, the package has active symlinks -> it's stowed.
+    if stow -d "$STOW_DIR" -D -n -v "$package" 2>&1 | grep -q "^UNLINK:"; then
+        echo "post-merge: re-stowing $package"
+        stow -d "$STOW_DIR" -R "$package"
+    fi
+done
