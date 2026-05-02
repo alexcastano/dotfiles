@@ -42,6 +42,11 @@ These files are sourced AFTER omarchy defaults, so they override settings:
 | `looknfeel.conf` | Visual tweaks (gaps, borders, animations) |
 | `autostart.conf` | Startup applications |
 
+Runtime toggles can also write Hyprland snippets under
+`~/.local/state/omarchy/toggles/hypr/*.conf`. The main config sources that
+directory so temporary Omarchy state can change flags without editing tracked
+dotfiles.
+
 ## Omarchy Customization Philosophy
 
 Omarchy maintains a clear separation between user and system files:
@@ -161,5 +166,6 @@ omarchy theme <theme-name>
 1. Omarchy defaults from `~/.local/share/omarchy/default/hypr/`
 2. Current theme from `~/.config/omarchy/current/theme/hyprland.conf`
 3. User overrides from `~/.config/hypr/*.conf`
+4. Runtime toggles from `~/.local/state/omarchy/toggles/hypr/*.conf`
 
 This means user settings always win.
