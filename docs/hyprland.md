@@ -91,6 +91,13 @@ Sequential keybindings with which-key popup. Files in `~/.config/hypr/submaps/`:
 
 - `custom/dnd` - Do Not Disturb indicator (signal 9)
 
+## Voxtype
+
+Voxtype runs as a user systemd service and uses the remote `whisper.cpp` server on `powerant:8080`.
+
+- Config: `~/.config/voxtype/config.toml` (tracked in `hyprland/.config/voxtype/`)
+- Post-process script: `bin/.local/bin/voxtype-clean-transcript` removes line wrapping inserted by `whisper.cpp` segments, including mid-word breaks.
+
 ## Screen Sharing DND
 
 The `~/.config/hypr/scripts/screencast-dnd` daemon automatically enables Do Not Disturb mode when screen sharing starts and restores the previous state when it stops.
@@ -106,7 +113,8 @@ The `~/.config/hypr/scripts/screencast-dnd` daemon automatically enables Do Not 
 hyprland/
 ├── .local/
 │   └── bin/
-│       └── hyprkeys
+│       ├── hyprkeys
+│       └── voxtype-clean-transcript
 └── .config/
     ├── hypr/
     │   ├── hyprland.conf

@@ -15,6 +15,9 @@ state_file = "auto"
 enabled = false
 
 [audio]
+# Pause MPRIS media players during recording
+pause_media = true
+
 # Audio input device ("default" uses system default)
 # List devices with: pactl list sources short
 device = "default"
@@ -74,9 +77,9 @@ type_delay_ms = 1
 # Useful for LLM-based text cleanup, grammar correction, filler word removal.
 # On any failure (timeout, error), falls back to original transcription.
 #
-# [output.post_process]
-# command = "ollama run llama3.2:1b 'Clean up this dictation. Fix grammar, remove filler words. Output only the cleaned text:'"
-# timeout_ms = 30000  # 30 second timeout (generous for LLM)
+[output.post_process]
+command = "/home/alex/.dotfiles/bin/.local/bin/voxtype-clean-transcript"
+timeout_ms = 1000
 
 [output.notification]
 # Show notification when recording starts (hotkey pressed)

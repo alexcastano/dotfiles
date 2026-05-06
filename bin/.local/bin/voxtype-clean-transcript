@@ -1,0 +1,12 @@
+#!/bin/sh
+
+# Normalize whisper.cpp segment wrapping before Voxtype outputs text.
+perl -CSDA -0pe '
+  s/\r\n?/\n/g;
+  s/[ \t]*\n[ \t]+/ /g;
+  s/(?<=[\p{L}\p{N}])\n(?=[\p{L}\p{N}])//g;
+  s/[ \t]*\n[ \t]*(?=[[:punct:]])//g;
+  s/[ \t]*\n[ \t]*/ /g;
+  s/[ \t]+/ /g;
+  s/^\s+|\s+$//g;
+'
