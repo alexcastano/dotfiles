@@ -1,7 +1,11 @@
 #!/bin/bash
-# Disable eDP-1 when an external monitor is connected; re-enable it when
-# the last external monitor is disconnected. No-op on machines without an
-# internal eDP panel (e.g. desktop towers).
+# Disable eDP-1 only when a specific known external monitor is connected
+# (matched by serial, so the port name doesn't matter). Other externals like
+# projectors or meeting-room displays leave the laptop panel alone.
+# No-op on machines without an internal eDP panel (e.g. desktop towers).
+
+# Serial of the home monitor that should trigger the toggle.
+TRIGGER_SERIAL="401NTQD3N604"  # LG UltraGear 4K
 
 # Exit if this machine has no internal laptop panel.
 if ! compgen -G "/sys/class/drm/*-eDP-*" >/dev/null; then
@@ -9,11 +13,10 @@ if ! compgen -G "/sys/class/drm/*-eDP-*" >/dev/null; then
 fi
 
 apply() {
-  # Count monitors excluding eDP-1 from the live list
-  local externals
-  externals=$(hyprctl -j monitors all | jq -r '.[] | select(.name != "eDP-1") | .name' | wc -l)
+  local present
+  present=$(hyprctl -j monitors all | jq -r --arg s "$TRIGGER_SERIAL" '[.[] | select(.serial == $s)] | length')
 
-  if [[ "$externals" -gt 0 ]]; then
+  if [[ "$present" -gt 0 ]]; then
     hyprctl keyword monitor "eDP-1, disable" >/dev/null
   else
     hyprctl keyword monitor "eDP-1, preferred, auto, 1" >/dev/null
