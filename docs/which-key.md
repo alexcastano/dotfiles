@@ -35,7 +35,7 @@ A vim-style which-key implementation for Hyprland that displays available keybin
 1. **Submap Entry**: User presses `Super+B` to enter bluetooth submap
 2. **IPC Event**: Hyprland emits `submap>>bluetooth` via socket2
 3. **Daemon Listens**: `which-key-daemon.sh` receives the event via socat
-4. **Fetch Bindings**: Daemon queries `hyprctl binds -j` for submap keybindings
+4. **Fetch Bindings**: Daemon queries `hyprctl binds` for submap keybindings
 5. **Update Widget**: Daemon sends bindings to eww, opens which-key window
 6. **Submap Exit**: When submap resets, daemon closes the widget
 
@@ -134,9 +134,16 @@ cat ~/.config/omarchy/current/theme/swayosd.css
 
 **Bindings not showing:**
 ```bash
-# Verify bindings have descriptions
-hyprctl binds -j | jq '[.[] | select(.submap == "bluetooth" and .has_description == true)]'
+# Verify bindings have descriptions (plain-text output, see note below)
+hyprctl binds | grep -A6 'submap: bluetooth'
 ```
+
+> **Note — do not use `hyprctl binds -j`.** Since Hyprland 0.56 the JSON output is
+> malformed: string values are emitted unquoted (`"keycode": XF86AudioRaiseVolume`)
+> and the keys are shifted against their values, so `jq` fails to parse it. The
+> daemon parses the plain-text `hyprctl binds` output instead, filtering on a
+> non-empty `description` field (equivalent to the old `has_description` flag).
+> Revisit if upstream fixes the serializer.
 
 ## Future Improvements
 
