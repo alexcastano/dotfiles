@@ -8,6 +8,7 @@
 This is a dotfiles repository using GNU Stow for symlinking. Main directories: `bash/`, `git/`, `hyprland/`, `i3/`, `shell/`, `vim/`, `bin/`, `webapps/`.
 
 ## Documentation Index
+- [docs/omarchy-quattro-migration.md](docs/omarchy-quattro-migration.md) - **EN CURSO**: migración de Omarchy 3 → quattro (rama `quattro`)
 - [docs/hyprland.md](docs/hyprland.md) - Hyprland/Omarchy architecture and what to track
 - [docs/which-key.md](docs/which-key.md) - Which-key popup for Hyprland submaps (eww-based)
 - [docs/webapps.md](docs/webapps.md) - Chromium webapps with Zen Browser integration (open-in-zen extension)
