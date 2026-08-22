@@ -1,57 +1,28 @@
--- Keep only your personal input overrides here. Uncommented settings below
--- replace Omarchy's defaults.
+-- Overrides propios de input. Todo lo que no esté aquí lo pone Omarchy en
+-- /usr/share/omarchy/default/hypr/input.lua (repeat_rate 40, numlock,
+-- touchpad.scroll_factor 0.4, scroll_touchpad de terminales... ya coinciden
+-- con lo que tenía, así que no hace falta repetirlo).
 
--- Keyboard layout and options.
--- See https://wiki.hypr.land/Configuring/Basics/Variables/#input
--- hl.config({
---   input = {
---     -- Use multiple keyboard layouts and switch between them with Left Alt + Right Alt.
---     kb_layout = "us,dk,eu",
---     kb_options = "compose:caps,shift:both_capslock_cancel,grp:alts_toggle",
+-- Teclado: `us` con variante `altgr-intl`. El español se escribe con AltGr sin
+-- cambiar nunca de layout:
 --
---     -- Use a specific keyboard variant if needed (e.g. intl for international keyboards).
---     kb_variant = "intl",
+--   AltGr+n = ñ      AltGr+/ = ¿      AltGr+Shift+1 = ¡
+--   AltGr+a e i o u = á é í ó ú
 --
---     -- Change speed of keyboard repeat.
---     repeat_rate = 40,
---     repeat_delay = 250,
+-- La variante mueve los dead keys a AltGr, así que ' " ` ~ se escriben normal
+-- (importante para código). Caps Lock = Ctrl. Ctrl derecho = Compose.
+-- Coste: AltGr (Alt derecho) deja de ser Alt; el Alt izquierdo sigue igual.
 --
---     -- Start with numlock on by default.
---     numlock_by_default = true,
+-- shift:both_capslock_cancel es de Omarchy y se conserva a propósito: como Caps
+-- Lock pasa a ser Ctrl, sin esto no quedaría ninguna forma de activar el Caps
+-- Lock de verdad (los dos Shift juntos lo activan, uno solo lo cancela).
 --
---     -- Increase sensitivity for mouse/trackpad (default: 0).
---     sensitivity = 0.35,
---
---     -- Turn off mouse acceleration (default: adaptive).
---     accel_profile = "flat",
---
---     touchpad = {
---       -- Use natural (inverse) scrolling.
---       natural_scroll = true,
---
---       -- Use two-finger clicks for right-click instead of lower-right corner.
---       clickfinger_behavior = true,
---
---       -- Control the speed of your scrolling.
---       scroll_factor = 0.4,
---
---       -- Enable the touchpad while typing.
---       disable_while_typing = false,
---
---       -- Left-click-and-drag with three fingers.
---       drag_3fg = 1,
---     },
---   },
--- })
-
--- App-specific touchpad scroll speeds.
--- o.window("(Alacritty|kitty|foot)", { scroll_touchpad = 1.5 })
--- o.window("com.mitchellh.ghostty", { scroll_touchpad = 0.2 })
-
--- Enable touchpad gestures for changing workspaces.
--- See https://wiki.hypr.land/Configuring/Advanced-and-Cool/Gestures/
--- hl.gesture({ fingers = 3, direction = "horizontal", action = "workspace" })
-
--- Enable touchpad gestures for moving focus (helpful on scrolling layout).
--- hl.gesture({ fingers = 3, direction = "left", action = function() hl.dispatch(hl.dsp.focus({ direction = "l" })) end })
--- hl.gesture({ fingers = 3, direction = "right", action = function() hl.dispatch(hl.dsp.focus({ direction = "r" })) end })
+-- Alternativas descartadas y por qué: docs/omarchy-quattro-migration.md,
+-- sección "Investigación cerrada: el teclado".
+hl.config({
+  input = {
+    kb_layout = "us",
+    kb_variant = "altgr-intl",
+    kb_options = "ctrl:nocaps,compose:rctrl,shift:both_capslock_cancel",
+  },
+})
