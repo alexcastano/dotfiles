@@ -43,6 +43,14 @@ Estas reglas se acordaron explícitamente. No se cambian sin volver a hablarlo.
 9. **Esto acaba cuando el escritorio se siente mío.** No hace falta agotar la
    lista. Lo que quede sin revisar se abandona sin culpa — por eso el orden
    importa, y por eso la cola está marcada como tal en el [Anexo B](#anexo-b--la-cola-probablemente-nunca).
+10. **Atajos: lo más estándar posible.** Ante dos atajos que valen, gana el de
+    Omarchy. Un binding propio es deuda: cada default nuevo puede chocar con él,
+    y cada upgrade obliga a revisarlo (esta migración *es* la factura de haberlo
+    hecho al revés). Un binding propio se justifica solo si el default no existe
+    o duele de verdad — y entonces se anota **por qué** aquí, para que el
+    siguiente que lo vea no tenga que adivinarlo. Esto **no** aplica al teclado
+    en sí (TEC-1): la disposición y `kb_options` no son atajos de Omarchy, son
+    memoria muscular de años y ergonomía de escribir en dos idiomas.
 
 **Idioma**: este documento en español (es donde se piensan las decisiones), los
 commits en inglés como el resto del repo.
@@ -261,19 +269,31 @@ módulos a la derecha y 6 en el centro.
 | ⬜ | BAR-5 | `power-profiles-daemon` | ¿Dentro de `omarchy.power`? Verificar. |
 | ⬜ | BAR-6 | `mpris` (artista – título) | Sin equivalente visible. Existe `omarchy-shell media`. |
 | ⬜ | BAR-7 | `group/tray-expander` (tray plegable) | `omarchy.tray` sin drawer. |
-| ⬜ | BAR-8 | `custom/voxtype` | voxtype es de serie en quattro; comprobar si `omarchy.indicators` ya lo muestra. |
+| ⬜ | BAR-8 | `custom/voxtype` | voxtype trae OSD propio (`voxtype-osd-gtk4`). Ver VOX-4. |
 | ⬜ | BAR-9 | `custom/dnd`, `custom/idle-indicator`, `custom/notification-silencing-indicator`, `custom/screenrecording-indicator` | `omarchy.indicators` los agrupa. Arrastra consigo `waybar/scripts/dnd-status`. |
 | ⬜ | BAR-10 | `clock` con locale `en_GB`, formato `ddd HH:mm`, calendario anual, timezone al clic central | `omarchy.clock` (con `birthYear`/`lifeExpectancy`). `omarchy-menu-timezone` sustituye a `omarchy-tz-select`. |
 | ⬜ | BAR-11 | Integración con el tema (`@import` del tema actual en `style.css`) | Ver cómo tematiza omarchy-shell. |
 | ⬜ | BAR-12 | `hyprland/.config/waybar/` (3 ficheros) | waybar desinstalado. Borrar del repo o dejar de stowear. |
 
-## Bloque 5 — Dictado (voxtype)
+## Bloque 5 — Dictado (voxtype) 🔍
+
+**El servidor no está roto.** Verificado el 2026-08-23 de punta a punta:
+`voxtype transcribe` contra `http://powerant:8080` devuelve texto en 0.49 s
+(whisper.cpp server, alcanzable por Tailscale, `voxtype 0.7.5`, daemon
+`voxtype.service` arriba desde el upgrade). Lo que se perdió es **el atajo**, no
+la transcripción — y una cosa más que llevaba rota desde mayo (VOX-2).
 
 | St. | ID | Entrada | Nota |
 |---|---|---|---|
-| ⬜ | VOX-1 | `SUPER+SPACE` push-to-talk (`binddr` start/stop) | Choca con el menú de Omarchy. Quattro trae voxtype de serie: `SUPER+CTRL+X` (toggle) y `F9` (push-to-talk). El propio `config.toml` ya dice *"Hotkey is configured in Hyprland. Default is Super + Ctrl + X"*. |
-| ⬜ | VOX-2 | `hyprland/.config/voxtype/config.toml` | Modo remoto contra powerant (`http://powerant:8080`), `post_process` con `voxtype-clean-transcript`. Verificar que sigue funcionando tras quattro. Omarchy 4 no trae un config propio que lo pise. |
-| ⬜ | VOX-3 | `pause_media = true` | Pausa reproductores MPRIS al grabar. `playerctl` ya no está, pero MPRIS es un protocolo — verificar que sigue pausando. |
+| 🔍 | VOX-1 | `SUPER+SPACE` push-to-talk (`binddr` start/stop) | Chocaba con el menú de Omarchy, que se queda con la tecla. Los defaults **ya funcionan hoy sin tocar nada**: `SUPER+CTRL+X` (toggle) y `F9` (push-to-talk, `binddr` de serie). Por la regla 10 se adoptan tal cual y no se escribe binding propio; las 3 líneas de `bindings.conf` se borran. |
+| ⬜ | VOX-2 | `post_process` con `voxtype-clean-transcript` | **Llevaba muerto desde el 2026-05-06.** `~/.config/voxtype/` **nunca fue un symlink de stow**: es un directorio real con un `config.toml` del 24 abril, o sea una copia que se quedó atrás. El commit `c10712d` añadió `post_process` **al repo** y nunca llegó a la config viva, donde sigue comentado. El script funciona (probado). Decidir: ¿se stowea `voxtype/` para que el repo mande de verdad, o se borra del repo y se acepta que esa config vive fuera? Riesgo del symlink: `omarchy-voxtype-install` hace `cp default/voxtype/config.toml ~/.config/voxtype/` y escribiría *a través* del enlace; y `voxtype configure` (TUI) podría reemplazar el fichero en vez de editarlo. |
+| ⬜ | VOX-3 | `pause_media = true` | Sigue en la config viva y voxtype 0.7.5 lo sigue soportando (habla MPRIS directamente, no necesitaba `playerctl`). Solo falta comprobar de oído que pausa Spotify al grabar. |
+| ⬜ | VOX-4 | Indicador en la barra | `custom/voxtype` de waybar (ver BAR-8) puede sobrar: voxtype 0.7.5 trae su propio OSD (`voxtype-osd-gtk4`, corriendo ya). Ver al usarlo si hace falta algo en la barra. |
+
+**🔍 Qué se está probando en VOX-1** (decidir hacia el 2026-08-30): si `F9` sale
+natural para push-to-talk viniendo de `SUPER+SPACE`, y si `SUPER+CTRL+X` (toggle,
+no hay que mantener pulsado) acaba gustando más para dictados largos. Si `F9`
+molesta, el siguiente candidato estándar es dejar solo el toggle.
 
 ## Bloque 6 — Captura de pantalla
 
@@ -350,7 +370,7 @@ Obsidian y Google Photos, que ahora existen de serie.
 
 | St. | ID | Tecla | Era | Ahora es |
 |---|---|---|---|---|
-| ⬜ | BND-2 | `SUPER+SPACE` | Dictado voxtype | Menú de Omarchy. Ver VOX-1. |
+| 🔍 | BND-2 | `SUPER+SPACE` | Dictado voxtype | Menú de Omarchy; se queda así. Ver VOX-1. |
 | ⬜ | BND-3 | `SUPER+D` | Lanzador (walker) | Libre. walker no existe; el menú es `SUPER+SPACE` y las apps `SUPER+ALT+SPACE`. |
 | ⬜ | BND-4 | `SUPER+W` / `SUPER+SHIFT+Q` | Pop window out / cerrar ventana | `SUPER+W` cierra ventana, `SUPER+O` es pop-out. |
 | ⬜ | BND-5 | `SUPER+I` / `SUPER+O` / `SUPER+P` | Spotify: anterior / play-pause / siguiente | `SUPER+O` pop-out, `SUPER+P` pseudo. **`playerctl` no está instalado**; quattro usa `omarchy-shell media next\|playPause\|previous` sobre las teclas `XF86Audio*`. Ojo: lo propio era específico de Spotify (`--player=spotify`), lo nuevo va al reproductor activo. |
@@ -360,7 +380,7 @@ Obsidian y Google Photos, que ahora existen de serie.
 | ⬜ | BND-9 | `SUPER+CTRL+P` | Toggle pseudo | Panel de energía. Pseudo está en `SUPER+P`. |
 | ⬜ | BND-10 | `SUPER+SHIFT+W` | Typora | **`typora` no está instalado**; quattro pone ahí Omawrite. ¿Reinstalar, probar Omawrite, o nvim y a otra cosa? |
 | ⬜ | BND-11 | `SUPER+SHIFT+T` | btop | Libre; quattro usa `SUPER+CTRL+T`. |
-| ⬜ | BND-12 | `unbind SUPER+CTRL+X` | Se desbindeaba por peligroso en Omarchy 3 | Ahora es el toggle de dictado. Reconsiderar. |
+| 🔍 | BND-12 | `unbind SUPER+CTRL+X` | Se desbindeaba por peligroso en Omarchy 3 | Ahora es el toggle de dictado y se quiere. El `unbind` se va con VOX-1. |
 
 ### 10c — Propios sin equivalente
 
@@ -479,3 +499,5 @@ a `~/.local/state/omarchy/current/theme` · `githooks/post-merge` ·
 | 2026-08-23 | BND-13 | Navegación vim (`SUPER+H/J/K/L`) descartada | "No me importa, no lo uso mucho" |
 | 2026-08-23 | MON-* | Monitores a baja prioridad | "Los monitores dan igual" — solo está conectado el portátil |
 | 2026-08-23 | REP-6 | Borrar `i3/` autorizado | i3, i3blocks y polybar desinstalados; sin tocar desde enero |
+| 2026-08-23 | — | Regla 10: atajos lo más estándar posible | Cada binding propio hay que revisarlo en cada upgrade y puede chocar con un default nuevo; esta migración es la factura de no haberlo hecho así. No aplica al teclado (TEC-1), que no es un atajo de Omarchy |
+| 2026-08-23 | VOX-1 | Dictado en los defaults: `SUPER+CTRL+X` y `F9` | Ya funcionan sin config propia; `SUPER+SPACE` se queda para el menú de Omarchy (regla 10) |
