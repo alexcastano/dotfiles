@@ -257,23 +257,68 @@ concretos por MAC con una tecla.
 
 ## Bloque 4 — La barra (waybar → omarchy-shell)
 
-`~/.config/omarchy/shell.json` ya existe con los defaults. waybar tenía 13
-módulos a la derecha y 6 en el centro.
+waybar era la barra de Omarchy 3: proyecto de terceros del ecosistema Hyprland,
+configurada con JSONC + CSS. Quattro la sustituye por `omarchy-shell`, escrito
+sobre **quickshell** (Qt/QML) y configurado en `~/.config/omarchy/shell.json`.
+Otros autores, otro lenguaje, otro formato: no hay nada que "traducir".
 
-| St. | ID | Lo que tenía | ¿Existe? |
+`hyprland/.config/waybar/` **se borró el 2026-08-24** (BAR-12). El archivo es
+`git show master:hyprland/.config/waybar/config.jsonc`, y este resumen existe
+para no tener que ir a buscarlo.
+
+### Lo que era mío de verdad
+
+Comparado con el waybar de serie de Omarchy 3.8.5 (recuperado del clon viejo en
+`~/.local/share/omarchy.…bak`, que conserva el git), esto es lo que había
+cambiado. Todo lo demás era default y no cuenta como pérdida.
+
+**Módulos añadidos** (no existían en el de serie):
+
+| Módulo | Qué mostraba |
+|---|---|
+| `cpu` `memory` | Barritas de 8 niveles `▁▂▃▄▅▆▇█`, umbrales warning 70 / critical 90, clic → btop |
+| `temperature` | `󰔏 {temperatureC}°`, warning 70 / critical 90, clic → btop |
+| `disk` | `󰋊 {percentage_used}%` de `/`, tooltip `{used} / {total}` |
+| `backlight` | Brillo en barritas de 8 niveles, scroll de 5 en 5 |
+| `power-profiles-daemon` | Icono por perfil (performance / balanced / power-saver) |
+| `mpris` | Artista – título **dentro del drawer del tray**, límites 30/20 caracteres |
+| `hyprland/language` | `󰌌 US` / `󰌌 ES`, clic → cambiar layout (ver TEC-4/TEC-5) |
+| `custom/dnd` | Script propio `dnd-status` (leía `makoctl mode`) + `dnd-toggle` |
+
+**Módulos de serie que había retocado:**
+
+- `cpu` de serie era un icono fijo; lo pasé a barritas con umbrales.
+- `pulseaudio`: barritas de 8 niveles en vez de los 3 iconos de serie.
+- `battery`: `{icon} {capacity}%` **siempre visible** (el de serie escondía el %),
+  aviso al **33 %** en vez del 20 %, y tooltip con vatios `{power:>1.0f}W↓`.
+- `bluetooth`: alias del dispositivo **y su batería en la propia barra**
+  (`󰂱 {device_alias} {device_battery_percentage}%`); el de serie era solo un icono.
+- `clock`: locale `en_GB.UTF-8`, formato `{:L%A %H:%M}`, tooltip con **calendario
+  anual** (4 meses por columna), clic derecho → `cal -y` en terminal, clic central
+  → timezone.
+- En el CSS, lo único propio con significado: clases **`.warning`** (subrayado +
+  negrita) y **`.critical`** (colores invertidos con padding). Eran el aviso
+  visual de los umbrales de cpu/memoria/temperatura. El resto eran márgenes.
+
+**Cosas de serie que había quitado:** el botón del logo (`custom/omarchy`) y los
+`persistent-workspaces` 1–5.
+
+### A decidir sobre la barra nueva
+
+| St. | ID | Entrada | Nota |
 |---|---|---|---|
-| ⬜ | BAR-1 | workspaces, clock, weather, update, language, bluetooth, network, tray | Sí, todos como `omarchy.*`. Solo comparar comportamiento. |
+| ⬜ | BAR-1 | workspaces, clock, weather, update, language, bluetooth, network, tray | Existen como `omarchy.*`. Comparar comportamiento, no presencia. |
 | ⬜ | BAR-2 | `pulseaudio`, `backlight` | `omarchy.audio` / `omarchy.monitor`. Verificar scroll para volumen y brillo. |
-| ⬜ | BAR-3 | `cpu`, `memory`, `temperature`, `disk` con iconos de barritas | **Sin equivalente.** Regla 7 permite escribir un plugin de quickshell (`~/.config/omarchy/plugins` + `plugins: []`). ¿Se echan de menos o basta `SUPER+CTRL+T` (btop)? |
-| ⬜ | BAR-4 | `battery` con vatios (`{power:>1.0f}W↓`) | `omarchy.power`. Comparar. |
+| ⬜ | BAR-3 | **`cpu` `memory` `temperature` `disk` con barritas y umbrales** | **Sin equivalente en quattro.** Es la pérdida más grande del bloque y lo único que pedía un plugin propio de quickshell (`~/.config/omarchy/plugins` + `plugins: []`, regla 7). Antes de escribirlo: ¿se echan de menos de verdad, o basta `SUPER+CTRL+T` (btop)? Lo que de verdad se usaba puede haber sido solo el aviso `.critical`, no el número. |
+| ⬜ | BAR-4 | `battery` con vatios y aviso al 33 % | `omarchy.power`. Comparar si muestra % siempre y si el umbral se configura. |
 | ⬜ | BAR-5 | `power-profiles-daemon` | ¿Dentro de `omarchy.power`? Verificar. |
 | ⬜ | BAR-6 | `mpris` (artista – título) | Sin equivalente visible. Existe `omarchy-shell media`. |
 | ⬜ | BAR-7 | `group/tray-expander` (tray plegable) | `omarchy.tray` sin drawer. |
 | ⬜ | BAR-8 | `custom/voxtype` | voxtype trae OSD propio (`voxtype-osd-gtk4`). Ver VOX-4. |
-| ⬜ | BAR-9 | `custom/dnd`, `custom/idle-indicator`, `custom/notification-silencing-indicator`, `custom/screenrecording-indicator` | `omarchy.indicators` los agrupa. Arrastra consigo `waybar/scripts/dnd-status`. |
-| ⬜ | BAR-10 | `clock` con locale `en_GB`, formato `ddd HH:mm`, calendario anual, timezone al clic central | `omarchy.clock` (con `birthYear`/`lifeExpectancy`). `omarchy-menu-timezone` sustituye a `omarchy-tz-select`. |
-| ⬜ | BAR-11 | Integración con el tema (`@import` del tema actual en `style.css`) | Ver cómo tematiza omarchy-shell. |
-| ⬜ | BAR-12 | `hyprland/.config/waybar/` (3 ficheros) | waybar desinstalado. Borrar del repo o dejar de stowear. **Corre prisa más de lo que parece**: cualquier `stow -R hyprland` recrea `~/.config/waybar`, y el hook `githooks/post-merge` restowea solo los paquetes que cambian en un `git pull`. El 2026-08-23 se esquivó con `--ignore=waybar`, pero eso no persiste. |
+| ⬜ | BAR-9 | `custom/dnd` + los 3 indicadores | `omarchy.indicators` los agrupa. El script `dnd-status` murió con `makoctl` y se fue con el borrado. |
+| ⬜ | BAR-10 | `clock` con calendario anual y locale `en_GB` | `omarchy.clock` (con `birthYear`/`lifeExpectancy`). ¿Se puede el calendario anual? |
+| ⬜ | BAR-11 | Integración con el tema | Ver cómo tematiza omarchy-shell. |
+| ✅ | BAR-12 | `hyprland/.config/waybar/` (3 ficheros) | **Borrado el 2026-08-24.** waybar desinstalada por el propio upgrade; mata también la trampa del restow que recreaba `~/.config/waybar`. |
 
 ## Bloque 5 — Dictado (voxtype) ✅⬜
 
