@@ -52,6 +52,16 @@ Estas reglas se acordaron explícitamente. No se cambian sin volver a hablarlo.
     en sí (TEC-1): la disposición y `kb_options` no son atajos de Omarchy, son
     memoria muscular de años y ergonomía de escribir en dos idiomas.
 
+11. **Antes de decidir sobre algo que quattro rompió, mirar si ya está
+    reportado.** `gh search issues --repo basecamp/omarchy <término>` y lo mismo
+    con `gh search prs`. Cuesta un minuto y cambia la pregunta: si upstream ya lo
+    tiene diagnosticado y con arreglo en camino, la decisión no es "¿qué hago con
+    esto?" sino "¿me pongo un puente y espero?" — que es una decisión distinta y
+    normalmente mejor. Y si hay puente, se apunta **con su condición de salida**,
+    para que no se quede instalado a mano para siempre (ver VOX-3 y VOX-5).
+    Además evita reescribir una investigación que ya está hecha y confirmada por
+    varias personas.
+
 **Idioma**: este documento en español (es donde se piensan las decisiones), los
 commits en inglés como el resto del repo.
 
@@ -572,6 +582,7 @@ a `~/.local/state/omarchy/current/theme` · `githooks/post-merge` ·
 | 2026-08-23 | MON-* | Monitores a baja prioridad | "Los monitores dan igual" — solo está conectado el portátil |
 | 2026-08-23 | REP-6 | Borrar `i3/` autorizado | i3, i3blocks y polybar desinstalados; sin tocar desde enero |
 | 2026-08-23 | — | Regla 10: atajos lo más estándar posible | Cada binding propio hay que revisarlo en cada upgrade y puede chocar con un default nuevo; esta migración es la factura de no haberlo hecho así. No aplica al teclado (TEC-1), que no es un atajo de Omarchy |
+| 2026-08-24 | — | Regla 11: buscar en los issues de Omarchy antes de decidir | En VOX-3 el bug estaba reportado (#7135), confirmado por 3 personas y con PR y arreglo upstream en camino. Saberlo convirtió la decisión en "puente temporal" en vez de "arreglo propio", que es más barato y más honesto |
 | 2026-08-24 | VOX-3 | Instalar `playerctl` a mano como puente, no como decisión | El bug es de Omarchy (envía `pause_media` activado y desinstala la herramienta). Ya hay issue #7135 y PR #7192, y voxtype 1.0.0 lo arregla upstream: instalarlo recupera la función hoy sin comprometerse a mantenerlo |
 | 2026-08-24 | BAR-* | Bloque 4 a prioridad baja | "En la nueva barra ya existe la mayoría de estas cosas, así que mejor todavía". El resumen de lo que había queda escrito y visible; se revisita cuando toque, sin prisa |
 | 2026-08-23 | VOX-2 | Todo lo configurable va stowed y enlazado al repo, sin excepciones | Se usa en varias máquinas: lo que no está enlazado se queda en un solo ordenador y deriva en silencio. Esta entrada llevaba 4 meses derivada sin que nadie lo notase |
