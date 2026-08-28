@@ -48,3 +48,29 @@ o.bind("SUPER + SPACE", "Stop dictation (push-to-talk)", "voxtype record stop", 
 -- without typing is gone.
 hl.unbind("SUPER + ALT + SPACE")
 o.bind("SUPER + ALT + SPACE", "Omarchy menu", "omarchy-menu toggle root")
+
+-- Multimedia en el portátil: el X1 Carbon Gen 12 no tiene teclas de transporte
+-- (solo volumen/mute/brillo en la fila F), así que hacen falta acordes. Los
+-- teclados externos (Keychron, Logitech) sí las traen y ya funcionan con los
+-- defaults de Omarchy en default/hypr/bindings/media.lua, esto es solo para
+-- cuando trabajo sin ellos.
+--
+-- Por qué AltGr+7/8/9 y no otra cosa:
+--   - Alt+7/8/9 descartado: es el atajo de pestañas de Firefox/Zen en Linux, y
+--     un bind de Hyprland consume la tecla antes de que llegue a la app, así
+--     que Zen se quedaría sin ese atajo para siempre y en silencio.
+--   - SUPER+O descartado: en quattro es "Pop window out", que quiero conservar.
+--   - AltGr gana porque las apps no pueden reclamarlo como modificador: solo
+--     ven el carácter resultante. En la variante altgr-intl esas tres
+--     posiciones son dead_horn / dead_ogonek / leftsinglequotemark, que no uso.
+--     Coste aceptado: pierdo la comilla tipográfica ' de AltGr+9.
+--
+-- Van por keycode y no por keysym porque con AltGr pulsado el keysym ya es
+-- dead_horn, no "7" (7=code:16, 8=code:17, 9=code:18). AltGr es MOD5.
+--
+-- Sin locked=true a propósito: los defaults de Omarchy lo llevan porque son
+-- teclas dedicadas, pero sobre la fila numérica dispararía el reproductor
+-- mientras escribo la contraseña en la pantalla de bloqueo.
+o.bind("MOD5 + code:16", "Previous track", "omarchy-shell media previous")
+o.bind("MOD5 + code:17", "Play/Pause", "omarchy-shell media playPause")
+o.bind("MOD5 + code:18", "Next track", "omarchy-shell media next")
