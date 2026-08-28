@@ -159,3 +159,48 @@ on_transcription = false
 #
 # Custom word replacements (case-insensitive)
 # replacements = { "hyperwhisper" = "hyprwhspr" }
+
+[meeting]
+# Modo reunión: grabación larga troceada en chunks, transcrita una a una y
+# cosida en un transcript continuo con timestamps. Nada que ver con el dictado:
+# el dictado tiene max_duration_secs = 60, esto llega a max_duration_mins = 180.
+# Se arranca y se para con F8 (voxtype-meeting-toggle). No hay activación por
+# voz: no existe ninguna frase gatillo en el binario, es start/stop explícito.
+#
+# Viene desactivado de fábrica; sin esto `meeting start` no hace nada.
+enabled = true
+
+# Los chunks se transcriben con el mismo motor que el dictado, o sea contra
+# whisper.cpp en powerant. Una reunión de una hora son ~120 peticiones por
+# Tailscale, y si powerant está apagado la reunión se queda sin transcribir.
+# chunk_duration_secs = 30
+
+# Los segmentos se persisten en ~/.local/share/voxtype/meetings/ según se
+# transcriben, así que un crash a mitad no se lleva la reunión por delante.
+# El audio en crudo NO se guarda (retain_audio = false por defecto).
+
+[meeting.audio]
+# Con loopback_device = "auto" (el valor por defecto) voxtype busca el monitor
+# de PipeWire y captura micro + audio del sistema a la vez: tu voz y la del
+# otro lado de la llamada. Si no encuentra monitor cae a micro solo y lo dice
+# en el log ("No monitor source found, using mic only").
+loopback_device = "auto"
+
+# Cancelación de eco GTCRN, para que tu propia voz saliendo por los altavoces
+# no se transcriba dos veces. Con auriculares casi no hace falta; "auto" ya
+# decide.
+echo_cancel = "auto"
+
+[meeting.diarization]
+# backend = "simple" atribuye por fuente de audio: lo que entra por el micro es
+# "You", lo que entra por el loopback es "Remote". Es exacto para 1:1 y para
+# llamadas de grupo agrupa a todos los demás en un solo hablante. El backend
+# "ml" (embeddings ECAPA-TDNN) sí los separa, pero necesita el modelo y la
+# feature ml-diarization, que este build binario puede no traer.
+backend = "simple"
+
+[meeting.summary]
+# Pendiente: `voxtype meeting summarize` saca key points, decisiones y action
+# items, pero quiere un Ollama local en localhost:11434 que ahora mismo no hay.
+# Para activarlo: backend = "ollama" y ollama_model = "<modelo>".
+backend = "disabled"

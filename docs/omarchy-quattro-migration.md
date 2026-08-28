@@ -65,7 +65,7 @@ Estas reglas se acordaron explícitamente. No se cambian sin volver a hablarlo.
 **Idioma**: este documento en español (es donde se piensan las decisiones), los
 commits en inglés como el resto del repo.
 
-**Estados**: ⬜ pendiente · 🔍 en prueba de campo · ✅ decidido y hecho · ⏭️ descartado
+**Estados**: ⬜ pendiente · 🔍 en prueba de campo · ✅ decidido y hecho · ⏭️ descartado · ⏸️ aparcada a propósito (con motivo escrito)
 
 **Flujo de sesión**: elegir un bloque → repasar sus entradas → decidir →
 aplicar → `hyprctl reload` y probar → commit pequeño → actualizar estados y el
@@ -394,18 +394,19 @@ Se cierra la prueba que vencía el 2026-08-30 sin retirar ninguno.
 
 | St. | ID | Entrada | En quattro |
 |---|---|---|---|
-| ⬜ | CAP-1 | Submap `capture` (`SUPER+SHIFT+C`): editar, clipboard, grabar, color picker, share | Cubierto casi al completo: `SUPER+CTRL+C` (menú de captura), `PRINT`, `ALT+PRINT` (grabar), `SUPER+PRINT` (picker), `SUPER+CTRL+S` (share). Además `SUPER+SHIFT+C` es ahora Calendar. |
+| ⏭️ | CAP-1 | Submap `capture` (`SUPER+SHIFT+C`): editar, clipboard, grabar, color picker, share | **Descartado con el resto de submaps (2026-08-28).**  Cubierto casi al completo: `SUPER+CTRL+C` (menú de captura), `PRINT`, `ALT+PRINT` (grabar), `SUPER+PRINT` (picker), `SUPER+CTRL+S` (share). Además `SUPER+SHIFT+C` es ahora Calendar. |
 | ⬜ | CAP-2 | `SUPER+SHIFT+F` screenshot `smart copy` | En quattro `SUPER+SHIFT+F` es el gestor de archivos. |
 | ⬜ | CAP-3 | `hypr/scripts/screencast-dnd` | Escucha DBus y activa DND al compartir pantalla, respetando el DND manual. **Roto**: usa `makoctl` y `bin/dnd-toggle`. Sustituto: `omarchy-toggle-notification-silencing`. Comprobar antes si Omarchy 4 ya lo hace solo. |
 | ⬜ | CAP-4 | — | Nuevo y relevante aquí: `SUPER+CTRL+PRINT` extrae texto (OCR) de un screenshot, y durante la selección hay control por teclado (`RETURN` ventana, `TAB` siguiente). |
 
-## Bloque 7 — Which-key y submaps restantes
+## Bloque 7 — Which-key y submaps ⏭️ CERRADO
 
 **El which-key está muerto y barrido (2026-08-28)**: WK-1 se descartó arrastrado
 por BT-1, y WK-2 a WK-5 se cerraron el mismo día borrando los ficheros. Ya no hay
 `hyprland/.config/eww/`, ni `docs/which-key.md`, ni `exec-once` en `autostart.conf`.
-Lo único vivo de este bloque son los submaps SUB-1..SUB-4, que ahora se deciden
-sin la pregunta "¿y el popup?" colgando de ellas.
+**Y los submaps se fueron detrás el mismo día**: "nos cargamos todos los subs,
+ya nos hemos cargado eww igualmente". `submaps.conf` y `submaps/` enteros
+borrados, más su `source =` en `hyprland.conf`. **Bloque cerrado.**
 
 | St. | ID | Entrada | Nota |
 |---|---|---|---|
@@ -414,10 +415,10 @@ sin la pregunta "¿y el popup?" colgando de ellas.
 | ⏭️ | WK-3 | Parseo de `hyprctl binds` | Sin objeto tras WK-1: se va con el daemon. Se deja la nota por si algún día se parsean bindings otra vez.  **Resuelto como hecho**: `-j` vuelve a dar JSON válido en 0.56.2 y 226/228 binds conservan `description`. El hack de `8acedd6` se puede tirar. |
 | ⏭️ | WK-4 | Color del borde del popup | Sin objeto tras WK-1: no hay popup.  Salía de `~/.config/omarchy/current/theme/swayosd.css`. swayosd no existe y la ruta del tema cambió a `~/.local/state/omarchy/current`. Buscar equivalente. |
 | ✅ | WK-5 | `eww/eww.yuck`, `eww/eww.scss` | **Borrados** con el resto de `hyprland/.config/eww/`, que ya no existe. |
-| ⬜ | SUB-1 | Submap `apps` (`SUPER+R`) | Spotify, Browser, Slack, Telegram, WhatsApp, Nautilus, btop, Docker, YouTube, Gemini. Todo salvo **Slack, Telegram y Gemini** existe ya como `SUPER+SHIFT+*`. Y Slack no está instalado. |
-| ⬜ | SUB-2 | Submap `resize` (`SUPER+SHIFT+R`) | hjkl y flechas, pasos de 50px. Omarchy tiene resize directo en `SUPER+code:20/21` con tres granularidades (25/100/300). |
-| ⬜ | SUB-3 | Submap `notifications` (`SUPER+COMMA`) | Cubierto al 100% de serie: `SUPER+comma` (última), `SUPER+SHIFT+comma` (todas), `SUPER+CTRL+comma` (silenciar), `SUPER+ALT+comma` (invocar), `SUPER+SHIFT+ALT+comma` (historial). Y `makoctl` no existe. Sin equivalente directo solo "dismiss group". |
-| ⬜ | SUB-4 | Mecánica de los submaps | Cada binding hacía `hyprctl dispatch submap reset; comando`, más `catchall`/`ESCAPE`/`RETURN`. Si algún submap sobrevive, rehacer la mecánica con la API nueva en vez de traducirla. |
+| ⏭️ | SUB-1 | Submap `apps` (`SUPER+R`) | **Descartado.** Spotify, Browser, Slack, Telegram, WhatsApp, Nautilus, btop, Docker, YouTube, Gemini. Verificado contra los defaults: todo tiene ya su `SUPER+SHIFT+*` (o `SUPER+CTRL+T` para btop) **salvo Telegram y Gemini**, y Slack ni está instalado. **Lo que se pierde son esos dos atajos** — ambos siguen a un `SUPER+SPACE` y escribir el nombre, porque al teclear en el menú raíz se cargan todos los providers. `SUPER+R` queda libre. |
+| ⏭️ | SUB-2 | Submap `resize` (`SUPER+SHIFT+R`) | **Descartado, cubierto de sobra.** Eran hjkl y flechas con paso fijo de 50px. Los defaults (`SUPER+SHIFT+EQUAL/MINUS`, con `ALT` y `CTRL` para las otras dos granularidades) hacen lo mismo sin entrar en modo. |
+| ⏭️ | SUB-3 | Submap `notifications` (`SUPER+COMMA`) | **Descartado.** Además `makoctl` no existe, así que 5 de sus 6 acciones ya estaban muertas.  Cubierto al 100% de serie: `SUPER+comma` (última), `SUPER+SHIFT+comma` (todas), `SUPER+CTRL+comma` (silenciar), `SUPER+ALT+comma` (invocar), `SUPER+SHIFT+ALT+comma` (historial). Y `makoctl` no existe. Sin equivalente directo solo "dismiss group". |
+| ⏭️ | SUB-4 | Mecánica de los submaps | **Sin objeto**: no sobrevivió ninguno, así que no hay nada que rehacer con `hl.define_submap`. |
 
 ## Bloque 8 — Webapps
 
@@ -530,7 +531,7 @@ tiene una trampa: en cuanto se enchufe el LG vuelven las rayas.
 | ⬜ | REP-8 | `docs/hyprland.md` | Describe la arquitectura de Omarchy 3 (waybar, mako, rutas viejas). Reescribir al terminar. |
 | ✅ | REP-9 | `docs/which-key.md` | **Borrado** con WK-1, y fuera del índice de `AGENTS.md`. Archivo: `git show master:docs/which-key.md`. |
 | ⬜ | REP-10 | `docs/webapps.md` | Verificar contra el Bloque 8. |
-| ⬜ | REP-12 | **`~/.config/omarchy/` no está stowed** | Hallazgo del 2026-08-28 barriendo WK-1: `~/.config/omarchy/hooks/theme-set` era un fichero real, **nunca versionado**, con un `eww reload` dentro — 8 meses de deriva silenciosa, el mismo patrón que VOX-2. Y el directorio entero es real, no un symlink al repo, así que **`shell.json` (toda la config de la barra, Bloque 4) tampoco está versionado**. Choca de frente con la decisión "todo lo configurable va stowed" del 2026-08-23. Decidir qué de `~/.config/omarchy/` entra al repo. |
+| ⏸️ | REP-12 | **`~/.config/omarchy/` no está stowed** | **Aparcada por decisión explícita (2026-08-28)**: "no quiero versionar de momento la configuración de omarchy porque todavía no entiendo cómo funciona esta versión exactamente". Se retoma cuando la barra nueva se entienda. Hallazgo del 2026-08-28 barriendo WK-1: `~/.config/omarchy/hooks/theme-set` era un fichero real, **nunca versionado**, con un `eww reload` dentro — 8 meses de deriva silenciosa, el mismo patrón que VOX-2. Y el directorio entero es real, no un symlink al repo, así que **`shell.json` (toda la config de la barra, Bloque 4) tampoco está versionado**. Choca de frente con la decisión "todo lo configurable va stowed" del 2026-08-23. Decidir qué de `~/.config/omarchy/` entra al repo. |
 | ⬜ | REP-11 | `CLAUDE.md` | La regla "NEVER modify `~/.local/share/omarchy/`" hay que actualizarla: ahora es `/usr/share/omarchy`, es un paquete pacman, y `~/.local/share/omarchy` es un symlink de compatibilidad. |
 
 ---
@@ -603,6 +604,8 @@ a `~/.local/state/omarchy/current/theme` · `githooks/post-merge` ·
 | 2026-08-24 | VOX-3 | Instalar `playerctl` a mano como puente, no como decisión | El bug es de Omarchy (envía `pause_media` activado y desinstala la herramienta). Ya hay issue #7135 y PR #7192, y voxtype 1.0.0 lo arregla upstream: instalarlo recupera la función hoy sin comprometerse a mantenerlo |
 | 2026-08-28 | BT-1 | Submap de bluetooth descartado; se cierra el Bloque 2 entero | El panel de serie (`SUPER+CTRL+B`) basta. Los atajos por MAC llevaban 6 días muertos sin echarse de menos: "me funciona bastante bien por defecto tal como está". `SUPER+B` estaba libre y era migrable, así que no se descarta por coste sino porque el default gana (regla 10) |
 | 2026-08-28 | BT-2, BT-3 | `bt` y `bt-toggle` se quedan | Son comandos de un disparo, no demonios: no cuestan nada por estar. Y `bt-toggle` no tiene sustituto — ningún `omarchy-audio-*` cambia el perfil A2DP↔HFP de la tarjeta, así que borrarlo perdería el micro del auricular |
+| 2026-08-28 | SUB-1..4, CAP-1 | Todos los submaps descartados | "Nos cargamos todos los subs, ya nos hemos cargado eww igualmente". Sin popup el modo pierde su affordance, y los defaults cubren casi todo. Única pérdida real: los atajos de Telegram y Gemini, a un `SUPER+SPACE` de distancia |
+| 2026-08-28 | REP-12 | Versionar `~/.config/omarchy/` se aparca, no se descarta | "Todavía no entiendo cómo funciona esta versión exactamente". Versionar antes de entender qué es config y qué es estado regenerado sería meter ruido en el repo |
 | 2026-08-28 | REP-12 | Abierta entrada nueva: `~/.config/omarchy/` no está stowed | El hook `theme-set` (con un `eww reload`) llevaba 8 meses fuera del repo sin que nadie lo notase. Si el hook derivó, `shell.json` puede derivar igual — y ahí vive toda la barra |
 | 2026-08-28 | WK-2, WK-5, AUT-2, REP-9 | Barrido del which-key en el mismo día que WK-1 | Regla 8: los ficheros muertos se van en el commit de su entrada. `hyprland/.config/eww/` entero, `docs/which-key.md`, las dos `exec-once` de `autostart.conf` y la línea del índice de `AGENTS.md` |
 | 2026-08-28 | WK-1 | Which-key descartado y `eww` desinstalado | Consecuencia directa de BT-1: el submap de bluetooth era lo que lo sostenía. Sin submaps propios, el daemon eww + socat + hoja de estilo no tiene a quién servir |

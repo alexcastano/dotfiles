@@ -1,0 +1,18 @@
+#!/bin/bash
+# Arranca o para el modo reunión de voxtype con una sola tecla (F8 en
+# hyprland/.config/hypr/bindings.lua). voxtype no trae `meeting toggle`: solo
+# start/stop, así que hay que mirar el estado antes.
+#
+# Se decide por el texto de `meeting status` y no por el código de salida
+# porque status devuelve 0 tanto si hay reunión como si no. `meeting stop`
+# sí falla cuando no hay ninguna ("Error: No meeting in progress."), pero
+# usarlo como sonda significaría arrancar una reunión ante cualquier otro
+# fallo del daemon.
+
+if voxtype meeting status 2>&1 | grep -q "No meeting currently in progress"; then
+  # El título es la fecha y hora: `meeting list` es cronológica y sin título
+  # las entradas salen indistinguibles. Se puede renombrar luego.
+  voxtype meeting start --title "$(date '+%Y-%m-%d %H:%M')"
+else
+  voxtype meeting stop
+fi

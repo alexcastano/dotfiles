@@ -74,3 +74,19 @@ o.bind("SUPER + ALT + SPACE", "Omarchy menu", "omarchy-menu toggle root")
 o.bind("MOD5 + code:16", "Previous track", "omarchy-shell media previous")
 o.bind("MOD5 + code:17", "Play/Pause", "omarchy-shell media playPause")
 o.bind("MOD5 + code:18", "Next track", "omarchy-shell media next")
+
+-- Modo reunión de voxtype: graba micro + audio del sistema (loopback de
+-- PipeWire, con cancelación de eco) durante toda la llamada, lo trocea en
+-- chunks de 30 s y va transcribiendo cada uno. Al parar queda un transcript
+-- continuo con timestamps y hablantes en ~/.local/share/voxtype/meetings/,
+-- que se saca con `voxtype meeting export latest --speakers --timestamps`.
+--
+-- F8 y no un acorde: es una tecla que se pulsa dos veces al día (al empezar y
+-- al acabar la reunión), no cien como el dictado, así que no compite con
+-- SUPER+SPACE por comodidad — compite por ser fácil de recordar y no pisar
+-- nada. Toda la fila F está libre de binds en Omarchy salvo las XF86 del
+-- portátil, y F8 no es ninguna de ellas.
+--
+-- Sin locked=true a propósito, igual que las de multimedia: no quiero poder
+-- abrir un micrófono desde la pantalla de bloqueo.
+o.bind("F8", "Toggle meeting recording", "voxtype-meeting-toggle")
