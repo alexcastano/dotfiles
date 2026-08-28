@@ -33,7 +33,6 @@ OFFICIAL_PACKAGES=(
 AUR_PACKAGES=(
     "eww"               # Widget system (required for which-key)
     "swayosd-git"       # OSD for volume/caps/etc
-    "rofi-wayland"      # App launcher (Wayland fork)
     "hyprsunset"        # Blue light filter
 )
 
@@ -121,11 +120,6 @@ cd "$DOTFILES_DIR"
 PACKAGES_TO_STOW=(
     "hyprland"
     "waybar"
-    # "rofi" - config is in i3/rofi? Let's check where it is.
-    # checking directory listing: i3/.config/rofi exists. 
-    # If hyprland uses rofi, it likely uses the same config or I should check if there's a hyprland specific one.
-    # The file tree shows i3/.config/rofi. Hyprland likely uses that or has its own.
-    # Assuming the user wants Hyprland, we should stow hyprland folder.
 )
 
 for pkg in "${PACKAGES_TO_STOW[@]}"; do

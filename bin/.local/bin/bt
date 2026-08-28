@@ -27,9 +27,6 @@ else
   echo "no argument"
 fi
 
-# Trigger immediate i3blocks bluetooth update
-pkill -RTMIN+10 i3blocks
-
 # # enable bluetooth
 # sudo systemctl start bluetooth
 
