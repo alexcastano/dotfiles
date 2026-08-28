@@ -401,19 +401,19 @@ Se cierra la prueba que vencía el 2026-08-30 sin retirar ninguno.
 
 ## Bloque 7 — Which-key y submaps restantes
 
-**WK-1 ya está decidido (⏭️, 2026-08-28)**: el which-key se va. Lo que queda de
-WK-2 a WK-5 no son decisiones, es barrido de ficheros — y WK-3 y WK-4 se cierran
-solas, porque ya no hay popup que parsee `hyprctl binds` ni borde que colorear.
-Los submaps SUB-1..SUB-4 siguen siendo decisiones abiertas, pero ahora sin la
-pregunta "¿y el popup?" colgando de ellas.
+**El which-key está muerto y barrido (2026-08-28)**: WK-1 se descartó arrastrado
+por BT-1, y WK-2 a WK-5 se cerraron el mismo día borrando los ficheros. Ya no hay
+`hyprland/.config/eww/`, ni `docs/which-key.md`, ni `exec-once` en `autostart.conf`.
+Lo único vivo de este bloque son los submaps SUB-1..SUB-4, que ahora se deciden
+sin la pregunta "¿y el popup?" colgando de ellas.
 
 | St. | ID | Entrada | Nota |
 |---|---|---|---|
-| ⏭️ | WK-1 | ¿Se sigue queriendo which-key? | **Descartado el 2026-08-28**, arrastrado por BT-1: el submap de bluetooth era el que lo justificaba y se fue. `eww` desinstalado el mismo día (no tenía dependencias inversas y no estaba corriendo). Quedan por barrer los ficheros: WK-2, WK-4, WK-5, AUT-2 y REP-9. |
-| ⬜ | WK-2 | `eww/which-key-daemon.sh` | Escucha el evento `submap` por socket con `socat` y parsea `hyprctl binds`. Funciona, pero `hl.on("keybinds.submap", cb)` haría lo mismo sin socat ni awk. |
+| ⏭️ | WK-1 | ¿Se sigue queriendo which-key? | **Descartado el 2026-08-28**, arrastrado por BT-1: el submap de bluetooth era el que lo justificaba y se fue. `eww` desinstalado el mismo día (no tenía dependencias inversas y no estaba corriendo). Barrido completo el mismo día. |
+| ✅ | WK-2 | `eww/which-key-daemon.sh` | **Borrado.** Escuchaba el evento `submap` por socket con `socat` y parseaba `hyprctl binds`. Archivo: `git show master:hyprland/.config/eww/which-key-daemon.sh`. |
 | ⏭️ | WK-3 | Parseo de `hyprctl binds` | Sin objeto tras WK-1: se va con el daemon. Se deja la nota por si algún día se parsean bindings otra vez.  **Resuelto como hecho**: `-j` vuelve a dar JSON válido en 0.56.2 y 226/228 binds conservan `description`. El hack de `8acedd6` se puede tirar. |
 | ⏭️ | WK-4 | Color del borde del popup | Sin objeto tras WK-1: no hay popup.  Salía de `~/.config/omarchy/current/theme/swayosd.css`. swayosd no existe y la ruta del tema cambió a `~/.local/state/omarchy/current`. Buscar equivalente. |
-| ⬜ | WK-5 | `eww/eww.yuck`, `eww/eww.scss` | Widget y estilos. Revisar tras WK-1. |
+| ✅ | WK-5 | `eww/eww.yuck`, `eww/eww.scss` | **Borrados** con el resto de `hyprland/.config/eww/`, que ya no existe. |
 | ⬜ | SUB-1 | Submap `apps` (`SUPER+R`) | Spotify, Browser, Slack, Telegram, WhatsApp, Nautilus, btop, Docker, YouTube, Gemini. Todo salvo **Slack, Telegram y Gemini** existe ya como `SUPER+SHIFT+*`. Y Slack no está instalado. |
 | ⬜ | SUB-2 | Submap `resize` (`SUPER+SHIFT+R`) | hjkl y flechas, pasos de 50px. Omarchy tiene resize directo en `SUPER+code:20/21` con tres granularidades (25/100/300). |
 | ⬜ | SUB-3 | Submap `notifications` (`SUPER+COMMA`) | Cubierto al 100% de serie: `SUPER+comma` (última), `SUPER+SHIFT+comma` (todas), `SUPER+CTRL+comma` (silenciar), `SUPER+ALT+comma` (invocar), `SUPER+SHIFT+ALT+comma` (historial). Y `makoctl` no existe. Sin equivalente directo solo "dismiss group". |
@@ -502,7 +502,7 @@ tiene una trampa: en cuanto se enchufe el LG vuelven las rayas.
 | ⬜ | MON-3 | ARZOPA portátil en `auto-left` | Siempre a la izquierda del portátil. Comprobar que `position = "auto-left"` funciona en `hl.monitor{}`. |
 | ⬜ | MON-4 | `decoration.rounding = 8` (`looknfeel.conf`) | Lo único que hacía ese fichero; el resto eran comentarios. |
 | ⬜ | AUT-1 | `exec-once = hyprsunset` | **Ya no hace falta**: `hyprsunset` está corriendo sin que lo lance nada propio, lo arranca Omarchy. Además hay toggle de nightlight en `SUPER+CTRL+N`. |
-| ⬜ | AUT-2 | `exec-once = eww daemon` + `which-key-daemon.sh` | Depende del Bloque 7. |
+| ✅ | AUT-2 | `exec-once = eww daemon` + `which-key-daemon.sh` | **Fuera de `autostart.conf`** con WK-1. |
 | ⬜ | AUT-3 | `exec-once = screencast-dnd` | Ver CAP-3. |
 | ⬜ | INP-1 | Gestos de touchpad de 3 dedos | Estaban comentados, nunca activados. Quattro documenta `hl.gesture{}` con acciones por dirección. ¿Ahora sí? |
 
@@ -528,8 +528,9 @@ tiene una trampa: en cuanto se enchufe el LG vuelven las rayas.
 | ⬜ | REP-6 | **`i3/` (44 ficheros)** | i3, i3blocks y polybar desinstalados; último toque hace 7 meses. **Borrado ya autorizado (2026-08-23)**, pendiente de ejecutar. |
 | ⬜ | REP-7 | `install-hyprland.sh` | Instala `hypridle`, `hyprlock`, `waybar`, `mako`, `swayosd-git` y clona omarchy a mano. Obsoleto de arriba abajo. ¿Reescribir o borrar? |
 | ⬜ | REP-8 | `docs/hyprland.md` | Describe la arquitectura de Omarchy 3 (waybar, mako, rutas viejas). Reescribir al terminar. |
-| ⬜ | REP-9 | `docs/which-key.md` | Rutas de tema viejas y `swayosd.css`. Depende del Bloque 7. |
+| ✅ | REP-9 | `docs/which-key.md` | **Borrado** con WK-1, y fuera del índice de `AGENTS.md`. Archivo: `git show master:docs/which-key.md`. |
 | ⬜ | REP-10 | `docs/webapps.md` | Verificar contra el Bloque 8. |
+| ⬜ | REP-12 | **`~/.config/omarchy/` no está stowed** | Hallazgo del 2026-08-28 barriendo WK-1: `~/.config/omarchy/hooks/theme-set` era un fichero real, **nunca versionado**, con un `eww reload` dentro — 8 meses de deriva silenciosa, el mismo patrón que VOX-2. Y el directorio entero es real, no un symlink al repo, así que **`shell.json` (toda la config de la barra, Bloque 4) tampoco está versionado**. Choca de frente con la decisión "todo lo configurable va stowed" del 2026-08-23. Decidir qué de `~/.config/omarchy/` entra al repo. |
 | ⬜ | REP-11 | `CLAUDE.md` | La regla "NEVER modify `~/.local/share/omarchy/`" hay que actualizarla: ahora es `/usr/share/omarchy`, es un paquete pacman, y `~/.local/share/omarchy` es un symlink de compatibilidad. |
 
 ---
@@ -602,6 +603,8 @@ a `~/.local/state/omarchy/current/theme` · `githooks/post-merge` ·
 | 2026-08-24 | VOX-3 | Instalar `playerctl` a mano como puente, no como decisión | El bug es de Omarchy (envía `pause_media` activado y desinstala la herramienta). Ya hay issue #7135 y PR #7192, y voxtype 1.0.0 lo arregla upstream: instalarlo recupera la función hoy sin comprometerse a mantenerlo |
 | 2026-08-28 | BT-1 | Submap de bluetooth descartado; se cierra el Bloque 2 entero | El panel de serie (`SUPER+CTRL+B`) basta. Los atajos por MAC llevaban 6 días muertos sin echarse de menos: "me funciona bastante bien por defecto tal como está". `SUPER+B` estaba libre y era migrable, así que no se descarta por coste sino porque el default gana (regla 10) |
 | 2026-08-28 | BT-2, BT-3 | `bt` y `bt-toggle` se quedan | Son comandos de un disparo, no demonios: no cuestan nada por estar. Y `bt-toggle` no tiene sustituto — ningún `omarchy-audio-*` cambia el perfil A2DP↔HFP de la tarjeta, así que borrarlo perdería el micro del auricular |
+| 2026-08-28 | REP-12 | Abierta entrada nueva: `~/.config/omarchy/` no está stowed | El hook `theme-set` (con un `eww reload`) llevaba 8 meses fuera del repo sin que nadie lo notase. Si el hook derivó, `shell.json` puede derivar igual — y ahí vive toda la barra |
+| 2026-08-28 | WK-2, WK-5, AUT-2, REP-9 | Barrido del which-key en el mismo día que WK-1 | Regla 8: los ficheros muertos se van en el commit de su entrada. `hyprland/.config/eww/` entero, `docs/which-key.md`, las dos `exec-once` de `autostart.conf` y la línea del índice de `AGENTS.md` |
 | 2026-08-28 | WK-1 | Which-key descartado y `eww` desinstalado | Consecuencia directa de BT-1: el submap de bluetooth era lo que lo sostenía. Sin submaps propios, el daemon eww + socat + hoja de estilo no tiene a quién servir |
 | 2026-08-28 | VOX-1 | Se conservan los tres atajos de dictado | `SUPER+SPACE` es el que se usa; `F9` y `SUPER+CTRL+X` no estorban. Cierra la prueba que vencía el 2026-08-30 |
 | 2026-08-28 | VOX-6 | Tecleado por `dotool`, descartado `mode = "paste"` | Electron ignora el keymap sintético de `wtype` y se come los acentuados en Slack ([electron#46823](https://github.com/electron/electron/issues/46823), *not planned*). El paste inyectaba pulsaciones que chocaban con el SUPER del PTT; `dotool` manda keycodes evdev reales y Electron lo trata como teclado físico |
