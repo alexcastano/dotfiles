@@ -240,17 +240,28 @@ que más se nota; lo de abajo es lo que probablemente nunca se toque.
 | ⬜ | TEC-6 | `/etc/vconsole.conf` | Sigue en `XKBLAYOUT=us` sin variante. Ponerlo con `localectl` haría que la TTY coincida con la sesión gráfica. ¿Merece la pena? |
 | ⬜ | TEC-7 | `device { name = tpps/2-elan-trackpoint }` | TrackPoint del ThinkPad: `sensitivity = -0.5`, `accel_profile = adaptive`. Migra a `hl.device({...})`. Confirmar el nombre con `hyprctl devices`. |
 
-## Bloque 2 — Bluetooth
+## Bloque 2 — Bluetooth ⏭️✅
 
-Lo único de toda la config que es inequívocamente propio: conectar a auriculares
-concretos por MAC con una tecla.
+**Cerrado el 2026-08-28.** Era el bloque señalado como "lo único inequívocamente
+propio", y resultó ser el más barato de todos: el panel de Omarchy (`SUPER+CTRL+B`)
+cubre el caso de uso real. Los atajos por MAC llevaban **seis días sin existir**
+(las `.conf` dejaron de leerse el 22 de agosto) y no se echaron de menos — la
+prueba de campo se hizo sola.
 
-| St. | ID | Entrada | Qué hace | En quattro |
-|---|---|---|---|---|
-| ⬜ | BT-1 | Submap `bluetooth` (`SUPER+B`) | 6 dispositivos por MAC (Sony XM3/XM6, Bose, Bose QC Ultra, Pixel Buds Pro 2, barra de sonido), desconectar, toggle de micro | Omarchy tiene panel (`SUPER+CTRL+B`) pero no atajos por dispositivo. `hl.define_submap` existe. ¿Submap, o bindings sueltos sin submap? |
-| ⬜ | BT-2 | `bin/.local/bin/bt` | Arranca el servicio, `rfkill unblock`, `bluetoothctl connect <MAC>` por alias | Funciona tal cual. ¿Simplificar con `omarchy-bluetooth-device`? |
-| ⬜ | BT-3 | `bin/.local/bin/bt-toggle` | Alterna perfil A2DP ↔ HFP para usar el micro del auricular | Funciona (usa `pactl`), pero acaba en `pkill -RTMIN+10 i3blocks` — residuo muerto de la época de i3. ¿Existe equivalente en `omarchy-audio-*`? |
-| ⬜ | BT-4 | Módulo `bluetooth` de waybar | Nombre del dispositivo + batería | `omarchy.bluetooth` ya está en `shell.json`. Comparar qué muestra. |
+Los dos scripts se quedan: son comandos de un disparo, sin demonio ni coste por
+tenerlos, y `bt-toggle` no tiene sustituto en quattro.
+
+| St. | ID | Entrada | Decisión |
+|---|---|---|---|
+| ⏭️ | BT-1 | Submap `bluetooth` (`SUPER+B`) | **Descartado.** 6 dispositivos por MAC + desconectar + toggle de micro. `SUPER+B` estaba libre y `hl.define_submap` existía, así que era migrable — pero el panel de serie basta. `submaps/bluetooth.conf` borrado y su `source =` fuera de `submaps.conf`. Archivo: `git show master:hyprland/.config/hypr/submaps/bluetooth.conf`. **Arrastra a WK-1.** |
+| ✅ | BT-2 | `bin/.local/bin/bt` | **Se queda tal cual, sin tocar.** Arranca el servicio, `rfkill unblock`, `bluetoothctl connect <MAC>` por alias. Se conserva "por si acaso": ya no lo llama ningún binding, pero desde la terminal sigue valiendo. Sustituto de Omarchy si algún día se quiere simplificar: `omarchy-bluetooth-device connect <MAC>`, que hace lo mismo mejor (enciende vía `omarchy-bluetooth-power`, que sí levanta el rfkill soft block — `bluetoothctl power on` a secas falla ahí —, además de `trust` y `timeout 20s`). **Conserva un `pkill -RTMIN+10 i3blocks` muerto** al final: se deja a propósito, la decisión fue no tocar el script. |
+| ✅ | BT-3 | `bin/.local/bin/bt-toggle` | **Se queda.** Alterna el perfil de la tarjeta A2DP ↔ HFP para usar el micro del auricular. **No hay equivalente en quattro**: los `omarchy-audio-*` son sink/source/volumen/mute, ninguno toca el perfil de la tarjeta. Único cambio: fuera el `pkill -RTMIN+10 i3blocks` del final. |
+| ⏭️ | BT-4 | Módulo `bluetooth` de waybar | **Sin objeto.** waybar se borró en BAR-12; `omarchy.bluetooth` ya está en `shell.json` y el usuario lo da por bueno. |
+
+**Nada que desinstalar.** `bt` y `bt-toggle` son scripts de un disparo, no
+demonios. Los demonios de la época vieja (`waybar`, `mako`, `swayosd`,
+`hypridle`, `hyprlock`, `walker`, `i3`, `i3blocks`, `polybar`) ya los desinstaló
+`omarchy-upgrade-to-quattro`; ninguno corre. Comprobado el 2026-08-28.
 
 ## Bloque 3 — Reglas de workspace
 
@@ -390,15 +401,18 @@ Se cierra la prueba que vencía el 2026-08-30 sin retirar ninguno.
 
 ## Bloque 7 — Which-key y submaps restantes
 
-**Decidir WK-1 primero**: si casi ningún submap sobrevive, el which-key entero
-(daemon + eww + hoja de estilo) deja de tener sentido.
+**WK-1 ya está decidido (⏭️, 2026-08-28)**: el which-key se va. Lo que queda de
+WK-2 a WK-5 no son decisiones, es barrido de ficheros — y WK-3 y WK-4 se cierran
+solas, porque ya no hay popup que parsee `hyprctl binds` ni borde que colorear.
+Los submaps SUB-1..SUB-4 siguen siendo decisiones abiertas, pero ahora sin la
+pregunta "¿y el popup?" colgando de ellas.
 
 | St. | ID | Entrada | Nota |
 |---|---|---|---|
-| ⬜ | WK-1 | ¿Se sigue queriendo which-key? | Depende de cuántos submaps queden vivos tras BT-1, SUB-1, SUB-2, SUB-3 y CAP-1. |
+| ⏭️ | WK-1 | ¿Se sigue queriendo which-key? | **Descartado el 2026-08-28**, arrastrado por BT-1: el submap de bluetooth era el que lo justificaba y se fue. `eww` desinstalado el mismo día (no tenía dependencias inversas y no estaba corriendo). Quedan por barrer los ficheros: WK-2, WK-4, WK-5, AUT-2 y REP-9. |
 | ⬜ | WK-2 | `eww/which-key-daemon.sh` | Escucha el evento `submap` por socket con `socat` y parsea `hyprctl binds`. Funciona, pero `hl.on("keybinds.submap", cb)` haría lo mismo sin socat ni awk. |
-| ⬜ | WK-3 | Parseo de `hyprctl binds` | **Resuelto como hecho**: `-j` vuelve a dar JSON válido en 0.56.2 y 226/228 binds conservan `description`. El hack de `8acedd6` se puede tirar. |
-| ⬜ | WK-4 | Color del borde del popup | Salía de `~/.config/omarchy/current/theme/swayosd.css`. swayosd no existe y la ruta del tema cambió a `~/.local/state/omarchy/current`. Buscar equivalente. |
+| ⏭️ | WK-3 | Parseo de `hyprctl binds` | Sin objeto tras WK-1: se va con el daemon. Se deja la nota por si algún día se parsean bindings otra vez.  **Resuelto como hecho**: `-j` vuelve a dar JSON válido en 0.56.2 y 226/228 binds conservan `description`. El hack de `8acedd6` se puede tirar. |
+| ⏭️ | WK-4 | Color del borde del popup | Sin objeto tras WK-1: no hay popup.  Salía de `~/.config/omarchy/current/theme/swayosd.css`. swayosd no existe y la ruta del tema cambió a `~/.local/state/omarchy/current`. Buscar equivalente. |
 | ⬜ | WK-5 | `eww/eww.yuck`, `eww/eww.scss` | Widget y estilos. Revisar tras WK-1. |
 | ⬜ | SUB-1 | Submap `apps` (`SUPER+R`) | Spotify, Browser, Slack, Telegram, WhatsApp, Nautilus, btop, Docker, YouTube, Gemini. Todo salvo **Slack, Telegram y Gemini** existe ya como `SUPER+SHIFT+*`. Y Slack no está instalado. |
 | ⬜ | SUB-2 | Submap `resize` (`SUPER+SHIFT+R`) | hjkl y flechas, pasos de 50px. Omarchy tiene resize directo en `SUPER+code:20/21` con tres granularidades (25/100/300). |
@@ -586,6 +600,9 @@ a `~/.local/state/omarchy/current/theme` · `githooks/post-merge` ·
 | 2026-08-23 | — | Regla 10: atajos lo más estándar posible | Cada binding propio hay que revisarlo en cada upgrade y puede chocar con un default nuevo; esta migración es la factura de no haberlo hecho así. No aplica al teclado (TEC-1), que no es un atajo de Omarchy |
 | 2026-08-24 | — | Regla 11: buscar en los issues de Omarchy antes de decidir | En VOX-3 el bug estaba reportado (#7135), confirmado por 3 personas y con PR y arreglo upstream en camino. Saberlo convirtió la decisión en "puente temporal" en vez de "arreglo propio", que es más barato y más honesto |
 | 2026-08-24 | VOX-3 | Instalar `playerctl` a mano como puente, no como decisión | El bug es de Omarchy (envía `pause_media` activado y desinstala la herramienta). Ya hay issue #7135 y PR #7192, y voxtype 1.0.0 lo arregla upstream: instalarlo recupera la función hoy sin comprometerse a mantenerlo |
+| 2026-08-28 | BT-1 | Submap de bluetooth descartado; se cierra el Bloque 2 entero | El panel de serie (`SUPER+CTRL+B`) basta. Los atajos por MAC llevaban 6 días muertos sin echarse de menos: "me funciona bastante bien por defecto tal como está". `SUPER+B` estaba libre y era migrable, así que no se descarta por coste sino porque el default gana (regla 10) |
+| 2026-08-28 | BT-2, BT-3 | `bt` y `bt-toggle` se quedan | Son comandos de un disparo, no demonios: no cuestan nada por estar. Y `bt-toggle` no tiene sustituto — ningún `omarchy-audio-*` cambia el perfil A2DP↔HFP de la tarjeta, así que borrarlo perdería el micro del auricular |
+| 2026-08-28 | WK-1 | Which-key descartado y `eww` desinstalado | Consecuencia directa de BT-1: el submap de bluetooth era lo que lo sostenía. Sin submaps propios, el daemon eww + socat + hoja de estilo no tiene a quién servir |
 | 2026-08-28 | VOX-1 | Se conservan los tres atajos de dictado | `SUPER+SPACE` es el que se usa; `F9` y `SUPER+CTRL+X` no estorban. Cierra la prueba que vencía el 2026-08-30 |
 | 2026-08-28 | VOX-6 | Tecleado por `dotool`, descartado `mode = "paste"` | Electron ignora el keymap sintético de `wtype` y se come los acentuados en Slack ([electron#46823](https://github.com/electron/electron/issues/46823), *not planned*). El paste inyectaba pulsaciones que chocaban con el SUPER del PTT; `dotool` manda keycodes evdev reales y Electron lo trata como teclado físico |
 | 2026-08-28 | VOX-8 | No arreglar los fallos latentes del limpiador | "Yo ya no lo veo al menos con esta configuración". No se manifiestan hoy; quedan documentados en vez de tocar un script que funciona |
