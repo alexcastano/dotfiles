@@ -97,6 +97,9 @@ Voxtype runs as a user systemd service and uses the remote `whisper.cpp` server 
 
 - Config: `~/.config/voxtype/config.toml` (tracked in `hyprland/.config/voxtype/`)
 - Post-process script: `bin/.local/bin/voxtype-clean-transcript` removes line wrapping inserted by `whisper.cpp` segments, including mid-word breaks.
+- Typing driver: `driver_order = ["dotool", "wtype", "clipboard"]`. **dotool is first on purpose.** `wtype` uploads a synthetic keymap over the Wayland virtual-keyboard protocol, and Electron ignores it, so accented characters vanish in Slack while the terminal is fine ([electron#46823](https://github.com/electron/electron/issues/46823), closed as *not planned*). dotool writes real evdev keycodes to `/dev/uinput`, which Electron treats as a physical keyboard.
+- **dotool needs the `input` group.** Its udev rule leaves `/dev/uinput` as `root:input 0620`, so a new machine needs `sudo usermod -aG input $USER` **and a re-login** — the user service inherits groups from the session. Without it dotool falls through to `wtype` and dictation still types, just with broken accents. Note the trade-off: `input` grants read access to all input devices.
+- dotool does not read the compositor's active layout: `dotool_xkb_layout` / `dotool_xkb_variant` must track `input.conf` (`us` / `altgr-intl`).
 
 ## Screen Sharing DND
 

@@ -59,17 +59,73 @@ language = "auto"
 translate = false
 
 [output]
-# Primary output mode: "type" or "clipboard"
-# - type: Simulates keyboard input at cursor position (requires ydotool)
+# Primary output mode: "type", "clipboard" or "paste"
+# - type: Simulates keyboard input at cursor position (via wtype)
 # - clipboard: Copies text to clipboard (requires wl-copy)
+# - paste: Copies to clipboard and sends the paste keystroke
+#
+# En "type" voxtype teclea con wtype, que sube un keymap sintético al
+# compositor. Electron (Slack) no lo respeta y se come los acentuados: la "ó"
+# desaparecía a mitad de frase mientras en la terminal salía bien. Es un bug
+# de Electron en Wayland con layouts de teclas muertas — el nuestro es
+# "English (intl., with AltGr dead keys)" — cerrado como "not planned":
+# https://github.com/electron/electron/issues/46823
+# "paste" se salta el keymap entero, pero obliga a inyectar una pulsación de
+# pegar, y eso trajo sus propios problemas (ver paste_keys más abajo).
+# Volvemos a "type" apoyándonos en dotool, que no usa el teclado virtual de
+# Wayland: escribe por /dev/uinput con keycodes evdev reales, así que Electron
+# lo ve como un teclado físico y aplica el layout de verdad.
+# Copia de la versión "paste" que funcionaba, por si hay que volver:
+#   ~/.local/state/voxtype-config-backups/config.toml.PASTE-shift-insert
 mode = "type"
 
 # Fall back to clipboard if typing fails
 fallback_to_clipboard = true
 
+# Orden de drivers para mode = "type".
+# dotool primero: es el único que no pasa por el keymap sintético de wtype, que
+# es lo que rompe los acentuados en Slack. Requiere pertenecer al grupo "input"
+# (regla udev /usr/lib/udev/rules.d/80-dotool.rules deja /dev/uinput en
+# root:input 0620) y volver a iniciar sesión para que el servicio de usuario
+# herede el grupo. wtype se queda detrás como red de seguridad: si dotool no
+# puede abrir uinput en otra máquina, el dictado sigue escribiendo aunque los
+# acentos salgan mal.
+driver_order = ["dotool", "wtype", "clipboard"]
+
+# dotool no lee el layout activo del compositor: hay que decírselo. Estos dos
+# tienen que seguir a input.conf (kb_layout = us,es / variant altgr-intl).
+# Si algún día dictas con el layout "es" seleccionado, esto se quedará corto.
+dotool_xkb_layout = "us"
+dotool_xkb_variant = "altgr-intl"
+
 # Delay between typed characters in milliseconds
 # 0 = fastest possible, increase if characters are dropped
 type_delay_ms = 1
+
+# Combinación que voxtype manda para pegar. INERTE mientras mode = "type";
+# se conserva porque costó encontrarla y es a lo que volvemos si dotool falla.
+# SHIFT+Insert y no SUPER+V: el "Universal paste" de Omarchy
+# (default/hypr/bindings/clipboard.lua:46) es un binding del compositor, y
+# meterle un SUPER inyectado con wtype mientras el PTT (SUPER+SPACE) tiene el
+# SUPER físico apretado dispara otros atajos — el menú de apagado, en la
+# prueba del 2026-08-27. Es el riesgo que el propio comentario de Omarchy
+# describe: "the physically held SUPER merges into the injected chord at the
+# seat". SHIFT+Insert no pasa por Hyprland (Insert no tiene ningún binding) y
+# pega igual en las dos partes: Alacritty, foot y ghostty lo traen como
+# clipboard-paste, y en Chromium/Electron es atajo de pegar nativo.
+paste_keys = "shift+insert"
+
+# Guarda el portapapeles antes de transcribir y lo devuelve tras pegar.
+# Por defecto voxtype lo deja sobrescrito; con esto el dictado deja de
+# pisar lo que tuvieras copiado. El retardo da tiempo a que la app lea el
+# portapapeles antes de restaurarlo.
+restore_clipboard = true
+restore_clipboard_delay_ms = 200
+
+# El PTT es SUPER+SPACE: sin esto lo que se teclea se mezcla con el SUPER que
+# todavía tienes apretado y salen chords en vez de texto. El precio es que si
+# no sueltas SUPER no aparece nada — es espera, no un fallo.
+wait_for_modifier_release = true
 
 # Post-processing command (optional)
 # Pipe transcribed text through an external command for cleanup before output.
