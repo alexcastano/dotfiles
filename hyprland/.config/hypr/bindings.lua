@@ -90,3 +90,16 @@ o.bind("MOD5 + code:18", "Next track", "omarchy-shell media next")
 -- Sin locked=true a propósito, igual que las de multimedia: no quiero poder
 -- abrir un micrófono desde la pantalla de bloqueo.
 o.bind("F8", "Toggle meeting recording", "voxtype-meeting-toggle")
+
+-- Apps preinstaladas de Omarchy que no uso: liberar el acorde en vez de
+-- arrastrar el bind. Signal está instalado pero no lo abro nunca (y si lo
+-- necesito, está en el lanzador), y HEY (calendario, correo y correo nuevo) es
+-- el stack de Basecamp que Omarchy trae por defecto pero que no es el mío.
+--
+-- Solo unbind, sin rebind: prefiero el acorde libre y visible en
+-- `omarchy menu keybindings` a un bind que no quiero. SUPER+SHIFT+G queda
+-- suelto (WhatsApp sigue en SUPER+SHIFT+ALT+G, sin cambios).
+hl.unbind("SUPER + SHIFT + G") -- era: Signal
+hl.unbind("SUPER + SHIFT + C") -- era: Calendar (HEY)
+hl.unbind("SUPER + SHIFT + E") -- era: Email (HEY)
+hl.unbind("SUPER + SHIFT + ALT + E") -- era: New email (HEY)

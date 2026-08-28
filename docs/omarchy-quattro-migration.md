@@ -394,7 +394,7 @@ Se cierra la prueba que vencía el 2026-08-30 sin retirar ninguno.
 
 | St. | ID | Entrada | En quattro |
 |---|---|---|---|
-| ⏭️ | CAP-1 | Submap `capture` (`SUPER+SHIFT+C`): editar, clipboard, grabar, color picker, share | **Descartado con el resto de submaps (2026-08-28).**  Cubierto casi al completo: `SUPER+CTRL+C` (menú de captura), `PRINT`, `ALT+PRINT` (grabar), `SUPER+PRINT` (picker), `SUPER+CTRL+S` (share). Además `SUPER+SHIFT+C` es ahora Calendar. |
+| ⏭️ | CAP-1 | Submap `capture` (`SUPER+SHIFT+C`): editar, clipboard, grabar, color picker, share | **Descartado con el resto de submaps (2026-08-28).**  Cubierto casi al completo: `SUPER+CTRL+C` (menú de captura), `PRINT`, `ALT+PRINT` (grabar), `SUPER+PRINT` (picker), `SUPER+CTRL+S` (share). Además `SUPER+SHIFT+C` era Calendar de HEY, ahora libre (BND-18). |
 | ⬜ | CAP-2 | `SUPER+SHIFT+F` screenshot `smart copy` | En quattro `SUPER+SHIFT+F` es el gestor de archivos. |
 | ⬜ | CAP-3 | `hypr/scripts/screencast-dnd` | Escucha DBus y activa DND al compartir pantalla, respetando el DND manual. **Roto**: usa `makoctl` y `bin/dnd-toggle`. Sustituto: `omarchy-toggle-notification-silencing`. Comprobar antes si Omarchy 4 ya lo hace solo. |
 | ⬜ | CAP-4 | — | Nuevo y relevante aquí: `SUPER+CTRL+PRINT` extrae texto (OCR) de un screenshot, y durante la selección hay control por teclado (`RETURN` ventana, `TAB` siguiente). |
@@ -455,15 +455,19 @@ de migrar cualquiera, mirar si ya existe.
 `SUPER+RETURN` terminal · `SUPER+ALT+RETURN` tmux · `SUPER+SHIFT+RETURN` y
 `SUPER+SHIFT+B` browser · `SUPER+SHIFT+ALT+B` browser privado · `SUPER+SHIFT+M`
 Spotify · `SUPER+SHIFT+ALT+M` cliamp · `SUPER+SHIFT+N` editor · `SUPER+SHIFT+D`
-lazydocker · `SUPER+SHIFT+G` Signal · `SUPER+SHIFT+A` ChatGPT ·
-`SUPER+SHIFT+ALT+A` Grok · `SUPER+SHIFT+E` email · `SUPER+SHIFT+Y` YouTube ·
-`SUPER+SHIFT+ALT+G` WhatsApp · `SUPER+SHIFT+CTRL+G` Google Messages ·
-`SUPER+SHIFT+X` X · `SUPER+SHIFT+ALT+X` X Post · más las líneas comentadas de
-Obsidian y Google Photos, que ahora existen de serie.
+lazydocker · `SUPER+SHIFT+A` ChatGPT · `SUPER+SHIFT+ALT+A` Grok ·
+`SUPER+SHIFT+Y` YouTube · `SUPER+SHIFT+ALT+G` WhatsApp ·
+`SUPER+SHIFT+CTRL+G` Google Messages · `SUPER+SHIFT+X` X ·
+`SUPER+SHIFT+ALT+X` X Post · más las líneas comentadas de Obsidian y Google
+Photos, que ahora existen de serie.
+
+(`SUPER+SHIFT+G` Signal y `SUPER+SHIFT+E` email salieron de esta lista: ver
+BND-18.)
 
 | St. | ID | Entrada |
 |---|---|---|
 | ⬜ | BND-1 | Confirmar uno a uno que el default hace lo mismo (ojo `SUPER+ALT+RETURN`: el propio pasaba `--dir` con `omarchy-cmd-terminal-cwd`) y borrarlos |
+| ✅ | BND-18 | **Apps preinstaladas que no se usan (2026-08-28).** `hl.unbind` de `SUPER+SHIFT+G` (Signal), `SUPER+SHIFT+C` (Calendar HEY), `SUPER+SHIFT+E` (Email HEY) y `SUPER+SHIFT+ALT+E` (New email HEY). Solo unbind, sin rebind: el acorde queda libre. Signal sigue instalado, solo pierde el atajo. Ojo: `SUPER+CTRL+ALT+D` sigue siendo Calendar, pero es el panel de la barra, no HEY. |
 
 ### 10b — Chocan con un default de quattro
 
