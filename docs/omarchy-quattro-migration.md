@@ -267,14 +267,34 @@ demonios. Los demonios de la época vieja (`waybar`, `mako`, `swayosd`,
 
 | St. | ID | Regla | Nota |
 |---|---|---|---|
-| ⬜ | WS-1 | Spotify → 10 | Instalado. |
-| ⬜ | WS-2 | slack → 9 | **`slack` ya no está instalado.** ¿Se reinstala o se cae la regla? |
-| ⬜ | WS-3 | ferdium → 9 | **`ferdium` ya no está instalado.** Idem. |
-| ⬜ | WS-4 | `chrome-web.whatsapp.com__-Default` → 9 | La clase depende de cómo se lance el webapp; verificar que no cambió (ver Bloque 8). |
-| ⬜ | WS-5 | teams-for-linux → 8 | Instalado. |
-| ⬜ | WS-6 | zen → 5 | Instalado. |
-| ⬜ | WS-7 | `chrome-web.telegram.org__-Default` → 3 | Igual que WS-4. |
-| ⬜ | WS-8 | Reglas propias de Omarchy 4 | `default/hypr/apps/*.lua` trae reglas para 1password, pip, steam, qemu, jetbrains, telegram… Revisar si alguna choca. |
+| ✅ | WS-1 | Spotify → 10 | **Restaurada.** Paquete `spotify` instalado, clase `Spotify` verificada en vivo. |
+| ✅ | WS-2 | slack → 9 | **Restaurada.** El aviso de "ya no está instalado" era un error de comprobación: el paquete se llama **`slack-desktop`**, no `slack`. Está instalado, corriendo, y su clase es `slack`. |
+| ⏭️ | WS-3 | ferdium → 9 | **Descartada.** `ferdium` no está instalado y no vuelve. El hueco de mensajería en el 9 ya lo llenan Slack y WhatsApp. |
+| ✅ | WS-4 | `chrome-web.whatsapp.com__-Default` → 9 | **Restaurada.** Clase verificada en vivo, sin cambios. `WEBAPP_CONTEXT=Personal` no toca el perfil de Chromium (solo lo lee `zen-open-url`), así que el sufijo sigue siendo `-Default`. |
+| ✅ | WS-5 | teams-for-linux → 8 | **Restaurada.** Instalado; clase sin verificar en vivo (no estaba abierto), pero es el nombre del binario/paquete y no cambió en quattro. |
+| ✅ | WS-6 | zen → 5 | **Restaurada.** `zen-browser-bin` instalado, clase `zen` verificada en vivo. |
+| ✅ | WS-7 | `chrome-web.telegram.org__-Default` → 3 | **Restaurada.** Clase verificada en vivo. Mismo razonamiento que WS-4. |
+| ✅ | WS-8 | Reglas propias de Omarchy 4 | **Sin colisiones.** Repasados los 19 ficheros de `/usr/share/omarchy/default/hypr/apps/`: la única regla de `workspace` de serie es `title = ".*is sharing.*"` → `special silent` (browser.lua). `telegram.lua` afecta al Telegram **nativo** (`org.telegram.desktop`), no al webapp. Los `tag` de `browser.lua` sí alcanzan a `zen` y a los webapps, pero solo aplican opacidad. |
+
+**Por qué se habían "perdido".** No las borró la migración: `windowrules.conf`
+seguía intacto en el repo, pero **muerto**. Quattro arranca por
+`hyprland.lua` (`hyprctl systeminfo` → `configProvider: lua`), y su lista de
+`require` no incluía las reglas; el `source =` que las cargaba vivía en
+`hyprland.conf`, que ya no lo lee nadie (REP-1). Las apps que parecían estar en
+su sitio estaban colocadas a mano.
+
+**Cómo quedan (2026-08-29).** Fichero nuevo `hypr/windowrules.lua` con
+`require("hypr.windowrules")` en `hyprland.lua`, en línea con los otros cinco
+módulos. La traducción es directa vía el helper de Omarchy:
+
+```lua
+o.window("Spotify", { workspace = "10 silent" })
+```
+
+`silent` se conserva tal cual dentro de la cadena — es el mismo patrón que usa
+Omarchy de serie en `default/hypr/apps/browser.lua`. `windowrules.conf`
+borrado, más su `source =` en `hyprland.conf` (regla 8). Archivo:
+`git show master:hyprland/.config/hypr/windowrules.conf`. **Bloque cerrado.**
 
 ## Bloque 4 — La barra (waybar → omarchy-shell)
 
@@ -615,6 +635,8 @@ a `~/.local/state/omarchy/current/theme` · `githooks/post-merge` ·
 | 2026-08-28 | REP-12 | Abierta entrada nueva: `~/.config/omarchy/` no está stowed | El hook `theme-set` (con un `eww reload`) llevaba 8 meses fuera del repo sin que nadie lo notase. Si el hook derivó, `shell.json` puede derivar igual — y ahí vive toda la barra |
 | 2026-08-28 | WK-2, WK-5, AUT-2, REP-9 | Barrido del which-key en el mismo día que WK-1 | Regla 8: los ficheros muertos se van en el commit de su entrada. `hyprland/.config/eww/` entero, `docs/which-key.md`, las dos `exec-once` de `autostart.conf` y la línea del índice de `AGENTS.md` |
 | 2026-08-28 | WK-1 | Which-key descartado y `eww` desinstalado | Consecuencia directa de BT-1: el submap de bluetooth era lo que lo sostenía. Sin submaps propios, el daemon eww + socat + hoja de estilo no tiene a quién servir |
+| 2026-08-29 | WS-3 | Ferdium se cae, Slack se queda | Ferdium no está instalado ni vuelve. Slack sí lo estaba: el paquete es `slack-desktop` y la comprobación buscaba `slack` a secas — hecho corregido antes de decidir, no después |
+| 2026-08-29 | WS-* | Las reglas viven en `windowrules.lua` propio, no al final de `hyprland.lua` | Omarchy sugiere colgarlas del entrypoint, pero eso mezcla "qué se carga" con "qué contiene". Un módulo más junto a los otros cinco cuesta una línea y mantiene el patrón |
 | 2026-08-28 | VOX-1 | Se conservan los tres atajos de dictado | `SUPER+SPACE` es el que se usa; `F9` y `SUPER+CTRL+X` no estorban. Cierra la prueba que vencía el 2026-08-30 |
 | 2026-08-28 | VOX-6 | Tecleado por `dotool`, descartado `mode = "paste"` | Electron ignora el keymap sintético de `wtype` y se come los acentuados en Slack ([electron#46823](https://github.com/electron/electron/issues/46823), *not planned*). El paste inyectaba pulsaciones que chocaban con el SUPER del PTT; `dotool` manda keycodes evdev reales y Electron lo trata como teclado físico |
 | 2026-08-28 | VOX-8 | No arreglar los fallos latentes del limpiador | "Yo ya no lo veo al menos con esta configuración". No se manifiestan hoy; quedan documentados en vez de tocar un script que funciona |
