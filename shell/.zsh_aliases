@@ -16,6 +16,8 @@ alias dhclient='dhclient -v'
 
 alias remotevnc="ssh -t -L 5900:localhost:5900 insomnia 'x11vnc -ncache 10 -localhost -display :0'"
 
+alias ssh_boot_powerant='ssh -i ~/.ssh/id_ed25519_w2 -o IdentitiesOnly=yes -p 222 root@192.168.1.10'
+
 alias ssh-fix='eval `ssh-agent` ; echo $SSH_AUTH_SOCK ; ssh-add'
 alias pg='ps aux | grep'
 
