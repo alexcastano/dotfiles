@@ -1,0 +1,40 @@
+# whisper.cpp server: OpenAI-compatible STT endpoint on :8080, Vulkan-accelerated.
+#
+# Consumed over Tailscale by voxtype, Home Assistant and OpenClaw, so it binds
+# 0.0.0.0 and must come up at boot without a login session.
+#
+# Vulkan comes from llama.cpp-vulkan (it provides ggml/libggml-vulkan); the
+# whisper-cpp package links against those system libs.
+#
+# Install: sudo ln -sf ~/.dotfiles/systemd/system/whisper-server.service \
+#            /etc/systemd/system/whisper-server.service
+#          sudo systemctl daemon-reload
+#          sudo systemctl enable --now whisper-server.service
+
+[Unit]
+Description=whisper.cpp Server (host bind, voxtype model, Vulkan)
+After=network-online.target
+Wants=network-online.target tailscaled.service
+# The unit file and the model both live under /home
+RequiresMountsFor=/home/alex
+
+[Service]
+Type=simple
+User=alex
+Group=alex
+ExecStart=/usr/bin/whisper-server \
+  --host 0.0.0.0 \
+  --port 8080 \
+  -m /home/alex/.local/share/voxtype/models/ggml-large-v3.bin \
+  --inference-path /v1/audio/transcriptions \
+  -l auto \
+  --no-timestamps \
+  --convert \
+  --tmp-dir /tmp \
+  -t 8
+ExecReload=/bin/kill -s HUP $MAINPID
+Restart=on-failure
+RestartSec=5
+
+[Install]
+WantedBy=multi-user.target

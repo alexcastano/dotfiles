@@ -10,6 +10,7 @@ This is a dotfiles repository using GNU Stow for symlinking. Main directories: `
 ## Documentation Index
 - [docs/omarchy-quattro-migration.md](docs/omarchy-quattro-migration.md) - **EN CURSO** (rama `quattro`): inventario de la migración de Omarchy 3 a quattro. **Lee la sección "Cómo trabajamos" antes de tocar `hyprland/`**: se decide entrada por entrada, sin sesgo por defecto y sin prisa.
 - [docs/hyprland.md](docs/hyprland.md) - Hyprland/Omarchy architecture and what to track
+- [docs/whisper-server.md](docs/whisper-server.md) - whisper.cpp STT server on :8080 (systemd unit, Vulkan via llama.cpp-vulkan)
 - [docs/webapps.md](docs/webapps.md) - Chromium webapps with Zen Browser integration (open-in-zen extension)
 - [docs/lazyvim.md](docs/lazyvim.md) - LazyVim architecture, plugin system, and customization patterns
 
