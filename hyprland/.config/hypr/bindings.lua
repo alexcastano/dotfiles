@@ -103,3 +103,14 @@ hl.unbind("SUPER + SHIFT + G") -- era: Signal
 hl.unbind("SUPER + SHIFT + C") -- era: Calendar (HEY)
 hl.unbind("SUPER + SHIFT + E") -- era: Email (HEY)
 hl.unbind("SUPER + SHIFT + ALT + E") -- era: New email (HEY)
+
+-- El toggle de luz nocturna de Omarchy lleva ON_TEMP=4000 fijo dentro de
+-- /usr/share/omarchy/bin/omarchy-toggle-nightlight, que no se puede editar
+-- (el paquete lo sobrescribe en cada update). Como el perfil automático de
+-- las 20:00 está a 3000 K, pulsar el atajo daba una luz distinta -- y más
+-- azul -- que la que entra sola por la noche.
+--
+-- nightlight-toggle lee la temperatura del propio hyprsunset.conf, así que
+-- manual y automático no pueden divergir: se cambia el valor en un sitio.
+hl.unbind("SUPER + CTRL + N")
+o.bind("SUPER + CTRL + N", "Toggle nightlight", "nightlight-toggle")

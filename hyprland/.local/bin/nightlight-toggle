@@ -1,0 +1,44 @@
+#!/bin/bash
+# Toggle the blue light filter, reusing the temperature from hyprsunset.conf.
+#
+# Replaces omarchy-toggle-nightlight, which hardcodes ON_TEMP=4000 in
+# /usr/share/omarchy/bin (not editable: the package overwrites it on update).
+# Reading the temperature from the config keeps one source of truth, so the
+# manual toggle and the 20:00 automatic profile always agree.
+
+CONF="${XDG_CONFIG_HOME:-$HOME/.config}/hypr/hyprsunset.conf"
+OFF_TEMP=6500
+IDENTITY_TEMP=6000 # hyprsunset shows no tint at 6000K; below that counts as on
+
+# Warmest temperature declared in the config; the daylight profile has none
+# (it uses `identity = true`), so this only ever matches nightlight profiles.
+night_temp() {
+    local temp
+    temp=$(grep -oP '^\s*temperature\s*=\s*\K[0-9]+' "$CONF" 2>/dev/null | sort -n | head -n1)
+    echo "${temp:-4000}"
+}
+
+current_temp() {
+    hyprctl hyprsunset temperature 2>/dev/null | grep -oE '[0-9]+' | head -n1
+}
+
+if ! pgrep -x hyprsunset >/dev/null; then
+    setsid uwsm-app -- hyprsunset >/dev/null 2>&1 &
+fi
+
+current=$(current_temp)
+if [[ -n "$current" ]] && ((current < IDENTITY_TEMP)); then
+    target=$OFF_TEMP
+else
+    target=$(night_temp)
+fi
+
+# A freshly-started hyprsunset applies its default temperature at the end of
+# its boot, overriding anything set before then -- so resend until it sticks.
+for _ in {1..10}; do
+    hyprctl hyprsunset temperature "$target" >/dev/null 2>&1
+    sleep 0.2
+    [[ $(current_temp) == "$target" ]] && break
+done
+
+omarchy-shell -q nightlight refresh
