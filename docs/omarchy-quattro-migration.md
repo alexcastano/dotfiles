@@ -296,7 +296,7 @@ Omarchy de serie en `default/hypr/apps/browser.lua`. `windowrules.conf`
 borrado, más su `source =` en `hyprland.conf` (regla 8). Archivo:
 `git show master:hyprland/.config/hypr/windowrules.conf`. **Bloque cerrado.**
 
-## Bloque 4 — La barra (waybar → omarchy-shell)
+## Bloque 4 — La barra (waybar → omarchy-shell) ✅ CERRADO
 
 waybar era la barra de Omarchy 3: proyecto de terceros del ecosistema Hyprland,
 configurada con JSONC + CSS. Quattro la sustituye por `omarchy-shell`, escrito
@@ -344,22 +344,62 @@ cambiado. Todo lo demás era default y no cuenta como pérdida.
 **Cosas de serie que había quitado:** el botón del logo (`custom/omarchy`) y los
 `persistent-workspaces` 1–5.
 
-### A decidir sobre la barra nueva
+### Lo que hay ahora (2026-08-30)
+
+`~/.config/omarchy/shell.json`, comparado con el default de quattro
+(`/usr/share/omarchy/config/omarchy/shell.json`):
+
+```
+izq:    menu · workspaces
+centro: indicators · clock · keyboard-layout · system-update · weather · timezones*
+dcha:   tray · notification-center* · tailscale · agents · bluetooth · network ·
+        audio · monitor · power
+```
+
+`*` = plugins de terceros instalados en `~/.config/omarchy/plugins/`:
+`io.github.sspaeti.timezones` (reloj mundial con rejilla horaria) y
+`shavanced.notification-center` (historial de notificaciones + DND). Ambos se
+declaran *theme-aware* en su manifest.
+
+Sobre el default se ha añadido: los dos plugins, `omarchy.tailscale`, y el
+`clock` con formato propio (`ddd d MMM HH:mm`) más `birthYear` / `lifeExpectancy`.
+
+**Ojo — no está stowed.** `shell.json` y `plugins/` son ficheros reales bajo
+`~/.config/omarchy/`, no symlinks al repo. Ver el bloque de stow.
+
+### Catálogo de widgets de quattro
+
+Registrados por `shell/services/BarWidgetRegistry.qml`. En uso los de arriba;
+**disponibles y sin usar**: `omarchy.media`, `omarchy.active-window`,
+`omarchy.microphone`, `omarchy.spacer`, `omarchy.wifiqr`, `omarchy.dropbox`,
+`omarchy.speedtest`, `omarchy.disk-speedtest`, `omarchy.battery`,
+`omarchy.nightlight`, `omarchy.reminders`.
+
+`omarchy.indicators` **agrupa** los indicadores de
+`shell/plugins/bar/indicators/`: `Dictation`, `Dnd`, `NightLight`, `Reminder`,
+`ScreenRecording` y `StayAwake`.
+
+### Decisión
 
 | St. | ID | Entrada | Nota |
 |---|---|---|---|
-| ⬜ | BAR-1 | workspaces, clock, weather, update, language, bluetooth, network, tray | Existen como `omarchy.*`. Comparar comportamiento, no presencia. |
-| ⬜ | BAR-2 | `pulseaudio`, `backlight` | `omarchy.audio` / `omarchy.monitor`. Verificar scroll para volumen y brillo. |
-| ⬜ | BAR-3 | **`cpu` `memory` `temperature` `disk` con barritas y umbrales** | **Sin equivalente en quattro**, y la única pérdida del bloque que pediría un plugin propio de quickshell (`~/.config/omarchy/plugins` + `plugins: []`, regla 7). Pero **sin prisa por decisión explícita (2026-08-24)**: la barra nueva ya cubre la mayoría del resto. Cuando se revisite, la pregunta buena no es "¿quiero los cuatro módulos?" sino "¿usaba el número, o solo el aviso `.critical`?" — lo segundo es mucho más barato de recuperar. |
-| ⬜ | BAR-4 | `battery` con vatios y aviso al 33 % | `omarchy.power`. Comparar si muestra % siempre y si el umbral se configura. |
-| ⬜ | BAR-5 | `power-profiles-daemon` | ¿Dentro de `omarchy.power`? Verificar. |
-| ⬜ | BAR-6 | `mpris` (artista – título) | Sin equivalente visible. Existe `omarchy-shell media`. |
-| ⬜ | BAR-7 | `group/tray-expander` (tray plegable) | `omarchy.tray` sin drawer. |
-| ⬜ | BAR-8 | `custom/voxtype` | voxtype trae OSD propio (`voxtype-osd-gtk4`). Ver VOX-4. |
-| ⬜ | BAR-9 | `custom/dnd` + los 3 indicadores | `omarchy.indicators` los agrupa. El script `dnd-status` murió con `makoctl` y se fue con el borrado. |
-| ⬜ | BAR-10 | `clock` con calendario anual y locale `en_GB` | `omarchy.clock` (con `birthYear`/`lifeExpectancy`). ¿Se puede el calendario anual? |
-| ⬜ | BAR-11 | Integración con el tema | Ver cómo tematiza omarchy-shell. |
+| ✅ | BAR-1 | workspaces, clock, weather, update, language, bluetooth, network, tray | Todos puestos y en uso diario. |
+| ✅ | BAR-2 | `pulseaudio`, `backlight` | `omarchy.audio` y `omarchy.monitor` puestos. El scroll no se verificó en banco: se da por bueno por uso. |
+| ⏸️ | BAR-3 | **`cpu` `memory` `temperature` `disk` con barritas y umbrales** | **La única pérdida real del bloque.** No hay equivalente: `omarchy.disk-speedtest` mide velocidad, no % de uso. Aparcada porque en 6 días de uso no se ha echado de menos. Si se revisita, la pregunta sigue siendo "¿usaba el número, o solo el aviso `.critical`?" — lo segundo es mucho más barato (plugin mínimo de quickshell en `~/.config/omarchy/plugins`). |
+| ✅ | BAR-4 | `battery` con vatios y aviso al 33 % | Dentro de `omarchy.power` (hay además `omarchy.battery` suelto sin usar). El umbral propio del 33 % no se ha reproducido y no se ha echado de menos. |
+| ✅ | BAR-5 | `power-profiles-daemon` | Cubierto por `omarchy.power`. |
+| ✅ | BAR-6 | `mpris` (artista – título) | **Corrige lo que decía este documento**: sí hay equivalente, `omarchy.media` (`shell/plugins/services/media/BarWidget.qml`). Se deja **sin poner** por decisión: no se ha echado de menos. Recuperable con una línea en `shell.json`. |
+| ✅ | BAR-7 | `group/tray-expander` (tray plegable) | `omarchy.tray` sin drawer. Se acepta. |
+| ✅ | BAR-8 | `custom/voxtype` | **No era una pérdida**: el indicador `Dictation` ya viene dentro de `omarchy.indicators`, que está en la barra. Más el OSD propio de voxtype (ver VOX-4). |
+| ✅ | BAR-9 | `custom/dnd` + los 3 indicadores | `omarchy.indicators` agrupa los seis, y el plugin `shavanced.notification-center` añade historial y DND — más de lo que hacía el `custom/dnd` propio, que era un script sobre `makoctl`. |
+| ✅ | BAR-10 | `clock` con calendario anual y locale `en_GB` | `omarchy.clock` configurado con formato propio. El calendario anual no se reprodujo y no se ha echado de menos. |
+| ✅ | BAR-11 | Integración con el tema | Nativa; los plugins de terceros también se declaran theme-aware. |
 | ✅ | BAR-12 | `hyprland/.config/waybar/` (3 ficheros) | **Borrado el 2026-08-24.** waybar desinstalada por el propio upgrade; mata también la trampa del restow que recreaba `~/.config/waybar`. |
+
+**Bloque cerrado el 2026-08-30.** La barra nueva se adopta tal cual y no se
+migra nada de waybar. La única entrada viva es BAR-3, aparcada. Lo que queda
+por hacer no es de la barra sino de stow: `shell.json` y `plugins/` no están
+versionados.
 
 ## Bloque 5 — Dictado (voxtype) ✅⬜
 
@@ -440,19 +480,23 @@ borrados, más su `source =` en `hyprland.conf`. **Bloque cerrado.**
 | ⏭️ | SUB-3 | Submap `notifications` (`SUPER+COMMA`) | **Descartado.** Además `makoctl` no existe, así que 5 de sus 6 acciones ya estaban muertas.  Cubierto al 100% de serie: `SUPER+comma` (última), `SUPER+SHIFT+comma` (todas), `SUPER+CTRL+comma` (silenciar), `SUPER+ALT+comma` (invocar), `SUPER+SHIFT+ALT+comma` (historial). Y `makoctl` no existe. Sin equivalente directo solo "dismiss group". |
 | ⏭️ | SUB-4 | Mecánica de los submaps | **Sin objeto**: no sobrevivió ninguno, así que no hay nada que rehacer con `hl.define_submap`. |
 
-## Bloque 8 — Webapps
+## Bloque 8 — Webapps ✅ CERRADO
 
 La migración regeneró los **3 lanzadores preinstalados de Omarchy** y se llevó
 `env WEBAPP_CONTEXT=Personal` y los iconos propios. Los 10 webapps creados a
 mano (ChatGPT, GitHub, Outlook, Gemini, Telegram, OneDrive…) están intactos.
 
+**Cerrado el 2026-09-13 sin trabajo**: verificado que lo que se perdió no hacía
+nada. Los 3 lanzadores siguen enlazados al repo (Omarchy escribió *a través* del
+symlink, así que el repo tiene ya su versión) y funcionan a diario.
+
 | St. | ID | Entrada | Nota |
 |---|---|---|---|
-| ⬜ | WEB-1 | WhatsApp, YouTube, Google Photos `.desktop` | Perdieron `WEBAPP_CONTEXT=Personal` y el `Icon=` propio. |
-| ⬜ | WEB-2 | Iconos | **Buena noticia**: los 12 PNG están versionados en `webapps/.local/share/applications/icons/`. Solo se renombró el directorio *vivo* a `.bak`; un restow los devuelve. |
-| ⬜ | WEB-3 | Que Omarchy no los vuelva a pisar | Los 3 afectados son justo los preinstalados. ¿Renombrarlos? ¿`omarchy-webapp-remove` y recrearlos como propios? |
-| ⬜ | WEB-4 | Integración open-in-zen | `WEBAPP_CONTEXT` + `bin/zen-open-url` + extensión en `webapps/.config/chromium-extensions/open-in-zen/` + `zen-open-handler.desktop`. ¿Sigue teniendo sentido con el `omarchy-launch-webapp` nuevo? Ver [webapps.md](webapps.md). |
-| ⬜ | WEB-5 | `install-webapps.sh` | Comparar con `omarchy-webapp-install` / `omarchy-webapp-remove`. ¿Sigue haciendo falta? |
+| ✅ | WEB-1 | WhatsApp, YouTube, Google Photos `.desktop` | **Sin pérdida real.** Perdieron `env WEBAPP_CONTEXT=Personal`, pero `zen-open-url` hace `CONTAINER="${WEBAPP_CONTEXT:-Personal}"`: **Personal ya es el valor por defecto**, así que el contenedor de Zen sale igual. El `Comment=` que también se fue no lo leía nadie. |
+| ✅ | WEB-2 | Iconos | **Se ven bien.** Los `.desktop` pasaron de un `Icon=` con ruta absoluta a `Icon=whatsapp` / `youtube` / `google-photos`, y quattro instala esos tres en `/usr/share/icons/hicolor/{48x48,256x256}/apps/`. Los otros 9 lanzadores siguen con su PNG propio enlazado desde `~/.local/share/applications/icons/`. Efecto colateral: `WhatsApp.png`, `YouTube.png` y `Google Photos.png` quedan versionados sin que nadie los use — se dejan, pesan nada. |
+| ⏭️ | WEB-3 | Que Omarchy no los vuelva a pisar | **Sin objeto tras WEB-1/WEB-2.** Si lo que escribe Omarchy encima funciona igual, que lo pise deja de ser un problema. Quien lo pisó fue `omarchy-upgrade-to-quattro`, que es de un solo uso, no el update normal. |
+| ✅ | WEB-4 | Integración open-in-zen | `WEBAPP_CONTEXT` + `bin/zen-open-url` + extensión en `webapps/.config/chromium-extensions/open-in-zen/` + `zen-open-handler.desktop`. **Sigue en pie y en uso.** Las 10 webapps propias conservan su `WEBAPP_CONTEXT=Work`/`Personal`, `zen-open-url` está intacto, y las 3 de Omarchy caen en Personal por el valor por defecto del script. Ver [webapps.md](webapps.md). |
+| ⏸️ | WEB-5 | `install-webapps.sh` | **Aparcada.** No estorba y no se ejecuta salvo en máquina nueva. Compararlo con `omarchy-webapp-install` / `omarchy-webapp-remove` es trabajo de la misma familia que REP-7 (`install-hyprland.sh`), así que se mira cuando se miren los instaladores, no ahora. |
 
 ## Bloque 9 — Scripts propios
 
@@ -465,7 +509,7 @@ mano (ChatGPT, GitHub, Outlook, Gemini, Telegram, OneDrive…) están intactos.
 | ⬜ | SCR-5 | `bin/.local/bin/zen-open-url` | Funciona. Ver WEB-4. |
 | ⬜ | SCR-6 | `analyze_code`, `llm_spend`, `voxtype-clean-transcript` | Sin relación con Omarchy. Solo verificar que siguen funcionando. |
 
-## Bloque 10 — Bindings sueltos
+## Bloque 10 — Bindings sueltos ✅ CERRADO
 
 Omarchy 4 trae **228 bindings de serie** (Omarchy 3 traía una fracción). Antes
 de migrar cualquiera, mirar si ya existe.
@@ -486,7 +530,7 @@ BND-18.)
 
 | St. | ID | Entrada |
 |---|---|---|
-| ⬜ | BND-1 | Confirmar uno a uno que el default hace lo mismo (ojo `SUPER+ALT+RETURN`: el propio pasaba `--dir` con `omarchy-cmd-terminal-cwd`) y borrarlos |
+| ✅ | BND-1 | **Confirmados y borrados (2026-09-13).** El aviso de `SUPER+ALT+RETURN` queda resuelto: el default también pasa el directorio actual (`omarchy-launch-terminal` hace `--dir="$(omarchy-cmd-terminal-cwd)"`). Única diferencia de conducta, aceptada: el propio abría **siempre sesión de tmux nueva** (`tmux new`) y el default **se engancha a una sesión llamada `Work`** o la crea (`tmux attach || tmux new -s Work`). |
 | ✅ | BND-18 | **Apps preinstaladas que no se usan (2026-08-28).** `hl.unbind` de `SUPER+SHIFT+G` (Signal), `SUPER+SHIFT+C` (Calendar HEY), `SUPER+SHIFT+E` (Email HEY) y `SUPER+SHIFT+ALT+E` (New email HEY). Solo unbind, sin rebind: el acorde queda libre. Signal sigue instalado, solo pierde el atajo. Ojo: `SUPER+CTRL+ALT+D` sigue siendo Calendar, pero es el panel de la barra, no HEY. |
 
 ### 10b — Chocan con un default de quattro
@@ -494,15 +538,15 @@ BND-18.)
 | St. | ID | Tecla | Era | Ahora es |
 |---|---|---|---|---|
 | ✅ | BND-2 | `SUPER+SPACE` | Dictado voxtype | **Se recupera para el dictado**; el menú a `SUPER+ALT+SPACE`. Ver VOX-1. |
-| ⬜ | BND-3 | `SUPER+D` | Lanzador (walker) | Libre. walker no existe; el menú es `SUPER+SPACE` y las apps `SUPER+ALT+SPACE`. |
-| ⬜ | BND-4 | `SUPER+W` / `SUPER+SHIFT+Q` | Pop window out / cerrar ventana | `SUPER+W` cierra ventana, `SUPER+O` es pop-out. |
-| ⬜ | BND-5 | `SUPER+I` / `SUPER+O` / `SUPER+P` | Spotify: anterior / play-pause / siguiente | `SUPER+O` pop-out, `SUPER+P` pseudo. **`playerctl` no está instalado**; quattro usa `omarchy-shell media next\|playPause\|previous` sobre las teclas `XF86Audio*`. Ojo: lo propio era específico de Spotify (`--player=spotify`), lo nuevo va al reproductor activo.  Depende de VOX-3: si se instala `playerctl`, los atajos propios vuelven a ser posibles. |
-| ⬜ | BND-6 | `SUPER+SHIFT+I/O/P` | Multimedia genérico | `SUPER+SHIFT+O` Obsidian, `SUPER+SHIFT+P` Google Photos. |
-| ⬜ | BND-7 | `SUPER+X` | Foco a ventana urgente | **Cortar universal** (`SUPER+C/V/X` funcionan también en terminales y paneles). ¿Se usaba de verdad "ventana urgente"? |
-| ⬜ | BND-8 | `SUPER+SHIFT+code:61` | Menú de keybindings | `SUPER+SHIFT+SLASH` es 1Password; el menú de keybindings es `SUPER+K`. |
-| ⬜ | BND-9 | `SUPER+CTRL+P` | Toggle pseudo | Panel de energía. Pseudo está en `SUPER+P`. |
-| ⬜ | BND-10 | `SUPER+SHIFT+W` | Typora | **`typora` no está instalado**; quattro pone ahí Omawrite. ¿Reinstalar, probar Omawrite, o nvim y a otra cosa? |
-| ⬜ | BND-11 | `SUPER+SHIFT+T` | btop | Libre; quattro usa `SUPER+CTRL+T`. |
+| ⏭️ | BND-3 | `SUPER+D` | Lanzador (walker) | **Todo por defecto (2026-09-13).** walker no existe. El menú es `SUPER+SPACE` (dictado, VOX-1) y `SUPER+ALT+SPACE`. `SUPER+D` queda suelto. |
+| ⏭️ | BND-4 | `SUPER+W` / `SUPER+SHIFT+Q` | Pop window out / cerrar ventana | **Todo por defecto (2026-09-13).** Se adoptan los de serie: `SUPER+W` cierra, `SUPER+O` saca la ventana. |
+| ⏭️ | BND-5 | `SUPER+I` / `SUPER+O` / `SUPER+P` | Spotify: anterior / play-pause / siguiente | `SUPER+O` pop-out, `SUPER+P` pseudo. **`playerctl` no está instalado**; quattro usa `omarchy-shell media next\|playPause\|previous` sobre las teclas `XF86Audio*`. Ojo: lo propio era específico de Spotify (`--player=spotify`), lo nuevo va al reproductor activo.  **Resuelto por otra vía**: el multimedia acabó en `AltGr+7/8/9` sobre `omarchy-shell media` (ver el comentario de `bindings.lua`), que vale para cualquier reproductor. Los `SUPER+I/O/P` propios se borran. |
+| ⏭️ | BND-6 | `SUPER+SHIFT+I/O/P` | Multimedia genérico | **Todo por defecto (2026-09-13).** Igual que BND-5: lo cubre `AltGr+7/8/9`. Los acordes vuelven a Obsidian y Google Photos. |
+| ⏭️ | BND-7 | `SUPER+X` | Foco a ventana urgente | **Todo por defecto (2026-09-13).** "No lo uso ya". Queda el **cortar universal** de Omarchy. |
+| ⏭️ | BND-8 | `SUPER+SHIFT+code:61` | Menú de keybindings | **Todo por defecto (2026-09-13).** `SUPER+K`. El acorde vuelve a 1Password. |
+| ⏭️ | BND-9 | `SUPER+CTRL+P` | Toggle pseudo | **Todo por defecto (2026-09-13).** Pseudo en `SUPER+P`; `SUPER+CTRL+P` vuelve a ser el panel de energía. |
+| ⏭️ | BND-10 | `SUPER+SHIFT+W` | Typora | **Todo por defecto (2026-09-13).** `typora` no está instalado y no vuelve. El acorde queda con Omawrite, el de serie. |
+| ⏭️ | BND-11 | `SUPER+SHIFT+T` | btop | **Todo por defecto (2026-09-13).** `SUPER+CTRL+T`. |
 | ✅ | BND-12 | `unbind SUPER+CTRL+X` | Se desbindeaba por peligroso en Omarchy 3 | Ahora es el toggle de dictado y se quiere: el `unbind` viejo se fue y el default se deja en paz. |
 
 ### 10c — Propios sin equivalente
@@ -510,10 +554,10 @@ BND-18.)
 | St. | ID | Binding | Nota |
 |---|---|---|---|
 | ⏭️ | BND-13 | `SUPER+H/J/K/L` foco y `SUPER+SHIFT+H/J/K/L` mover ventana | **Descartado 2026-08-23**: "no me importa, no lo uso mucho". Se borran sin sustituto; quedan los defaults con flechas. |
-| ⬜ | BND-14 | `SUPER+N` workspace vacío | Quattro tiene `SUPER+TAB` / `SUPER+SHIFT+TAB` para navegar. |
-| ⬜ | BND-15 | `SUPER+apostrophe` / `SUPER+SHIFT+apostrophe` | Último workspace / mover al último (costumbre de i3). Quattro: `SUPER+CTRL+TAB`. |
-| ⬜ | BND-16 | `SUPER+BACKSLASH` toggle split | Quattro lo pone en `SUPER+J`. |
-| ⬜ | BND-17 | `SUPER+Q` cambiar layout | Ver TEC-4. |
+| ✅ | BND-14 | `SUPER+N` workspace vacío | **Único binding propio que se conserva del bloque (2026-09-13).** "Lo único que me podría gustar es el `SUPER+N`". No hay equivalente: `SUPER+TAB`, `SUPER+SHIFT+TAB` y `SUPER+CTRL+TAB` navegan entre escritorios que ya existen, ninguno salta al primero libre. `SUPER+N` estaba suelto en quattro (`SUPER+SHIFT+N` es el editor), así que no desplaza ningún default. Rehecho en `bindings.lua` como `hl.dsp.focus({ workspace = "empty" })`. |
+| ⏭️ | BND-15 | `SUPER+apostrophe` / `SUPER+SHIFT+apostrophe` | Último workspace / mover al último (costumbre de i3). **Todo por defecto (2026-09-13).** `SUPER+CTRL+TAB` cubre el ir al último. **Mover la ventana al último se pierde**, sin sustituto — se acepta. |
+| ⏭️ | BND-16 | `SUPER+BACKSLASH` toggle split | **Todo por defecto (2026-09-13).** `SUPER+J`. |
+| ⏭️ | BND-17 | `SUPER+Q` cambiar layout | **Todo por defecto (2026-09-13).** Con un solo layout no hay nada que alternar. Se va con el script del OSD (TEC-4). |
 
 ## Bloque 11 — Monitores, aspecto y autostart
 
@@ -527,6 +571,7 @@ tiene una trampa: en cuanto se enchufe el LG vuelven las rayas.
 | ⬜ | MON-3 | ARZOPA portátil en `auto-left` | Siempre a la izquierda del portátil. Comprobar que `position = "auto-left"` funciona en `hl.monitor{}`. |
 | ⬜ | MON-4 | `decoration.rounding = 8` (`looknfeel.conf`) | Lo único que hacía ese fichero; el resto eran comentarios. |
 | ⬜ | AUT-1 | `exec-once = hyprsunset` | **Ya no hace falta**: `hyprsunset` está corriendo sin que lo lance nada propio, lo arranca Omarchy. Además hay toggle de nightlight en `SUPER+CTRL+N`. |
+| ⬜ | SUN-1 | **El indicador de la barra aplica 4000 K, no la temperatura propia** | Quattro tiene el valor de la luz nocturna escrito a fuego en **dos sitios distintos**: `ON_TEMP=4000` en `/usr/share/omarchy/bin/omarchy-toggle-nightlight` (atajo y menú) y `readonly property int nightTemperature: 4000` en `/usr/share/omarchy/shell/plugins/services/nightlight/Service.qml` (clic en el indicador de la barra). Ninguno de los dos lee `hyprsunset.conf`, y ninguno es editable: los sobrescribe el paquete en cada update. El primero ya está resuelto (`nightlight-toggle` propio, ver el registro del 2026-09-07). El segundo pide `omarchy plugin clone omarchy.nightlight` y editar `nightTemperature` en el clon — pero el clon cae en `~/.config/omarchy/plugins/`, **así que esto está bloqueado por REP-12** (ese directorio no está stowed). Mientras tanto: el indicador *muestra* el estado bien (usa el umbral `< 6000 K`, no el valor exacto); lo único que hace mal es el clic. |
 | ✅ | AUT-2 | `exec-once = eww daemon` + `which-key-daemon.sh` | **Fuera de `autostart.conf`** con WK-1. |
 | ⬜ | AUT-3 | `exec-once = screencast-dnd` | Ver CAP-3. |
 | ⬜ | INP-1 | Gestos de touchpad de 3 dedos | Estaban comentados, nunca activados. Quattro documenta `hl.gesture{}` con acciones por dirección. ¿Ahora sí? |
@@ -644,3 +689,10 @@ a `~/.local/state/omarchy/current/theme` · `githooks/post-merge` ·
 | 2026-08-24 | BAR-* | Bloque 4 a prioridad baja | "En la nueva barra ya existe la mayoría de estas cosas, así que mejor todavía". El resumen de lo que había queda escrito y visible; se revisita cuando toque, sin prisa |
 | 2026-08-23 | VOX-2 | Todo lo configurable va stowed y enlazado al repo, sin excepciones | Se usa en varias máquinas: lo que no está enlazado se queda en un solo ordenador y deriva en silencio. Esta entrada llevaba 4 meses derivada sin que nadie lo notase |
 | 2026-08-23 | VOX-1 | Dictado push-to-talk en `SUPER+SPACE`; menú de Omarchy a `SUPER+ALT+SPACE`; `SUPER+CTRL+X` intacto como toggle | Excepción a la regla 10 porque el estándar no cubre el caso: `F9` exige FnLock y dos manos, y `SUPER+CTRL+X` es un toggle de tres teclas. La acción más usada se lleva el chord más cómodo, y el menú solo pierde el atajo a las apps, que ya se buscan desde la raíz |
+| 2026-09-07 | SUN-1 | Luz nocturna a 3000 K, y `nightlight-toggle` propio que lee la temperatura de `hyprsunset.conf` | "Me gusta mi luz de noche pero la veo demasiado poco naranja". Los 4000 K de Omarchy son un filtro suave; 3000 K corta bastante más azul. El script propio existe porque el valor de Omarchy no es configurable, y **lee el `.conf` en vez de repetir la constante** para que manual y automático no puedan divergir: un solo sitio que tocar. Queda fuera el clic del indicador de la barra (SUN-1) |
+| 2026-08-30 | BAR-* | La barra nueva se adopta tal cual; no se migra nada de waybar | "La barra nueva me gusta mucho, no creo que tengamos que migrar nada". 6 días de uso sin echar nada de menos valen más que una comparación módulo a módulo |
+| 2026-09-13 | WEB-* | Bloque 8 cerrado sin tocar nada | Lo único que se perdió fue `WEBAPP_CONTEXT=Personal` en tres lanzadores, y `zen-open-url` ya usa Personal como valor por defecto. Los iconos los pone quattro en el tema del sistema. "Ya tenemos eso corriendo, al menos a mí me funciona" — comprobado antes de darlo por bueno, no después |
+| 2026-09-13 | BND-* | Todos los bindings propios del Bloque 10 se van, salvo `SUPER+N` | "Dejamos todo por defecto, lo demás no lo uso ya". Es la regla 10 aplicada de golpe: 14 entradas revisadas, 13 cubiertas por un default. El multimedia (BND-5, BND-6) ya se había resuelto por otra vía con `AltGr+7/8/9` |
+| 2026-09-13 | BND-14 | `SUPER+N` se conserva como excepción a la regla 10 | Es el único sin equivalente: los tres atajos de escritorio de quattro navegan entre escritorios existentes, ninguno salta al primero libre. Y el acorde estaba suelto, así que no desplaza ningún default: la excepción no cuesta deuda |
+| 2026-09-13 | BND-15 | Aceptada la pérdida de "mover ventana al último escritorio" | No hay default equivalente y mantenerlo era el único motivo para conservar un binding en `SUPER+apostrophe`. Se pierde a sabiendas, no por descuido |
+| 2026-08-30 | BAR-3 | cpu/memoria/temperatura/disco aparcada ⏸️, no descartada | Es la única pérdida real y pide código nuevo; aparcarla con el motivo escrito evita que se quede en ⬜ eterna |

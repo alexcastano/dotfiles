@@ -114,3 +114,11 @@ hl.unbind("SUPER + SHIFT + ALT + E") -- era: New email (HEY)
 -- manual y automático no pueden divergir: se cambia el valor en un sitio.
 hl.unbind("SUPER + CTRL + N")
 o.bind("SUPER + CTRL + N", "Toggle nightlight", "nightlight-toggle")
+
+-- Escritorio vacío nuevo: la única costumbre de i3 que sobrevive al repaso de
+-- atajos. Omarchy no trae equivalente -- SUPER+TAB y SUPER+CTRL+TAB navegan
+-- entre escritorios que ya existen, pero ninguno salta al primero libre.
+--
+-- SUPER+N estaba suelto en quattro (SUPER+SHIFT+N es el editor), así que no
+-- desplaza ningún default: excepción barata a la regla 10.
+o.bind("SUPER + N", "New empty workspace", hl.dsp.focus({ workspace = "empty" }))
