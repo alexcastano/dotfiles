@@ -1,0 +1,23 @@
+{
+  "schemaVersion": 1,
+  "id": "alex.pomodoro",
+  "name": "Pomodoro",
+  "version": "1.0.0",
+  "author": "alex",
+  "description": "Pomodoro technique timer with focus and break phases",
+  "kinds": [
+    "service",
+    "bar-widget"
+  ],
+  "keepLoaded": true,
+  "entryPoints": {
+    "service": "Service.qml",
+    "barWidget": "BarWidget.qml"
+  },
+  "barWidget": {
+    "displayName": "Pomodoro",
+    "description": "Focus timer with break cycles",
+    "category": "Time",
+    "allowMultiple": false
+  }
+}

@@ -13,6 +13,7 @@ This is a dotfiles repository using GNU Stow for symlinking. Main directories: `
 - [docs/whisper-server.md](docs/whisper-server.md) - whisper.cpp STT server on :8080 (systemd unit, Vulkan via llama.cpp-vulkan)
 - [docs/webapps.md](docs/webapps.md) - Chromium webapps with Zen Browser integration (open-in-zen extension)
 - [docs/lazyvim.md](docs/lazyvim.md) - LazyVim architecture, plugin system, and customization patterns
+- [docs/omarchy-pomodoro.md](docs/omarchy-pomodoro.md) - Pomodoro shell plugin (`alex.pomodoro`): bar timer, controls, IPC, settings
 
 ## Testing & Validation
 - Test scripts manually: `~/.local/bin/<script_name>`
