@@ -1,12 +1,62 @@
 # Migración a Omarchy quattro
 
-> **Lee "Cómo trabajamos" antes de tocar nada.** Esto no es una migración
-> rápida: es una lista para revisar entrada por entrada, decidiendo con
-> criterio. Se tacha sesión a sesión y no hay prisa.
+> **Terminada el 2026-09-21.** Queda como archivo: el *por qué* de cada decisión
+> de `hyprland/` está aquí y en ningún otro sitio. Lo que sigue abierto son
+> cuatro entradas que ya no son migración (ver [Estado final](#estado-final)).
+>
+> Si vuelves a abrirlo para decidir algo, **lee "Cómo trabajamos" primero**: las
+> reglas siguen valiendo.
 
 - **Rama**: `quattro` · **Rollback**: `master` (último Omarchy 3 funcionando)
 - **Punto de partida**: snapshot del working tree tras `omarchy-upgrade-to-quattro` (2026-08-22)
 - **Versiones**: Omarchy 4.0.0.alpha · Hyprland 0.56.2
+
+---
+
+## Estado final
+
+La migración se da por terminada el **2026-09-21**, con la regla 9 cumplida por
+el lado bueno: no se abandonó nada por cansancio, simplemente se acabó la lista.
+
+**Los 13 bloques están cerrados.** De las ~70 entradas del inventario, el
+reparto real fue: la mayoría se resolvieron **adoptando el default de quattro**,
+un puñado se restauraron porque no había equivalente, y exactamente **una añadió
+algo nuevo** (INP-1, los gestos).
+
+Lo que sobrevive como propio en `hyprland/` cabe en una lista:
+
+- El teclado (`input.lua`) — y está en revisión, ver TEC-2
+- El gesto de tres dedos (`input.lua`), que es el default de Hyprland descomentado
+- Dos bindings (`bindings.lua`): dictado en `SUPER+SPACE` y `SUPER+N`
+- Las reglas de escritorio (`windowrules.lua`)
+- `screencast-dnd` + su autostart
+- `nightlight-toggle` y `hyprsunset.conf`
+- La config de voxtype
+
+Todo lo demás es el default de Omarchy. `looknfeel.lua` y `monitors.lua` son la
+plantilla de quattro sin una sola línea propia.
+
+### Lo que sigue abierto, y por qué no es migración
+
+| Entrada | Qué es ahora |
+|---|---|
+| TEC-2 | Reabre TEC-1: "el altgr no me acaba de convencer, vamos a volver a lo que teníamos". Es una decisión de teclado nueva, con su propia investigación ya escrita arriba |
+| VOX-7 | Consecuencia de TEC-1. Se decide cuando se decida el teclado |
+| VOX-8 | Dos fallos latentes documentados a propósito para no diagnosticarlos dos veces. No se arreglan |
+| SUN-1 | Bloqueada por REP-12, que está aparcada por decisión explícita |
+
+### Deuda aceptada por escrito
+
+1. **REP-12**: `~/.config/omarchy/` (hooks y `shell.json`, o sea toda la barra)
+   sigue sin versionar. Es la única grieta viva del "todo va stowed", y ya costó
+   ocho meses de deriva silenciosa una vez.
+2. **REP-7**: al borrar `install-hyprland.sh`, los tres pasos manuales que
+   necesita una máquina nueva para el dictado (`pacman -S dotool`,
+   `usermod -aG input $USER`, volver a iniciar sesión) solo viven escritos aquí
+   y en `docs/hyprland.md`. Nada los ejecuta.
+3. **VOX-6 en esta máquina**: el grupo `input` no está aplicado, así que dotool
+   cae a `wtype`. El dictado funciona en todo menos en los acentos dentro de
+   Electron. Se deja a sabiendas.
 
 ---
 

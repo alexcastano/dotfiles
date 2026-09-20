@@ -9,7 +9,7 @@
 This is a dotfiles repository using GNU Stow for symlinking. Main directories: `bash/`, `git/`, `hyprland/`, `shell/`, `vim/`, `bin/`, `webapps/`.
 
 ## Documentation Index
-- [docs/omarchy-quattro-migration.md](docs/omarchy-quattro-migration.md) - **EN CURSO** (rama `quattro`): inventario de la migración de Omarchy 3 a quattro. **Lee la sección "Cómo trabajamos" antes de tocar `hyprland/`**: se decide entrada por entrada, sin sesgo por defecto y sin prisa.
+- [docs/omarchy-quattro-migration.md](docs/omarchy-quattro-migration.md) - **TERMINADA** (2026-09-21): el archivo de la migración de Omarchy 3 a quattro. Es donde vive el **porqué** de cada decisión de `hyprland/` — si algo de esa config parece raro, la respuesta está ahí antes que en el código. Para reabrir una entrada, lee primero "Cómo trabajamos".
 - [docs/hyprland.md](docs/hyprland.md) - Hyprland/Omarchy quattro: las tres capas, los módulos Lua, voxtype y el DND al compartir pantalla
 - [docs/whisper-server.md](docs/whisper-server.md) - whisper.cpp STT client side (voxtype). The server itself lives in the `homelab` repo: `powerant/whisper/`
 - [docs/webapps.md](docs/webapps.md) - Chromium webapps with Zen Browser integration (open-in-zen extension)
