@@ -2,14 +2,15 @@
 
 ## Important Rules
 - **Document discoveries**: When adding new features or scripts, suggest documenting them in `docs/`. Keep documentation minimal - just the essentials to understand what exists and where to investigate further.
-- **NEVER modify `~/.local/share/omarchy/`**: This is omarchy's git repo. Changes will be lost on updates. Use hooks or dotfiles instead.
+- **NEVER modify `/usr/share/omarchy/`**: since Omarchy 4 (quattro) this is a pacman package, so any change is lost on the next update. `~/.local/share/omarchy` is only a compatibility symlink to it — same rule. Use hooks or dotfiles instead.
+- **Hyprland is configured in Lua, not `.conf`**: the entrypoint is `hyprland/.config/hypr/hyprland.lua`. See [docs/hyprland.md](docs/hyprland.md).
 
 ## Repository Structure
 This is a dotfiles repository using GNU Stow for symlinking. Main directories: `bash/`, `git/`, `hyprland/`, `shell/`, `vim/`, `bin/`, `webapps/`.
 
 ## Documentation Index
 - [docs/omarchy-quattro-migration.md](docs/omarchy-quattro-migration.md) - **EN CURSO** (rama `quattro`): inventario de la migración de Omarchy 3 a quattro. **Lee la sección "Cómo trabajamos" antes de tocar `hyprland/`**: se decide entrada por entrada, sin sesgo por defecto y sin prisa.
-- [docs/hyprland.md](docs/hyprland.md) - Hyprland/Omarchy architecture and what to track
+- [docs/hyprland.md](docs/hyprland.md) - Hyprland/Omarchy quattro: las tres capas, los módulos Lua, voxtype y el DND al compartir pantalla
 - [docs/whisper-server.md](docs/whisper-server.md) - whisper.cpp STT client side (voxtype). The server itself lives in the `homelab` repo: `powerant/whisper/`
 - [docs/webapps.md](docs/webapps.md) - Chromium webapps with Zen Browser integration (open-in-zen extension)
 - [docs/lazyvim.md](docs/lazyvim.md) - LazyVim architecture, plugin system, and customization patterns

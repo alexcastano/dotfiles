@@ -1,176 +1,135 @@
-# Hyprland Configuration (Omarchy)
+# Hyprland / Omarchy (quattro)
 
-## Architecture Overview
+Omarchy es una capa de configuración sobre Hyprland: trae los defaults y el
+tema, y lo propio vive aparte. Desde Omarchy 4 (quattro) **la configuración es
+Lua**, no `.conf` — `hyprctl systeminfo` lo confirma (`configProvider: lua`).
 
-This system uses **Omarchy** as a configuration layer on top of Hyprland. Omarchy manages defaults and theming, while user customizations are kept separate.
+La migración desde Omarchy 3 está documentada entrada por entrada en
+[omarchy-quattro-migration.md](omarchy-quattro-migration.md), que es donde mirar
+el *por qué* de cualquier decisión de esta config.
 
-## Configuration Layers
+## Las tres capas
 
-### 1. Omarchy Defaults (DO NOT EDIT)
-Location: `~/.local/share/omarchy/default/`
+| Capa | Ruta | Regla |
+|---|---|---|
+| Defaults de Omarchy | `/usr/share/omarchy/default/` | **No tocar**: es un paquete pacman, se sobrescribe en cada update |
+| Tema actual | `~/.local/state/omarchy/current/theme` | Generado. Ojo: en Omarchy 3 esto vivía en `~/.config/omarchy/current` |
+| Config propia | `~/.config/hypr/` → **symlink al repo** | Se carga *después* de los defaults, así que gana |
 
-Contains default configurations for:
-- `hypr/` - Hyprland bindings, autostart, environment, input, windows
-- `waybar/` - Status bar configuration
-- `mako/` - Notification daemon
-- `alacritty/`, `ghostty/`, `kitty/` - Terminal emulators
-- And more...
+Como `~/.config/hypr` es un symlink al directorio del repo, **borrar un fichero
+del repo lo quita de la config viva al instante**, sin pasar por stow.
 
-### 2. Omarchy Themes
-Location: `~/.config/omarchy/themes/`
+`~/.config/omarchy/` (hooks, `shell.json` — toda la config de la barra) **no
+está versionado** todavía: ver REP-12 en el documento de migración.
 
-Each theme provides styling overrides:
-- `waybar.css` - Status bar styling
-- `mako.ini` - Notification colors
-- `hyprland.conf` - Visual settings
-- `hyprlock.conf` - Lock screen styling
-- `alacritty.toml`, `ghostty.conf`, etc.
+## Cómo carga
 
-Current theme symlinked at: `~/.config/omarchy/current/theme`
+`hyprland.lua` es el entrypoint. Hace `bootstrap.lua` (mete `~/.config` en
+`package.path`), luego `require("default.hypr.omarchy")` (todos los defaults), y
+después los módulos propios:
 
-### 3. User Overrides (TRACK THESE IN DOTFILES)
-Location: `~/.config/hypr/`
+| Módulo | Contenido |
+|---|---|
+| `monitors.lua` | Plantilla de quattro sin cambios (`preferred/auto/1`) |
+| `input.lua` | Teclado `us`+`altgr-intl` con Caps=Ctrl, y el gesto de 3 dedos |
+| `bindings.lua` | Solo dos excepciones: dictado en `SUPER+SPACE` y `SUPER+N` |
+| `looknfeel.lua` | Vacío: todo al default |
+| `autostart.lua` | `screencast-dnd` |
+| `windowrules.lua` | Apps fijadas a su escritorio (Spotify→10, Slack→9…) |
 
-These files are sourced AFTER omarchy defaults, so they override settings:
+Dos globales en cualquiera de ellos: **`hl`** (API de Hyprland) y **`o`**
+(helpers de Omarchy, en `/usr/share/omarchy/default/hypr/helpers.lua`).
+Los tipos para el editor salen de `/usr/share/hypr/stubs/hl.meta.lua`, que es a
+lo que apunta `.luarc.json`.
 
-| File | Purpose |
-|------|---------|
-| `hyprland.conf` | Main config - sources everything else |
-| `monitors.conf` | Monitor layout and resolution |
-| `input.conf` | Keyboard, mouse, touchpad settings |
-| `bindings.conf` | Custom keybindings |
-| `looknfeel.conf` | Visual tweaks (gaps, borders, animations) |
-| `autostart.conf` | Startup applications |
+Quedan dos `.conf` en el paquete, y **ninguno es de Hyprland**:
+`hyprsunset.conf` (lo lee `nightlight-toggle`) y `xdph.conf` (lo lee el portal
+de screencast; es copia exacta del default de quattro).
 
-## Omarchy Customization Philosophy
+## Bindings
 
-Omarchy maintains a clear separation between user and system files:
-- **User customizations**: `~/.config/` - yours to modify freely
-- **Omarchy internals**: `~/.local/share/omarchy/` - DO NOT edit
+Regla del repo: **lo más estándar posible**. Un binding propio hay que revisarlo
+en cada upgrade y puede chocar con un default nuevo, así que solo se justifica
+si el default no existe. Hoy hay exactamente dos excepciones, las dos razonadas
+en el comentario de `bindings.lua`.
 
-Omarchy provides initial configs in `~/.config/` but you own them. Edits persist through updates.
+```bash
+omarchy menu keybindings --print   # los bindings activos, con descripción
+```
 
-**Quick edit**: Use Omarchy menu (Super + Alt + Space) → Setup → Configs. Processes auto-restart after saving.
-
-**Reference**: https://learn.omacom.io/2/the-omarchy-manual/65/dotfiles
-
-## What to Track in Dotfiles
-
-**Include in `hyprland/` stow package:**
-- `~/.config/hypr/*.conf` - Hyprland user override files
-- `~/.config/waybar/config.jsonc` - Status bar config (if customized)
-- `~/.config/mako/config` - Notifications (if customized)
-
-**Do NOT include:**
-- `~/.config/waybar/style.css` - Symlinked to current theme
-- `~/.config/omarchy/` - Omarchy's own management folder
-- `~/.local/share/omarchy/` - Omarchy system files
-
-## Omarchy Hooks
-
-Location: `~/.config/omarchy/hooks/`
-
-Hooks are shell scripts that run on specific events:
-
-| Hook | Trigger |
-|------|---------|
-| `theme-set` | After theme change |
-| `font-set` | After font change |
-| `post-update` | After omarchy update |
-
-Create by removing `.sample` extension from example files.
-
-## Submaps
-
-Sequential keybindings with which-key popup. Files in `~/.config/hypr/submaps/`:
-- `Super+B` → Bluetooth device control
-- `Super+R` → Window resize mode
-- `Super+,` → Notification control (mako)
-
-## Custom Waybar Modules
-
-- `custom/dnd` - Do Not Disturb indicator (signal 9)
+**No sirve `hyprctl binds`**: con config Lua todos los bindings salen como
+`dispatcher: __lua, arg: N`, sin el comando. Las descripciones sí sobreviven.
+Por eso se borró el script propio `hyprkeys`: la información ya no existe.
 
 ## Voxtype
 
-Voxtype runs as a user systemd service and uses the remote `whisper.cpp` server on `powerant:8080`.
+Corre como servicio de usuario y transcribe contra el `whisper.cpp` remoto de
+`powerant:8080` (el servidor vive en el repo `homelab`).
 
-- Config: `~/.config/voxtype/config.toml` (tracked in `hyprland/.config/voxtype/`)
-- Post-process script: `bin/.local/bin/voxtype-clean-transcript` removes line wrapping inserted by `whisper.cpp` segments, including mid-word breaks.
-- Typing driver: `driver_order = ["dotool", "wtype", "clipboard"]`. **dotool is first on purpose.** `wtype` uploads a synthetic keymap over the Wayland virtual-keyboard protocol, and Electron ignores it, so accented characters vanish in Slack while the terminal is fine ([electron#46823](https://github.com/electron/electron/issues/46823), closed as *not planned*). dotool writes real evdev keycodes to `/dev/uinput`, which Electron treats as a physical keyboard.
-- **dotool needs the `input` group.** Its udev rule leaves `/dev/uinput` as `root:input 0620`, so a new machine needs `sudo usermod -aG input $USER` **and a re-login** — the user service inherits groups from the session. Without it dotool falls through to `wtype` and dictation still types, just with broken accents. Note the trade-off: `input` grants read access to all input devices.
-- dotool does not read the compositor's active layout: `dotool_xkb_layout` / `dotool_xkb_variant` must track `input.conf` (`us` / `altgr-intl`).
+- Config: `~/.config/voxtype/config.toml` (versionada en `hyprland/.config/voxtype/`)
+- Post-proceso: `bin/.local/bin/voxtype-clean-transcript` junta las líneas que
+  `whisper.cpp` mete por segmento — si no, el texto envía el mensaje a medias en
+  un chat y ejecuta la línea en una terminal.
+- Driver de tecleado: `driver_order = ["dotool", "wtype", "clipboard"]`.
+  **dotool va primero a propósito.** `wtype` sube un keymap sintético por el
+  protocolo virtual-keyboard y Electron no lo respeta, así que los acentos
+  desaparecen en Slack mientras en la terminal salen bien
+  ([electron#46823](https://github.com/electron/electron/issues/46823), cerrado
+  como *not planned*). dotool escribe keycodes evdev reales por `/dev/uinput` y
+  Electron lo trata como teclado físico.
+- **dotool necesita el grupo `input`.** Su regla udev deja `/dev/uinput` en
+  `root:input 0620`, así que una máquina nueva necesita
+  `sudo usermod -aG input $USER` **y volver a iniciar sesión** (el servicio de
+  usuario hereda los grupos de la sesión). Sin eso dotool cae a `wtype` y el
+  dictado sigue escribiendo, solo que con los acentos rotos en Electron.
+  El precio: `input` da lectura de todos los dispositivos de entrada.
+- dotool no lee el layout activo del compositor: `dotool_xkb_layout` y
+  `dotool_xkb_variant` tienen que seguir a `input.lua` (`us` / `altgr-intl`).
 
-## Screen Sharing DND
+## DND al compartir pantalla
 
-The `~/.config/hypr/scripts/screencast-dnd` daemon automatically enables Do Not Disturb mode when screen sharing starts and restores the previous state when it stops.
+`~/.config/hypr/scripts/screencast-dnd` silencia las notificaciones mientras
+compartes pantalla. No hay equivalente de serie en quattro.
 
-- Monitors DBus for `org.freedesktop.portal.ScreenCast` events
-- Uses `dnd-toggle --enable/--disable` for consistent OSD feedback
-- Preserves manual DND state (only disables if it enabled)
-- Started via `autostart.conf`
+- Escucha en DBus los eventos de `org.freedesktop.portal.ScreenCast`
+- Activa y desactiva con `omarchy-shell notifications setDnd on|off`, y consulta
+  con `dndState` (el `makoctl` + `dnd-toggle` de Omarchy 3 ya no existen)
+- **Respeta el DND manual**: el fichero de estado marca "lo encendí yo", así que
+  si ya lo tenías puesto ni lo toca ni lo apaga al terminar
+- Lo arranca `autostart.lua` con `o.launch_on_start` (o sea uwsm-app), para que
+  systemd lo recoja al cerrar sesión
 
-## Stow Package Structure
+## Estructura del paquete stow
 
 ```
 hyprland/
-├── .local/
-│   └── bin/
-│       ├── hyprkeys
-│       └── voxtype-clean-transcript
+├── .local/bin/nightlight-toggle      # toggle de luz nocturna a la temperatura de hyprsunset.conf
 └── .config/
     ├── hypr/
-    │   ├── hyprland.conf
-    │   ├── monitors.conf
-    │   ├── input.conf
-    │   ├── bindings.conf
-    │   ├── looknfeel.conf
-    │   ├── autostart.conf
-    │   ├── submaps.conf
-    │   ├── windowrules.conf
-    │   ├── submaps/
-    │   │   ├── bluetooth.conf
-    │   │   ├── resize.conf
-    │   │   └── notifications.conf
-    │   └── scripts/
-    │       └── screencast-dnd
-    ├── waybar/
-    │   ├── config.jsonc
-    │   ├── style.css
-    │   └── scripts/dnd-status
-    └── eww/
-        ├── eww.yuck
-        ├── eww.scss
-        └── which-key-daemon.sh
-
-bin/
-└── dnd-toggle
+    │   ├── hyprland.lua              # entrypoint
+    │   ├── monitors.lua  input.lua  bindings.lua
+    │   ├── looknfeel.lua  autostart.lua  windowrules.lua
+    │   ├── hyprsunset.conf  xdph.conf
+    │   ├── .luarc.json               # stubs de tipos para el editor
+    │   └── scripts/screencast-dnd
+    └── voxtype/config.toml
 ```
 
-**Theme integration pattern:** `waybar/style.css` uses `@import "../omarchy/current/theme/waybar.css"` to pull colors dynamically. This way the file is tracked but colors come from the current theme.
-
-## Useful Commands
+## Comandos útiles
 
 ```bash
-# Reload Hyprland config
-hyprctl reload
-
-# Check current monitors
-hyprctl monitors
-
-# List global keybindings (no submaps)
-hyprkeys
-
-# Switch Omarchy theme
-omarchy theme <theme-name>
+hyprctl reload                     # recargar la config
+hyprctl configerrors               # ver si la recarga se quejó
+hyprctl monitors                   # monitores y modos
+omarchy menu keybindings --print   # bindings activos
+omarchy theme <nombre>             # cambiar de tema
 ```
 
-`hyprkeys` is a custom script at `~/.local/bin/hyprkeys` (stowed from `hyprland/.local/bin/`). It wraps `hyprctl binds` filtering out submap entries and formatting the output like `omarchy-menu-keybindings --print` does.
+## Hooks de Omarchy
 
-## Source Order in hyprland.conf
+En `~/.config/omarchy/hooks/`, con `.d/` por evento: `theme-set`, `font-set`,
+`post-update`, `post-boot`, `battery-low`, `pre-refresh-pacman`. Se crean
+quitando la extensión `.sample` de los ejemplos.
 
-1. Omarchy defaults from `~/.local/share/omarchy/default/hypr/`
-2. Current theme from `~/.config/omarchy/current/theme/hyprland.conf`
-3. User overrides from `~/.config/hypr/*.conf`
-
-This means user settings always win.
+**Este directorio no está versionado** (REP-12). Ya costó una deriva silenciosa:
+un `theme-set` con un `eww reload` dentro sobrevivió 8 meses fuera del repo.

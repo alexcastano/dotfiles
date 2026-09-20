@@ -92,6 +92,13 @@ Exec=env WEBAPP_CONTEXT=Personal omarchy-launch-webapp https://web.whatsapp.com/
 ...
 ```
 
+> **Only needed for `Work`.** The three launchers Omarchy preinstalls (WhatsApp,
+> YouTube, Google Photos) lost their `env WEBAPP_CONTEXT=Personal` when
+> `omarchy-upgrade-to-quattro` regenerated them, and it made no difference:
+> `zen-open-url` falls back to `Personal` when the variable is unset. So set it
+> explicitly only when you want a container *other* than Personal — and expect
+> Omarchy to overwrite its own three launchers again on a major upgrade.
+
 Or create wrapper scripts in `~/.dotfiles/bin/`:
 
 ```bash
