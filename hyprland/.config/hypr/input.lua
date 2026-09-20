@@ -26,3 +26,12 @@ hl.config({
     kb_options = "ctrl:nocaps,compose:rctrl,shift:both_capslock_cancel",
   },
 })
+
+-- Cambiar de escritorio deslizando tres dedos por el touchpad.
+--
+-- Es la línea que quattro trae comentada en su propia plantilla
+-- (/usr/share/omarchy/config/hypr/input.lua), sin tocar: Omarchy no activa
+-- ningún gesto de serie, así que esto es el default de Hyprland descomentado,
+-- no un ajuste propio. En Omarchy 3 el equivalente era `gesture = 3,
+-- horizontal, workspace`, que estaba escrito pero nunca activado.
+hl.gesture({ fingers = 3, direction = "horizontal", action = "workspace" })
