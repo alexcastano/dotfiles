@@ -1,27 +1,42 @@
 #!/bin/bash
-# Disable notifications during screen sharing
-# Monitors DBus for xdg-desktop-portal screencast events
-# Preserves user's manual DND state
+# Silencia las notificaciones mientras compartes pantalla.
+#
+# Escucha en DBus los eventos del portal de screencast y activa el DND de
+# omarchy-shell al empezar, devolviéndolo a su sitio al terminar. Respeta el DND
+# manual: si ya lo tenías puesto, ni lo toca ni lo apaga al acabar (por eso el
+# fichero de estado — marca "lo encendí yo", no "está encendido").
+#
+# En quattro esto se hace con `omarchy-shell notifications`, que tiene IPC de
+# lectura (dndState) además de escritura (setDnd). La versión de Omarchy 3 usaba
+# makoctl y bin/dnd-toggle, los dos desaparecidos.
 
-STATE_FILE="/tmp/screencast-dnd-state"
+state_file="${XDG_RUNTIME_DIR:-/tmp}/screencast-dnd-state"
+
+# Arrancamos limpios: si una sesión anterior murió compartiendo pantalla, el
+# fichero sobraría y el primer Close apagaría un DND que no habíamos puesto.
+rm -f "$state_file"
+
+dnd_state() {
+  omarchy-shell notifications dndState 2>/dev/null
+}
 
 dbus-monitor --session "interface='org.freedesktop.portal.ScreenCast'" \
-                       "interface='org.freedesktop.portal.Session'" 2>/dev/null | \
-while read -r line; do
+                       "interface='org.freedesktop.portal.Session'" 2>/dev/null |
+  while read -r line; do
     case "$line" in
-        *"interface=org.freedesktop.portal.ScreenCast; member=Start"*)
-            # Screen sharing started
-            if ! makoctl mode | grep -q "do-not-disturb"; then
-                ~/.local/bin/dnd-toggle --enable
-                touch "$STATE_FILE"
-            fi
-            ;;
-        *"interface=org.freedesktop.portal.Session; member=Close"*)
-            # Screen sharing stopped
-            if [[ -f "$STATE_FILE" ]]; then
-                ~/.local/bin/dnd-toggle --disable
-                rm -f "$STATE_FILE"
-            fi
-            ;;
+      *"interface=org.freedesktop.portal.ScreenCast; member=Start"*)
+        # Empieza a compartir: solo silenciamos si no estaba ya silenciado.
+        if [[ "$(dnd_state)" != "on" ]]; then
+          omarchy-shell notifications setDnd on >/dev/null 2>&1
+          touch "$state_file"
+        fi
+        ;;
+      *"interface=org.freedesktop.portal.Session; member=Close"*)
+        # Deja de compartir: devolvemos el DND solo si lo pusimos nosotros.
+        if [[ -f "$state_file" ]]; then
+          omarchy-shell notifications setDnd off >/dev/null 2>&1
+          rm -f "$state_file"
+        fi
+        ;;
     esac
-done
+  done
