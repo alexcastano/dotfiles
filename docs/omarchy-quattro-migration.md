@@ -234,11 +234,11 @@ que más se nota; lo de abajo es lo que probablemente nunca se toque.
 |---|---|---|---|
 | ✅ | TEC-1 | `us` + `altgr-intl` + `ctrl:nocaps,compose:rctrl,shift:both_capslock_cancel` | Aplicado en `input.lua`. Ver la investigación arriba. |
 | 🔍 | TEC-2 | Prueba de campo de TEC-1 | Alt derecho y fluidez de `AltGr+n`. Decidir ~2026-08-30. |
-| ⬜ | TEC-3 | `repeat_delay = 600` | Omarchy pone 250. `repeat_rate` ya coincide (40). ¿600 era intencional o inercia? Único valor de input que difiere del default. |
-| ⬜ | TEC-4 | `SUPER+Q` cambiar layout + `hypr/scripts/keyboard-layout-osd` | Con un solo layout no hay nada que alternar, y el script usa `swayosd-client` (desinstalado; sustituto `omarchy-osd`). Queda vivo o se va entero según cómo acabe TEC-2. |
-| ⬜ | TEC-5 | Módulo `omarchy.keyboard-layout` en `shell.json` | Con un solo layout muestra siempre "US". ¿Se quita de la barra? |
-| ⬜ | TEC-6 | `/etc/vconsole.conf` | Sigue en `XKBLAYOUT=us` sin variante. Ponerlo con `localectl` haría que la TTY coincida con la sesión gráfica. ¿Merece la pena? |
-| ⬜ | TEC-7 | `device { name = tpps/2-elan-trackpoint }` | TrackPoint del ThinkPad: `sensitivity = -0.5`, `accel_profile = adaptive`. Migra a `hl.device({...})`. Confirmar el nombre con `hyprctl devices`. |
+| ✅ | TEC-3 | `repeat_delay = 600` | **Default 250 (2026-09-21).** `input.conf` llevaba muerto desde el 22 de agosto, así que el 250 ya se estaba viviendo un mes sin queja: la prueba de campo se hizo sola. Era inercia, no intención. |
+| ✅ | TEC-4 | `SUPER+Q` cambiar layout + `keyboard-layout-osd` | **Borrados (2026-09-21).** Con un solo layout no hay nada que alternar, y el script hablaba con `swayosd-client`, desinstalado. El binding ya se había ido con BND-17. |
+| ⏸️ | TEC-5 | Módulo `omarchy.keyboard-layout` en `shell.json` | **Aparcada (2026-09-21)**, junto con TEC-6: depende de si se vuelve al layout anterior. Además vive en `shell.json`, bloqueado por REP-12. |
+| ⏸️ | TEC-6 | `/etc/vconsole.conf` | **Aparcada (2026-09-21).** "Esto del altgr no me acaba de convencer, creo que vamos a volver a lo que teníamos antes." Alinear la TTY con un layout que puede cambiar sería trabajo tirado; se decide cuando se decida TEC-1. |
+| ✅ | TEC-7 | `device { name = tpps/2-elan-trackpoint }` | **Default (2026-09-21).** Mismo razonamiento que TEC-3: un mes con el TrackPoint a sensibilidad normal sin echarlo de menos. No se porta a `hl.device{}`. |
 
 ## Bloque 2 — Bluetooth ⏭️✅
 
@@ -455,9 +455,9 @@ Se cierra la prueba que vencía el 2026-08-30 sin retirar ninguno.
 | St. | ID | Entrada | En quattro |
 |---|---|---|---|
 | ⏭️ | CAP-1 | Submap `capture` (`SUPER+SHIFT+C`): editar, clipboard, grabar, color picker, share | **Descartado con el resto de submaps (2026-08-28).**  Cubierto casi al completo: `SUPER+CTRL+C` (menú de captura), `PRINT`, `ALT+PRINT` (grabar), `SUPER+PRINT` (picker), `SUPER+CTRL+S` (share). Además `SUPER+SHIFT+C` era Calendar de HEY, ahora libre (BND-18). |
-| ⬜ | CAP-2 | `SUPER+SHIFT+F` screenshot `smart copy` | En quattro `SUPER+SHIFT+F` es el gestor de archivos. |
-| ⬜ | CAP-3 | `hypr/scripts/screencast-dnd` | Escucha DBus y activa DND al compartir pantalla, respetando el DND manual. **Roto**: usa `makoctl` y `bin/dnd-toggle`. Sustituto: `omarchy-toggle-notification-silencing`. Comprobar antes si Omarchy 4 ya lo hace solo. |
-| ⬜ | CAP-4 | — | Nuevo y relevante aquí: `SUPER+CTRL+PRINT` extrae texto (OCR) de un screenshot, y durante la selección hay control por teclado (`RETURN` ventana, `TAB` siguiente). |
+| ⏭️ | CAP-2 | `SUPER+SHIFT+F` screenshot `smart copy` | **Descartado (2026-09-21).** `PRINT` y el menú de `SUPER+CTRL+C` cubren la captura; en quattro el acorde es el gestor de archivos y no se le disputa (regla 10). |
+| ✅ | CAP-3 | `hypr/scripts/screencast-dnd` | **Resucitado (2026-09-21)**: "esto me encantaba y lo echo de menos". Llevaba sin arrancar desde el 22 de agosto (su `exec-once` vivía en el `autostart.conf` muerto). Reescrito contra `omarchy-shell notifications`, que tiene IPC de lectura (`dndState`) y de escritura (`setDnd on|off`) — el `makoctl mode` + `dnd-toggle` de Omarchy 3 ya no existen. Se conserva lo que lo hacía bueno: el fichero de estado marca "lo encendí yo", así que un DND manual previo ni se toca ni se apaga al dejar de compartir. Añadido `rm -f` al arrancar, porque una sesión que muera compartiendo pantalla dejaba el fichero y el siguiente `Close` apagaba un DND ajeno. No hay equivalente de serie en quattro: `SUPER+CTRL+coma` silencia a mano, pero nada reacciona al portal. |
+| ✅ | CAP-4 | — | Anotado y nada que hacer: `SUPER+CTRL+PRINT` hace OCR de un screenshot, y durante la selección hay control por teclado (`RETURN` ventana, `TAB` siguiente). Feature nueva, no tarea. |
 
 ## Bloque 7 — Which-key y submaps ⏭️ CERRADO
 
@@ -502,12 +502,12 @@ symlink, así que el repo tiene ya su versión) y funcionan a diario.
 
 | St. | ID | Script | Estado |
 |---|---|---|---|
-| ⬜ | SCR-1 | `hyprland/.local/bin/hyprkeys` | **Irreparable, no solo roto.** Listaba bindings parseando `hyprctl -j binds`, pero con config Lua el comando ya no se expone (`dispatcher: __lua`). La información no existe. Sustituto: `omarchy-menu-keybindings` (`SUPER+K`). |
-| ⬜ | SCR-2 | `bin/.local/bin/dnd-toggle` | Roto por triple: `makoctl`, `swayosd-client` y `pkill -RTMIN+9 waybar`. `omarchy-toggle-notification-silencing` hace lo mismo con su propio indicador. |
-| ⬜ | SCR-3 | `hypr/scripts/screencast-dnd` | Ver CAP-3. |
-| ⬜ | SCR-4 | `hypr/scripts/keyboard-layout-osd` | Ver TEC-4. |
-| ⬜ | SCR-5 | `bin/.local/bin/zen-open-url` | Funciona. Ver WEB-4. |
-| ⬜ | SCR-6 | `analyze_code`, `llm_spend`, `voxtype-clean-transcript` | Sin relación con Omarchy. Solo verificar que siguen funcionando. |
+| ✅ | SCR-1 | `hyprland/.local/bin/hyprkeys` | **Borrado (2026-09-21).** Irreparable: con config Lua `hyprctl binds` ya no expone el comando. Sustituto `SUPER+K`. |
+| ✅ | SCR-2 | `bin/.local/bin/dnd-toggle` | **Borrado (2026-09-21).** Roto por triple (`makoctl`, `swayosd-client`, `pkill waybar`). Lo que lo usaba era `screencast-dnd`, que ahora llama al IPC de omarchy-shell directamente. |
+| ✅ | SCR-3 | `hypr/scripts/screencast-dnd` | Ver CAP-3: reescrito y de vuelta en el autostart. |
+| ✅ | SCR-4 | `hypr/scripts/keyboard-layout-osd` | **Borrado** con TEC-4. |
+| ✅ | SCR-5 | `bin/.local/bin/zen-open-url` | Funciona; Bloque 8 cerrado sin tocarlo. Nada que hacer. |
+| ✅ | SCR-6 | `analyze_code`, `llm_spend`, `voxtype-clean-transcript` | Sin relación con Omarchy. `voxtype-clean-transcript` se verificó vivo en VOX-2; los otros dos no dependen de nada que quattro tocase. |
 
 ## Bloque 10 — Bindings sueltos ✅ CERRADO
 
@@ -566,14 +566,14 @@ tenía este bloque (MON-2, las rayas del LG) se resolvió sola: el monitor muri�
 
 | St. | ID | Entrada | Nota |
 |---|---|---|---|
-| ⬜ | MON-1 | `GDK_SCALE=1` + `monitor=,preferred,auto,1` | La plantilla nueva ya trae exactamente esto. |
+| ✅ | MON-1 | `GDK_SCALE=1` + `monitor=,preferred,auto,1` | **Nada que hacer (2026-09-21)**: `monitors.lua` ya trae exactamente eso de plantilla. |
 | ⏭️ | MON-2 | Override del LG UltraGear a `2560x1440@120` | **Descartada: el monitor se murió (2026-09-21).** El panel ya no arranca, así que el workaround de las rayas negras se va con él. Bloque borrado de `monitors.conf`; cuando llegue el sustituto se configura de cero, sin arrastrar el `desc:` del viejo. Archivo: `git show master:hyprland/.config/hypr/monitors.conf`. |
-| ⬜ | MON-3 | ARZOPA portátil en `auto-left` | Siempre a la izquierda del portátil. Comprobar que `position = "auto-left"` funciona en `hl.monitor{}`. |
-| ⬜ | MON-4 | `decoration.rounding = 8` (`looknfeel.conf`) | Lo único que hacía ese fichero; el resto eran comentarios. |
-| ⬜ | AUT-1 | `exec-once = hyprsunset` | **Ya no hace falta**: `hyprsunset` está corriendo sin que lo lance nada propio, lo arranca Omarchy. Además hay toggle de nightlight en `SUPER+CTRL+N`. |
+| ⏭️ | MON-3 | ARZOPA portátil en `auto-left` | **Descartada (2026-09-21)**: "no la estoy usando". Se borra con `monitors.conf`; si vuelve, `position = "auto-left"` es una línea. |
+| ✅ | MON-4 | `decoration.rounding = 8` | **Default (2026-09-21).** Un mes con el `rounding` de quattro (0) sin echarlo de menos. `looknfeel.conf` borrado; `looknfeel.lua` se queda con la plantilla comentada. |
+| ✅ | AUT-1 | `exec-once = hyprsunset` | **Se borra sin sustituto (2026-09-21)**: lo arranca Omarchy. `hyprsunset.conf` sí se queda, que es de donde `nightlight-toggle` lee la temperatura (REP-3). |
 | ⬜ | SUN-1 | **El indicador de la barra aplica 4000 K, no la temperatura propia** | Quattro tiene el valor de la luz nocturna escrito a fuego en **dos sitios distintos**: `ON_TEMP=4000` en `/usr/share/omarchy/bin/omarchy-toggle-nightlight` (atajo y menú) y `readonly property int nightTemperature: 4000` en `/usr/share/omarchy/shell/plugins/services/nightlight/Service.qml` (clic en el indicador de la barra). Ninguno de los dos lee `hyprsunset.conf`, y ninguno es editable: los sobrescribe el paquete en cada update. El primero ya está resuelto (`nightlight-toggle` propio, ver el registro del 2026-09-07). El segundo pide `omarchy plugin clone omarchy.nightlight` y editar `nightTemperature` en el clon — pero el clon cae en `~/.config/omarchy/plugins/`, **así que esto está bloqueado por REP-12** (ese directorio no está stowed). Mientras tanto: el indicador *muestra* el estado bien (usa el umbral `< 6000 K`, no el valor exacto); lo único que hace mal es el clic. |
 | ✅ | AUT-2 | `exec-once = eww daemon` + `which-key-daemon.sh` | **Fuera de `autostart.conf`** con WK-1. |
-| ⬜ | AUT-3 | `exec-once = screencast-dnd` | Ver CAP-3. |
+| ✅ | AUT-3 | `exec-once = screencast-dnd` | **Rehecho en `autostart.lua`** con CAP-3, por `o.launch_on_start` (uwsm-app) en vez de `exec-once` a pelo: es un demonio de sesión y así systemd lo recoge al cerrar sesión. La ruta se compone con `os.getenv` en vez de dejar un `$HOME` al shell de `exec`. |
 | ⬜ | INP-1 | Gestos de touchpad de 3 dedos | Estaban comentados, nunca activados. Quattro documenta `hl.gesture{}` con acciones por dirección. ¿Ahora sí? |
 
 ## Bloque 12 — Idle y lock ✅ CERRADO
@@ -590,13 +590,13 @@ tenía este bloque (MON-2, las rayas del LG) se resolvió sola: el monitor muri�
 
 | St. | ID | Fichero | Nota |
 |---|---|---|---|
-| ⬜ | REP-1 | `hypr/hyprland.conf` | Ya no lo lee nadie. Borrar cuando los bloques 1–11 hayan vaciado los `.conf`. |
-| ⬜ | REP-2 | `hypr/hypridle.conf`, `hypr/hyprlock.conf` | **Listos para borrar**: IDLE-3 e IDLE-4 cerrados, ninguno de los dos binarios está instalado y nadie los lee. Quedan dos referencias colgando que se van con su propia entrada: `install-hyprland.sh` los instala (REP-7) y `docs/hyprland.md` documenta el estilo del lock (REP-8). |
-| ⬜ | REP-3 | `hypr/hyprsunset.conf` | **Sigue vivo y sigue siendo `.conf` en quattro.** Solo verificar. |
-| ⬜ | REP-4 | `hypr/xdph.conf` | Sigue vivo (`allow_token_by_default`, `custom_picker_binary`). Comparar con el default de quattro. |
-| ⬜ | REP-5 | `hypr/.luarc.json` | Lo puso la migración; apunta a los stubs. Confirmar que se quiere versionado. |
+| ✅ | REP-1 | `hypr/hyprland.conf` | **Borrado (2026-09-21).** Su última línea viva era el `env = SSH_AUTH_SOCK`, ya cubierto por el paquete `ssh/` (`cb15c6f`). Con esto `hyprland/` es Lua puro más tres `.conf` que no son de Hyprland. |
+| ✅ | REP-2 | `hypr/hypridle.conf`, `hypr/hyprlock.conf` | **Borrados (2026-09-21)** con IDLE-3 e IDLE-4 cerrados. Ninguno de los dos binarios está instalado. |
+| ✅ | REP-3 | `hypr/hyprsunset.conf` | **Se queda.** Sigue siendo `.conf` en quattro y es la fuente de la temperatura para `nightlight-toggle` (ver SUN-1). |
+| ✅ | REP-4 | `hypr/xdph.conf` | **Se queda, pero no era config propia**: es **byte a byte** el default de quattro (`/usr/share/omarchy/config/hypr/xdph.conf`). El portal lo lee de `~/.config/hypr/`, así que el fichero tiene que existir ahí. Decisión sin decisión. |
+| ✅ | REP-5 | `hypr/.luarc.json` | **Se queda versionado.** Apunta a los stubs de `/usr/share/hypr/stubs`, que es lo que da autocompletado y tipos al editar los `.lua` — o sea sirve en cualquier máquina, no solo en esta. |
 | ✅ | REP-6 | **`i3/` (45 ficheros)** | **Borrado (2026-08-28)**. No solo i3+i3blocks: el directorio guardaba también `.config/polybar/` (6 ficheros) y `.config/rofi/` + `.local/share/rofi/themes/` (8), igual de muertos — **rofi tampoco está instalado** y quattro lanza `omarchy-launch-walker`. Verificado antes de borrar: nada stowed (`~/.config/{i3,rofi,polybar}` no existían), ningún paquete instalado, todo X11 (`xss-lock`, `xinput`, `setxkbmap`, `feh`, `xset dpms`, `dex --environment i3`), y las `APIKEY` de `openweather` eran placeholders literales. Recuperable en `git show 22e4155:i3/…`. Arrastró: sección "i3blocks Scripts" y comandos de *Testing* de `AGENTS.md`, y en `install-hyprland.sh` el paquete `rofi-wayland` más 5 líneas de comentarios de un agente preguntándose dónde vivía la config de rofi. Y se llevó por delante el `pkill -RTMIN+10 i3blocks` muerto de `bin/.local/bin/bt`, que BT-2 había dejado a propósito. |
-| ⬜ | REP-7 | `install-hyprland.sh` | Instala `hypridle`, `hyprlock`, `waybar`, `mako`, `swayosd-git` y clona omarchy a mano. Obsoleto de arriba abajo. ¿Reescribir o borrar? |
+| ⏭️ | REP-7 | `install-hyprland.sh` | **Borrado (2026-09-21)**, no reescrito. Instalaba `hypridle`, `hyprlock`, `waybar`, `mako`, `swayosd-git` y clonaba omarchy a mano: obsoleto de arriba abajo. **Deuda aceptada a sabiendas**: los tres pasos manuales de una máquina nueva (`pacman -S dotool`, `usermod -aG input $USER`, re-login) se quedan sin sitio ejecutable; están escritos en VOX-6 y nada más. |
 | ⬜ | REP-8 | `docs/hyprland.md` | Describe la arquitectura de Omarchy 3 (waybar, mako, rutas viejas). Reescribir al terminar. |
 | ✅ | REP-9 | `docs/which-key.md` | **Borrado** con WK-1, y fuera del índice de `AGENTS.md`. Archivo: `git show master:docs/which-key.md`. |
 | ⬜ | REP-10 | `docs/webapps.md` | Verificar contra el Bloque 8. |
@@ -696,6 +696,11 @@ a `~/.local/state/omarchy/current/theme` · `githooks/post-merge` ·
 | 2026-09-13 | WEB-* | Bloque 8 cerrado sin tocar nada | Lo único que se perdió fue `WEBAPP_CONTEXT=Personal` en tres lanzadores, y `zen-open-url` ya usa Personal como valor por defecto. Los iconos los pone quattro en el tema del sistema. "Ya tenemos eso corriendo, al menos a mí me funciona" — comprobado antes de darlo por bueno, no después |
 | 2026-09-13 | BND-* | Todos los bindings propios del Bloque 10 se van, salvo `SUPER+N` | "Dejamos todo por defecto, lo demás no lo uso ya". Es la regla 10 aplicada de golpe: 14 entradas revisadas, 13 cubiertas por un default. El multimedia (BND-5, BND-6) ya se había resuelto por otra vía con `AltGr+7/8/9` |
 | 2026-09-13 | BND-14 | `SUPER+N` se conserva como excepción a la regla 10 | Es el único sin equivalente: los tres atajos de escritorio de quattro navegan entre escritorios existentes, ninguno salta al primero libre. Y el acorde estaba suelto, así que no desplaza ningún default: la excepción no cuesta deuda |
+| 2026-09-21 | TEC-3, TEC-7, MON-4 | Tres ajustes propios se van al default | Los tres vivían en `.conf` muertos desde el 22 de agosto, o sea que llevaban un mes sin aplicarse y nadie los echó de menos. La prueba de campo la hizo el accidente; confirmarla es más honesto que restaurarlos |
+| 2026-09-21 | TEC-5, TEC-6 | Layout en la barra y `vconsole` aparcados | "Esto del altgr no me acaba de convencer, creo que vamos a volver a lo que teníamos antes". Las dos entradas son consecuencias de TEC-1; decidirlas antes de reabrir TEC-1 sería trabajo tirado |
+| 2026-09-21 | CAP-3 | `screencast-dnd` se resucita, no se borra | "Esto me encantaba y lo echo de menos" — la única entrada del barrido que se salva. Quattro no lo hace de serie, y el IPC nuevo (`dndState`/`setDnd`) permite conservar lo que lo hacía bueno: respetar el DND manual |
+| 2026-09-21 | REP-7 | `install-hyprland.sh` se borra en vez de reescribirse | El agente recomendó reescribirlo pequeño para alojar los pasos manuales de dotool; el usuario decidió borrarlo. Se acepta la deuda por escrito: una máquina nueva dictará con los acentos rotos hasta que alguien lea VOX-6 |
+| 2026-09-21 | MON-3 | ARZOPA descartada | "No la estoy usando". Con el LG muerto y la ARZOPA fuera, `monitors.conf` se queda sin contenido propio y se borra entero |
 | 2026-09-21 | MON-2 | El override del LG se borra en vez de portarse a Lua | El monitor murió. Portar una línea `desc:` de un panel que ya no existe es arrastrar deuda por definición; el sustituto se configurará de cero |
 | 2026-09-13 | BND-15 | Aceptada la pérdida de "mover ventana al último escritorio" | No hay default equivalente y mantenerlo era el único motivo para conservar un binding en `SUPER+apostrophe`. Se pierde a sabiendas, no por descuido |
 | 2026-08-30 | BAR-3 | cpu/memoria/temperatura/disco aparcada ⏸️, no descartada | Es la única pérdida real y pide código nuevo; aparcarla con el motivo escrito evita que se quede en ⬜ eterna |
