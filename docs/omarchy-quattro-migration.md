@@ -561,13 +561,13 @@ BND-18.)
 
 ## Bloque 11 — Monitores, aspecto y autostart
 
-Baja prioridad por decisión explícita ("los monitores dan igual"), pero MON-2
-tiene una trampa: en cuanto se enchufe el LG vuelven las rayas.
+Baja prioridad por decisión explícita ("los monitores dan igual"). La trampa que
+tenía este bloque (MON-2, las rayas del LG) se resolvió sola: el monitor murió.
 
 | St. | ID | Entrada | Nota |
 |---|---|---|---|
 | ⬜ | MON-1 | `GDK_SCALE=1` + `monitor=,preferred,auto,1` | La plantilla nueva ya trae exactamente esto. |
-| ⬜ | MON-2 | Override del LG UltraGear a `2560x1440@120` | **Workaround temporal**: a 4K por HDMI salen rayas negras (fallo del panel; aparece hasta en el OSD del monitor). No depende de Omarchy, sigue aplicando. ¿Llegó ya el hub USB-C → DisplayPort? |
+| ⏭️ | MON-2 | Override del LG UltraGear a `2560x1440@120` | **Descartada: el monitor se murió (2026-09-21).** El panel ya no arranca, así que el workaround de las rayas negras se va con él. Bloque borrado de `monitors.conf`; cuando llegue el sustituto se configura de cero, sin arrastrar el `desc:` del viejo. Archivo: `git show master:hyprland/.config/hypr/monitors.conf`. |
 | ⬜ | MON-3 | ARZOPA portátil en `auto-left` | Siempre a la izquierda del portátil. Comprobar que `position = "auto-left"` funciona en `hl.monitor{}`. |
 | ⬜ | MON-4 | `decoration.rounding = 8` (`looknfeel.conf`) | Lo único que hacía ese fichero; el resto eran comentarios. |
 | ⬜ | AUT-1 | `exec-once = hyprsunset` | **Ya no hace falta**: `hyprsunset` está corriendo sin que lo lance nada propio, lo arranca Omarchy. Además hay toggle de nightlight en `SUPER+CTRL+N`. |
@@ -696,5 +696,6 @@ a `~/.local/state/omarchy/current/theme` · `githooks/post-merge` ·
 | 2026-09-13 | WEB-* | Bloque 8 cerrado sin tocar nada | Lo único que se perdió fue `WEBAPP_CONTEXT=Personal` en tres lanzadores, y `zen-open-url` ya usa Personal como valor por defecto. Los iconos los pone quattro en el tema del sistema. "Ya tenemos eso corriendo, al menos a mí me funciona" — comprobado antes de darlo por bueno, no después |
 | 2026-09-13 | BND-* | Todos los bindings propios del Bloque 10 se van, salvo `SUPER+N` | "Dejamos todo por defecto, lo demás no lo uso ya". Es la regla 10 aplicada de golpe: 14 entradas revisadas, 13 cubiertas por un default. El multimedia (BND-5, BND-6) ya se había resuelto por otra vía con `AltGr+7/8/9` |
 | 2026-09-13 | BND-14 | `SUPER+N` se conserva como excepción a la regla 10 | Es el único sin equivalente: los tres atajos de escritorio de quattro navegan entre escritorios existentes, ninguno salta al primero libre. Y el acorde estaba suelto, así que no desplaza ningún default: la excepción no cuesta deuda |
+| 2026-09-21 | MON-2 | El override del LG se borra en vez de portarse a Lua | El monitor murió. Portar una línea `desc:` de un panel que ya no existe es arrastrar deuda por definición; el sustituto se configurará de cero |
 | 2026-09-13 | BND-15 | Aceptada la pérdida de "mover ventana al último escritorio" | No hay default equivalente y mantenerlo era el único motivo para conservar un binding en `SUPER+apostrophe`. Se pierde a sabiendas, no por descuido |
 | 2026-08-30 | BAR-3 | cpu/memoria/temperatura/disco aparcada ⏸️, no descartada | Es la única pérdida real y pide código nuevo; aparcarla con el motivo escrito evita que se quede en ⬜ eterna |
