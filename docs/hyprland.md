@@ -31,7 +31,7 @@ después los módulos propios:
 | Módulo | Contenido |
 |---|---|
 | `monitors.lua` | Plantilla de quattro sin cambios (`preferred/auto/1`) |
-| `input.lua` | Teclado `us`+`altgr-intl` con Caps=Ctrl, y el gesto de 3 dedos |
+| `input.lua` | Teclado `us`+`intl` con Caps=Ctrl, y el gesto de 3 dedos |
 | `bindings.lua` | Solo dos excepciones: dictado en `SUPER+SPACE` y `SUPER+N` |
 | `looknfeel.lua` | Vacío: todo al default |
 | `autostart.lua` | `screencast-dnd` |
@@ -84,7 +84,7 @@ Corre como servicio de usuario y transcribe contra el `whisper.cpp` remoto de
   dictado sigue escribiendo, solo que con los acentos rotos en Electron.
   El precio: `input` da lectura de todos los dispositivos de entrada.
 - dotool no lee el layout activo del compositor: `dotool_xkb_layout` y
-  `dotool_xkb_variant` tienen que seguir a `input.lua` (`us` / `altgr-intl`).
+  `dotool_xkb_variant` tienen que seguir a `input.lua` (hoy `us` / `intl`).
 
 ## DND al compartir pantalla
 

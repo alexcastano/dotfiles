@@ -278,16 +278,18 @@ para alternar.
 Ordenada por impacto en "esto vuelve a ser mío", no por tema. Lo de arriba es lo
 que más se nota; lo de abajo es lo que probablemente nunca se toque.
 
-## Bloque 1 — Teclado ✅🔍
+## Bloque 1 — Teclado ✅🔍 (reabierto 2026-09-21)
 
 | St. | ID | Entrada | Notas |
 |---|---|---|---|
 | ✅ | TEC-1 | `us` + `altgr-intl` + `ctrl:nocaps,compose:rctrl,shift:both_capslock_cancel` | Aplicado en `input.lua`. Ver la investigación arriba. |
-| 🔍 | TEC-2 | Prueba de campo de TEC-1 | Alt derecho y fluidez de `AltGr+n`. Decidir ~2026-08-30. |
+| ⏭️ | TEC-2 | Prueba de campo de TEC-1 | **Cerrada en contra (2026-09-21).** El Alt derecho no se echó de menos, pero `AltGr+vocal` nunca llegó a salir natural: "ha sido un precioso experimento pero no he llegado a acostumbrarme nunca del todo". Continúa en TEC-8. |
 | ✅ | TEC-3 | `repeat_delay = 600` | **Default 250 (2026-09-21).** `input.conf` llevaba muerto desde el 22 de agosto, así que el 250 ya se estaba viviendo un mes sin queja: la prueba de campo se hizo sola. Era inercia, no intención. |
 | ✅ | TEC-4 | `SUPER+Q` cambiar layout + `keyboard-layout-osd` | **Borrados (2026-09-21).** Con un solo layout no hay nada que alternar, y el script hablaba con `swayosd-client`, desinstalado. El binding ya se había ido con BND-17. |
 | ⏸️ | TEC-5 | Módulo `omarchy.keyboard-layout` en `shell.json` | **Aparcada (2026-09-21)**, junto con TEC-6: depende de si se vuelve al layout anterior. Además vive en `shell.json`, bloqueado por REP-12. |
 | ⏸️ | TEC-6 | `/etc/vconsole.conf` | **Aparcada (2026-09-21).** "Esto del altgr no me acaba de convencer, creo que vamos a volver a lo que teníamos antes." Alinear la TTY con un layout que puede cambiar sería trabajo tirado; se decide cuando se decida TEC-1. |
+| 🔍 | TEC-8 | **Prueba: `us(intl)` en vez de `us(altgr-intl)`** (2026-09-21) | "El altgr no me convence, a veces no escribo el acento en la letra que toca." Se prueba la variante con **teclas muertas**: `'`+a = á, sin mantener ningún modificador — el mismo gesto que el layout `es` de siempre, pero sin cambiar de layout. `AltGr+a` y `AltGr+n` siguen funcionando. **Coste**: `' " ` ~` pasan a ser teclas muertas (literal con AltGr+tecla o tecla+espacio), que es exactamente lo que descartó `us(intl)` en TEC-1 por "infierno para escribir código" — **esto es lo que hay que medir esta vez**, escribiendo código de verdad. Verificado que `RALT` sigue siendo `ISO_Level3_Shift`, así que los `MOD5+code:16/17/18` de multimedia no se tocan. Arrastra `dotool_xkb_variant = "intl"` en `voxtype/config.toml` (si no, los acentos del dictado vuelven a romperse en Slack, VOX-6). **Qué se decide**: si las comillas muertas se pueden vivir escribiendo código, y si el acento cae donde toca. Revisar ~2026-09-28 |
+| ⬜ | TEC-9 | Diagnóstico del fallo real de TEC-2 | Tres causas posibles y solo dos las arregla la disposición: (1) se pierde el acento (rollover, AltGr no registra), (2) se acentúa la letra siguiente (AltGr soltado tarde), (3) el acento se decide **después** de escribir la vocal — esta última no la arregla ni `intl` ni `es`, porque en los dos el acento va antes. Anotar cuál es al vivir TEC-8. **Pista encontrada al aplicar TEC-8 (2026-09-21)**: hay un `fcitx5` corriendo (PID vivo, `--disable notificationitem`) y su teclado virtual sale como `main: True` en `hyprctl devices` — y es el **único** que se quedó en `altgr-intl` tras el `hyprctl reload`; los nueve físicos pasaron a `intl`. Un teclado virtual sube su propio keymap y no sigue a `input.lua`. Si algún método de entrada está pasando por ahí, el layout efectivo no era el que creíamos. Sin verificar: hace falta probar escribiendo |
 | ✅ | TEC-7 | `device { name = tpps/2-elan-trackpoint }` | **Default (2026-09-21).** Mismo razonamiento que TEC-3: un mes con el TrackPoint a sensibilidad normal sin echarlo de menos. No se porta a `hl.device{}`. |
 
 ## Bloque 2 — Bluetooth ⏭️✅
