@@ -1,0 +1,163 @@
+#!/usr/bin/env bash
+# dig2go-sync — Sincroniza la cuerda LED (WLED dig2go) con el estado de Orochimaru:
+#   - Hub USB presente  y sesión desbloqueada -> encendida con el accent del tema Omarchy
+#   - Hub ausente       o sesión bloqueada    -> apagado total
+#
+# Eventos:
+#   * udevadm monitor  -> alta/baja del hub (05e3:0625 en puerto 2-1)
+#   * polling ligero   -> estado de lock via `omarchy-shell lock isLocked`
+#   * hook theme-set.d -> cambio de tema (llama a este script: dig2go-sync apply <slug>)
+#
+# Uso: dig2go-sync               (daemon en foreground)
+#      dig2go-sync apply         (aplica estado una vez y sale)
+#      dig2go-sync apply <slug>  (aplica con el color del tema indicado)
+
+set -uo pipefail
+
+WLED_HOST="${DIG2GO_HOST:-192.168.1.144}"
+HUB_SYSFS="/sys/bus/usb/devices/2-1"     # Genesys USB3.2 Hub 05e3:0625
+HUB_MATCH="05e3:0625"
+LOCK_POLL_SECONDS=3
+BRI=180
+TRANSITION=10                              # 1.0s en unidades de WLED (x100ms)
+STATE_FILE="${XDG_RUNTIME_DIR:-/tmp}/dig2go-sync.state"
+
+log() { logger -t dig2go-sync -- "$*"; }
+
+theme_slug() {
+    omarchy theme current 2>/dev/null | tr '[:upper:] ' '[:lower:]-' | sed 's/[-_]*$//'
+}
+
+theme_accent() {
+    local slug="$1" f
+    for f in "$HOME/.config/omarchy/themes/$slug/colors.toml" \
+             "/usr/share/omarchy/themes/$slug/colors.toml"; do
+        if [[ -f "$f" ]]; then
+            local c
+            c=$(sed -n 's/^accent[[:space:]]*=[[:space:]]*"\(#[0-9a-fA-F]\{6\}\)".*/\1/p' "$f" | head -1)
+            [[ -n "$c" ]] && { echo "$c"; return 0; }
+        fi
+    done
+    echo "#ffffff"
+}
+
+hex_to_rgb() {
+    local hex="${1#\#}"
+    echo "$((16#${hex:0:2})) $((16#${hex:2:2})) $((16#${hex:4:2}))"
+}
+
+# Los accent de los temas Omarchy suelen ser pasteles (mucha leche) y a traves del
+# difusor de la cuerda se leen como blanco. Subimos saturacion conservando el tono.
+saturate() {
+    python3 - "$1" <<'PYEOF'
+import sys, colorsys
+hexs = sys.argv[1].lstrip('#')
+r, g, b = (int(hexs[i:i+2], 16) / 255 for i in (0, 2, 4))
+h, l, s = colorsys.rgb_to_hls(r, g, b)
+# Tono intacto, saturacion maxima y luminosidad 0.5: los pasteles del tema se leen
+# blancos a traves del difusor de la cuerda; asi sale color duro (verificado A/B 2026-09-22)
+l = 0.5
+s = 1.0
+r, g, b = colorsys.hls_to_rgb(h, l, s)
+print('#%02x%02x%02x' % (round(r*255), round(g*255), round(b*255)))
+PYEOF
+}
+
+hub_present() { [[ -d "$HUB_SYSFS" ]]; }
+
+session_locked() {
+    [[ "$(omarchy-shell lock isLocked 2>/dev/null)" == "true" ]]
+}
+
+wled_on() {
+    local hex="$1" r g b
+    read -r r g b <<<"$(hex_to_rgb "$hex")"
+    curl -fsS --max-time 5 -X PUT "http://$WLED_HOST/json/state" \
+        -H 'Content-Type: application/json' \
+        -d "{\"on\":true,\"bri\":$BRI,\"transition\":$TRANSITION,\"seg\":[{\"id\":0,\"start\":0,\"stop\":50,\"fx\":0,\"col\":[[$r,$g,$b]]}]}" \
+        >/dev/null
+}
+
+wled_off() {
+    curl -fsS --max-time 5 -X PUT "http://$WLED_HOST/json/state" \
+        -H 'Content-Type: application/json' \
+        -d "{\"on\":false,\"transition\":$TRANSITION}" >/dev/null
+}
+
+apply() {
+    local slug hex want_state cur
+    slug="$(theme_slug)"
+    hex="$(saturate "${FORCED_HEX:-$(theme_accent "$slug")}")"
+
+    if hub_present && ! session_locked; then
+        want_state="on"
+    else
+        want_state="off"
+    fi
+
+    cur="$(cat "$STATE_FILE" 2>/dev/null || echo unknown)"
+
+    if [[ "$want_state" == "on" ]]; then
+        [[ "$cur" == "on $hex" ]] && return 0
+        if wled_on "$hex"; then
+            echo "on $hex" >"$STATE_FILE"
+            log "cuerda ON ($hex) [hub=si locked=no]"
+        else
+            log "AVISO: dig2go ($WLED_HOST) no responde, estado no guardado"
+        fi
+    else
+        [[ "$cur" == "off" ]] && return 0
+        if wled_off; then
+            echo "off" >"$STATE_FILE"
+            log "cuerda OFF [hub=$(hub_present && echo si || echo no) locked=$(session_locked && echo si || echo no)]"
+        else
+            log "AVISO: dig2go ($WLED_HOST) no responde (off), estado no guardado"
+        fi
+    fi
+}
+
+# --- Modo aplicación puntual (hook de tema / manual) --------------------------
+if [[ "${1:-}" == "apply" ]]; then
+    if [[ -n "${2:-}" ]]; then
+        FORCED_HEX="$(theme_accent "$2")"
+        log "hook theme-set: slug=$2 accent=$FORCED_HEX"
+    fi
+    apply
+    exit 0
+fi
+
+# --- Modo daemon --------------------------------------------------------------
+log "daemon iniciado (hub=$HUB_SYSFS, wled=$WLED_HOST)"
+
+# Estado inicial
+apply
+
+# Hilo udev: eventos del hub hacia un FIFO (fd 3 abierto una sola vez)
+UDEV_FIFO="$(mktemp -u "${TMPDIR:-/tmp}/dig2go-udev.XXXXXX")"
+mkfifo "$UDEV_FIFO"
+cleanup() { exec 3<&- 3>&- 2>/dev/null; rm -f "$UDEV_FIFO"; }
+trap cleanup EXIT
+
+exec 3<>"$UDEV_FIFO"
+# OJO: `udevadm monitor --udev` a secas solo imprime la linea resumen sin propiedades;
+# hay que pedir --property para que el PRODUCT=5e3/625 sea grepeable.
+udevadm monitor --udev --property --subsystem=usb 2>/dev/null | \
+    grep --line-buffered -E "PRODUCT=5e3/625" >"$UDEV_FIFO" &
+UDEV_PID=$!
+
+last_locked="$(session_locked && echo true || echo false)"
+
+while true; do
+    # 1) ¿Evento del hub? (espera como mucho LOCK_POLL_SECONDS)
+    if read -r -t "$LOCK_POLL_SECONDS" -u 3 line; then
+        log "evento udev: $line"
+        apply
+    fi
+    # 2) ¿Cambió el estado de lock? (polling barato)
+    now_locked="$(session_locked && echo true || echo false)"
+    if [[ "$now_locked" != "$last_locked" ]]; then
+        log "lock changed: $last_locked -> $now_locked"
+        last_locked="$now_locked"
+        apply
+    fi
+done

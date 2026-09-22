@@ -1,0 +1,17 @@
+[Unit]
+Description=Sync cuerda LED dig2go con hub y lock de Orochimaru
+After=network-online.target
+Wants=network-online.target
+# Setup especifico de Orochimaru (hub USB en 2-1 + dig2go en la LAN)
+ConditionHost=orochimaru
+
+[Service]
+Type=simple
+ExecStart=/home/alex/.local/bin/dig2go-sync
+Restart=on-failure
+RestartSec=5
+# Omarchy/qs necesitan entorno de sesión; systemd user ya lo aporta.
+# Ojo: `omarchy-shell lock isLocked` requiere WAYLAND_DISPLAY o socket recuperable.
+
+[Install]
+WantedBy=default.target
