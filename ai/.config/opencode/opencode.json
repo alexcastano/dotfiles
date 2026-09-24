@@ -1,4 +1,114 @@
 {
   "$schema": "https://opencode.ai/config.json",
-  "autoupdate": false
+  "autoupdate": false,
+  "model": "halogen/halogen-qwen3.8-flash-next",
+  "small_model": "halogen/halogen-qwen3.8-flash-next-low",
+  "provider": {
+    "powerant": {
+      "npm": "@ai-sdk/openai-compatible",
+      "name": "Powerant (local)",
+      "options": {
+        "baseURL": "http://powerant:8000/v1",
+        "timeout": false,
+        "headerTimeout": false,
+        "chunkTimeout": 300000
+      },
+      "models": {
+        "ciru-halo-agent": {
+          "name": "Ciru Halo Agent (262K)",
+          "reasoning": true,
+          "interleaved": {
+            "field": "reasoning_content"
+          },
+          "tool_call": true,
+          "temperature": true,
+          "limit": {
+            "context": 262144,
+            "input": 229376,
+            "output": 32768
+          }
+        }
+      }
+    },
+    "halogen": {
+      "npm": "@ai-sdk/openai-compatible",
+      "name": "Halogen Flash (local)",
+      "options": {
+        "baseURL": "http://powerant:8731/v1",
+        "timeout": false,
+        "headerTimeout": false,
+        "chunkTimeout": 300000
+      },
+      "models": {
+        "halogen-qwen3.8-flash-next": {
+          "name": "Halogen Qwen3.8-Flash-Next (262K, xhigh)",
+          "reasoning": true,
+          "interleaved": {
+            "field": "reasoning_content"
+          },
+          "tool_call": true,
+          "temperature": true,
+          "limit": {
+            "context": 262144,
+            "input": 229376,
+            "output": 32768
+          },
+          "options": {
+            "reasoning_effort": "xhigh"
+          },
+          "reasoning_options": [
+            {
+              "type": "effort",
+              "values": [
+                "low",
+                "medium",
+                "xhigh"
+              ]
+            }
+          ]
+        },
+        "halogen-qwen3.8-flash-next-low": {
+          "name": "Halogen Qwen3.8-Flash-Next (262K, low)",
+          "reasoning": true,
+          "interleaved": {
+            "field": "reasoning_content"
+          },
+          "tool_call": true,
+          "temperature": true,
+          "limit": {
+            "context": 262144,
+            "input": 229376,
+            "output": 32768
+          },
+          "id": "halogen-qwen3.8-flash-next",
+          "options": {
+            "reasoning_effort": "low"
+          }
+        },
+        "halogen-qwen3.8-flash-next-medium": {
+          "name": "Halogen Qwen3.8-Flash-Next (262K, medium)",
+          "reasoning": true,
+          "interleaved": {
+            "field": "reasoning_content"
+          },
+          "tool_call": true,
+          "temperature": true,
+          "limit": {
+            "context": 262144,
+            "input": 229376,
+            "output": 32768
+          },
+          "id": "halogen-qwen3.8-flash-next",
+          "options": {
+            "reasoning_effort": "medium"
+          }
+        }
+      }
+    }
+  },
+  "compaction": {
+    "auto": true,
+    "prune": true,
+    "reserved": 32768
+  }
 }

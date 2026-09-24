@@ -11,3 +11,7 @@ ai/.config/opencode/node_modules/
 ai/.config/opencode/bun.lock
 ai/.config/opencode/bun.lockb
 ai/.config/opencode/auth.json
+ai/.config/opencode/package-lock.json
+ai/.config/opencode/*.bak
+ai/.config/opencode/*.bak.*
+ai/.config/opencode/*.bak[0-9]*
