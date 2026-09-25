@@ -230,6 +230,7 @@ To add a new webapp to your dotfiles:
 | ChatGPT | Work | chatgpt.com |
 | GitHub | Work | github.com |
 | Google Photos | Personal | photos.google.com |
+| Grok | Personal | grok.com |
 | Tailscale Admin Console | Personal | login.tailscale.com/admin/machines |
 | WhatsApp | Personal | web.whatsapp.com |
 | YouTube | Personal | youtube.com |

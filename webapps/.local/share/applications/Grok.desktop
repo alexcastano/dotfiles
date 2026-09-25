@@ -1,0 +1,9 @@
+[Desktop Entry]
+Version=1.0
+Name=Grok
+Comment=xAI Grok
+Exec=env WEBAPP_CONTEXT=Personal omarchy-launch-webapp https://grok.com/
+Terminal=false
+Type=Application
+Icon=/home/alex/.local/share/applications/icons/Grok.png
+StartupNotify=true
