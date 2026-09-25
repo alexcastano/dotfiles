@@ -2,7 +2,7 @@
 
 > **Terminada el 2026-09-21.** Queda como archivo: el *por qué* de cada decisión
 > de `hyprland/` está aquí y en ningún otro sitio. Lo que sigue abierto son
-> cuatro entradas que ya no son migración (ver [Estado final](#estado-final)).
+> seis entradas que ya no son migración (ver [Estado final](#estado-final)).
 >
 > Si vuelves a abrirlo para decidir algo, **lee "Cómo trabajamos" primero**: las
 > reglas siguen valiendo.
@@ -43,7 +43,9 @@ plantilla de quattro sin una sola línea propia.
 | TEC-2 | Reabre TEC-1: "el altgr no me acaba de convencer, vamos a volver a lo que teníamos". Es una decisión de teclado nueva, con su propia investigación ya escrita arriba |
 | VOX-7 | Consecuencia de TEC-1. Se decide cuando se decida el teclado |
 | VOX-8 | Dos fallos latentes documentados a propósito para no diagnosticarlos dos veces. No se arreglan |
-| SUN-1 | Bloqueada por REP-12, que está aparcada por decisión explícita |
+| SUN-1 | Bloqueada por REP-12 |
+| REP-12 | `~/.config/omarchy/` sin stowear. Aparcada el 2026-08-28, vuelve a pendiente el 2026-09-26: `shell.json` ya está en el repo pero desfasado y sin enlazar |
+| REP-13 | Bash de Omarchy o zsh. Hasta decidirlo, `bash/` y `shell/` no se pueden stowear y los alias propios no cargan |
 
 ### Deuda aceptada por escrito
 
@@ -652,7 +654,8 @@ tenía este bloque (MON-2, las rayas del LG) se resolvió sola: el monitor muri�
 | ✅ | REP-8 | `docs/hyprland.md` | **Reescrito entero (2026-09-21).** Describía Omarchy 3: waybar, mako, submaps, `hyprkeys`, `~/.local/share/omarchy/` y el `source =` de `hyprland.conf`. La versión nueva cuenta las tres capas de quattro (con la ruta del tema ya en `~/.local/state/`), los seis módulos Lua y qué hay en cada uno, y por qué `hyprctl binds` ya no sirve. Se conservan las dos secciones que seguían siendo ciertas y caras de reconstruir: voxtype/dotool y el DND al compartir pantalla, esta última actualizada al IPC nuevo. |
 | ✅ | REP-9 | `docs/which-key.md` | **Borrado** con WK-1, y fuera del índice de `AGENTS.md`. Archivo: `git show master:docs/which-key.md`. |
 | ✅ | REP-10 | `docs/webapps.md` | **Verificado y corregido con una nota (2026-09-21).** El documento era correcto salvo en un punto: enseñaba a poner `env WEBAPP_CONTEXT=Personal` en los `.desktop` como si hiciera falta. Tras WEB-1 se sabe que no — `zen-open-url` usa `Personal` por defecto — y que Omarchy pisa sus tres lanzadores en un upgrade mayor. Añadido eso; el resto se queda. |
-| ⏸️ | REP-12 | **`~/.config/omarchy/` no está stowed** | **Aparcada por decisión explícita (2026-08-28)**: "no quiero versionar de momento la configuración de omarchy porque todavía no entiendo cómo funciona esta versión exactamente". Se retoma cuando la barra nueva se entienda. Hallazgo del 2026-08-28 barriendo WK-1: `~/.config/omarchy/hooks/theme-set` era un fichero real, **nunca versionado**, con un `eww reload` dentro — 8 meses de deriva silenciosa, el mismo patrón que VOX-2. Y el directorio entero es real, no un symlink al repo, así que **`shell.json` (toda la config de la barra, Bloque 4) tampoco está versionado**. Choca de frente con la decisión "todo lo configurable va stowed" del 2026-08-23. Decidir qué de `~/.config/omarchy/` entra al repo. |
+| ⬜ | REP-12 | **`~/.config/omarchy/` no está stowed** | **Pasa de aparcada a pendiente (2026-09-26)** al barrer el estado de stow. Aparcada el 2026-08-28: "no quiero versionar de momento la configuración de omarchy porque todavía no entiendo cómo funciona esta versión exactamente". Hallazgo de entonces barriendo WK-1: `~/.config/omarchy/hooks/theme-set` era un fichero real, **nunca versionado**, con un `eww reload` dentro — 8 meses de deriva silenciosa, el mismo patrón que VOX-2. Choca de frente con la decisión "todo lo configurable va stowed" del 2026-08-23. **Estado al 2026-09-26**: el directorio sigue siendo real, pero ya está **medio versionado** sin que nadie lo decidiera: el paquete `omarchy/` tiene `alex.pomodoro` (enlazado, idéntico) y un `shell.json` del 14-sep que **no** está enlazado — el vivo es del 22-sep y el repo se ha quedado atrás (formato del reloj con `birthYear`/`lifeExpectancy`, el módulo `io.github.sspaeti.timezones`, `system-update` reordenado). `stow omarchy` aborta por ese choque. `dig2go/` también cuelga de aquí (`hooks/theme-set.d/dig2go-color.sh`, enlazado). **Sin versionar**: los plugins de terceros `io.github.sspaeti.timezones` y `shavanced.notification-center`, `extensions/omarchy-menu.jsonc`, `branding/`, `defaults/agent`, `hooks/post-update.d/setup-agent.hook` y tres `shell.json.bak.*`. El resto de `hooks/` son `.sample` de Omarchy. Decidir qué entra al repo; lo mínimo sería adoptar el `shell.json` vivo. |
+| ⬜ | REP-13 | **Shell: bash de Omarchy o zsh** | **Abierta el 2026-09-26**: "todavía me queda la duda de si seguir usando bash por defecto de omarchy o pasarme a zsh. Antes usaba oh my zsh, es un lío". Bloquea el stow de dos paquetes enteros, porque stow aborta el paquete completo ante un solo choque. **Hechos**: el shell de login es `/usr/bin/bash`. `~/.bashrc` es un fichero real: la plantilla de Omarchy (carga `$OMARCHY_PATH/default/bash/rc`) más `SSH_AUTH_SOCK`, `PATH=~/.local/bin`, `~/.local/bin/env` (lo añadió un instalador) y `~/.bashrc.local`. El `bash/.bashrc` del repo es de enero, anterior a Omarchy, y **no** carga el rc de Omarchy: stowearlo tal cual quitaría sus alias y funciones. `~/.zshrc` tiene 2 líneas; `shell/.zshrc` es una config de oh-my-zsh, **que no está instalado**. **Consecuencia invisible**: `~/.bash_aliases`, `~/.bash_prompt` y `~/.zsh_aliases` **no existen** y nada los carga, así que los alias que se duplican en los dos shells llevan sin aplicarse desde el upgrade. Pendiente dentro del mismo paquete: `shell/.config/tinted-theming/tinty/config.toml` solo servía para generar los colores de alacritty, que se borró el 2026-09-26. Se decide junto con esto. |
 | ✅ | REP-11 | `CLAUDE.md` | **Actualizado (2026-09-21).** La regla "NEVER modify `~/.local/share/omarchy/`" pasa a `/usr/share/omarchy/`, diciendo que es un paquete pacman y que la ruta vieja es solo un symlink de compatibilidad. Añadida una regla nueva que faltaba y que es la que más despista a un agente: **Hyprland se configura en Lua**, con el entrypoint señalado. |
 
 ---
@@ -699,8 +702,7 @@ locales antes de borrarlo).
 Verificaciones sin problema conocido: nvim (quattro trae paquete `omarchy-nvim`
 y el repo stowea su propio LazyVim — comprobar que no colisionan) ·
 `remote_clipboard.lua` (OSC 52 para tmux/SSH) · el tema actual, cuya ruta cambió
-a `~/.local/state/omarchy/current/theme` · `githooks/post-merge` ·
-`pacman/.config/pacman/makepkg.conf`.
+a `~/.local/state/omarchy/current/theme` · `githooks/post-merge`.
 
 ---
 
@@ -760,3 +762,6 @@ a `~/.local/state/omarchy/current/theme` · `githooks/post-merge` ·
 | 2026-09-21 | MON-2 | El override del LG se borra en vez de portarse a Lua | El monitor murió. Portar una línea `desc:` de un panel que ya no existe es arrastrar deuda por definición; el sustituto se configurará de cero |
 | 2026-09-13 | BND-15 | Aceptada la pérdida de "mover ventana al último escritorio" | No hay default equivalente y mantenerlo era el único motivo para conservar un binding en `SUPER+apostrophe`. Se pierde a sabiendas, no por descuido |
 | 2026-08-30 | BAR-3 | cpu/memoria/temperatura/disco aparcada ⏸️, no descartada | Es la única pérdida real y pide código nuevo; aparcarla con el motivo escrito evita que se quede en ⬜ eterna |
+| 2026-09-26 | — | Fuera del repo `ai/` (opencode, gemini), `pacman/`, `ruby/` y `shell/.config/alacritty/` | "Ya no los uso". Ninguno estaba stowed, así que los ficheros vivos no se tocaron. De paso sale de la cola del Anexo B la verificación de `makepkg.conf` |
+| 2026-09-26 | REP-12 | Vuelve de ⏸️ a ⬜ | "El shell también déjalo como tarea pendiente". El barrido de stow mostró que `shell.json` ya está en el repo pero desfasado ocho días respecto al vivo: la deriva que se temía el 2026-08-28 ya ha empezado |
+| 2026-09-26 | REP-13 | Bash o zsh queda como entrada de la migración, sin decidir | "Déjalo como parte de la migración". Stowear `bash/` o `shell/` antes sería decidir sin querer: el `.bashrc` del repo quitaría el rc de Omarchy y el `.zshrc` depende de oh-my-zsh, que no está instalado |
