@@ -7,6 +7,10 @@ local omarchy_monitor_scale = 1
 hl.env("GDK_SCALE", tostring(omarchy_gdk_scale))
 hl.monitor({ output = "", mode = "preferred", position = "auto", scale = omarchy_monitor_scale })
 
+-- AOC 32" 4K: un poco más grande que el resto. Por descripción, no por
+-- conector, para que valga sea cual sea el puerto (DP-1, DP-2...).
+hl.monitor({ output = "desc:AOC U32U3CV AUJS19A000121", mode = "preferred", position = "auto", scale = 1.25 })
+
 -- Configure a specific monitor.
 -- hl.monitor({ output = "DP-2", mode = "2560x1440@144", position = "0x0", scale = 1 })
 
