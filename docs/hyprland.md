@@ -44,7 +44,9 @@ lo que apunta `.luarc.json`.
 
 Quedan dos `.conf` en el paquete, y **ninguno es de Hyprland**:
 `hyprsunset.conf` (lo lee `nightlight-toggle`) y `xdph.conf` (lo lee el portal
-de screencast; es copia exacta del default de quattro).
+de screencast; es el default de quattro más `cursor_mode = 2`, para que el
+cursor salga al compartir pantalla en Slack — no pide `cursor_mode` y el portal
+cae a "oculto").
 
 ## Bindings
 
