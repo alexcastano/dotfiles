@@ -30,7 +30,7 @@ después los módulos propios:
 
 | Módulo | Contenido |
 |---|---|
-| `monitors.lua` | Plantilla de quattro sin cambios (`preferred/auto/1`) |
+| `monitors.lua` | Catch-all a 1 y el AOC 4K a 1.25 por descripción. El catch-all va con otra forma que la plantilla para que `SUPER+/` no lo reescriba (ver comentario en el archivo) |
 | `input.lua` | Teclado `us`+`intl` con Caps=Ctrl, y el gesto de 3 dedos |
 | `bindings.lua` | Solo dos excepciones: dictado en `SUPER+SPACE` y `SUPER+N` |
 | `looknfeel.lua` | Vacío: todo al default |
