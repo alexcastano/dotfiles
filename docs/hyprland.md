@@ -31,7 +31,7 @@ después los módulos propios:
 | Módulo | Contenido |
 |---|---|
 | `global-workspaces.lua` | Escritorios 1-10 globales en vez de por monitor (deshace el default de 4.5, ver abajo). Va justo después de los defaults |
-| `monitors.lua` | Catch-all a 1 y el AOC 4K a 1.25 por descripción. El catch-all va con otra forma que la plantilla para que `SUPER+/` no lo reescriba (ver comentario en el archivo) |
+| `monitors.lua` | Catch-all a 1 y el AOC 4K a 1.25 por descripción. El catch-all va con otra forma que la plantilla para que `SUPER+/` no lo reescriba, y con `scale = tonumber("1")` para que el clamshell de Omarchy no devuelva el portátil a 1 cada 2 s estando acoplado (ver comentario en el archivo) |
 | `input.lua` | Teclado `us`(`altgr-intl`) + `es` (`SUPER+I` alterna) con Caps=Ctrl, y el gesto de 3 dedos |
 | `bindings.lua` | Excepciones propias (`SUPER+N`, F8, AltGr+7/8/9…). El dictado usa los atajos de Omarchy |
 | `looknfeel.lua` | Vacío: todo al default |
