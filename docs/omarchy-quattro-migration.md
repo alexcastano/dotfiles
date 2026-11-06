@@ -7,7 +7,7 @@
 > Si vuelves a abrirlo para decidir algo, **lee "Cómo trabajamos" primero**: las
 > reglas siguen valiendo.
 
-- **Rama**: `quattro` · **Rollback**: `master` (último Omarchy 3 funcionando)
+- **Rama**: `quattro`, mergeada en `master` el 2026-11-06 · **Rollback**: tag `omarchy-3` (último Omarchy 3 funcionando)
 - **Punto de partida**: snapshot del working tree tras `omarchy-upgrade-to-quattro` (2026-08-22)
 - **Versiones**: Omarchy 4.0.0.alpha · Hyprland 0.56.2
 
@@ -91,7 +91,7 @@ Estas reglas se acordaron explícitamente. No se cambian sin volver a hablarlo.
 7. **Escribir código nuevo está permitido.** Si al revisar una entrada resulta
    que hace falta un plugin de la barra o reescribir un script, se hace aquí.
 8. **Los `.conf` muertos se borran en el commit de su propia entrada.** Nada de
-   arrastrarlos "por si acaso": `git show master:<ruta>` es el archivo.
+   arrastrarlos "por si acaso": `git show omarchy-3:<ruta>` es el archivo.
 9. **Esto acaba cuando el escritorio se siente mío.** No hace falta agotar la
    lista. Lo que quede sin revisar se abandona sin culpa — por eso el orden
    importa, y por eso la cola está marcada como tal en el [Anexo B](#anexo-b--la-cola-probablemente-nunca).
@@ -307,7 +307,7 @@ tenerlos, y `bt-toggle` no tiene sustituto en quattro.
 
 | St. | ID | Entrada | Decisión |
 |---|---|---|---|
-| ⏭️ | BT-1 | Submap `bluetooth` (`SUPER+B`) | **Descartado.** 6 dispositivos por MAC + desconectar + toggle de micro. `SUPER+B` estaba libre y `hl.define_submap` existía, así que era migrable — pero el panel de serie basta. `submaps/bluetooth.conf` borrado y su `source =` fuera de `submaps.conf`. Archivo: `git show master:hyprland/.config/hypr/submaps/bluetooth.conf`. **Arrastra a WK-1.** |
+| ⏭️ | BT-1 | Submap `bluetooth` (`SUPER+B`) | **Descartado.** 6 dispositivos por MAC + desconectar + toggle de micro. `SUPER+B` estaba libre y `hl.define_submap` existía, así que era migrable — pero el panel de serie basta. `submaps/bluetooth.conf` borrado y su `source =` fuera de `submaps.conf`. Archivo: `git show omarchy-3:hyprland/.config/hypr/submaps/bluetooth.conf`. **Arrastra a WK-1.** |
 | ✅ | BT-2 | `bin/.local/bin/bt` | **Se queda.** Arranca el servicio, `rfkill unblock`, `bluetoothctl connect <MAC>` por alias. Se conserva "por si acaso": ya no lo llama ningún binding, pero desde la terminal sigue valiendo. Sustituto de Omarchy si algún día se quiere simplificar: `omarchy-bluetooth-device connect <MAC>`, que hace lo mismo mejor (enciende vía `omarchy-bluetooth-power`, que sí levanta el rfkill soft block — `bluetoothctl power on` a secas falla ahí —, además de `trust` y `timeout 20s`). Tenía un `pkill -RTMIN+10 i3blocks` muerto al final; **eliminado el 2026-08-28** al borrar `i3/` (REP-6), rectificando la decisión previa de no tocar el script. |
 | ✅ | BT-3 | `bin/.local/bin/bt-toggle` | **Se queda.** Alterna el perfil de la tarjeta A2DP ↔ HFP para usar el micro del auricular. **No hay equivalente en quattro**: los `omarchy-audio-*` son sink/source/volumen/mute, ninguno toca el perfil de la tarjeta. Único cambio: fuera el `pkill -RTMIN+10 i3blocks` del final. |
 | ⏭️ | BT-4 | Módulo `bluetooth` de waybar | **Sin objeto.** waybar se borró en BAR-12; `omarchy.bluetooth` ya está en `shell.json` y el usuario lo da por bueno. |
@@ -348,7 +348,7 @@ o.window("Spotify", { workspace = "10 silent" })
 `silent` se conserva tal cual dentro de la cadena — es el mismo patrón que usa
 Omarchy de serie en `default/hypr/apps/browser.lua`. `windowrules.conf`
 borrado, más su `source =` en `hyprland.conf` (regla 8). Archivo:
-`git show master:hyprland/.config/hypr/windowrules.conf`. **Bloque cerrado.**
+`git show omarchy-3:hyprland/.config/hypr/windowrules.conf`. **Bloque cerrado.**
 
 ## Bloque 4 — La barra (waybar → omarchy-shell) ✅ CERRADO
 
@@ -358,7 +358,7 @@ sobre **quickshell** (Qt/QML) y configurado en `~/.config/omarchy/shell.json`.
 Otros autores, otro lenguaje, otro formato: no hay nada que "traducir".
 
 `hyprland/.config/waybar/` **se borró el 2026-08-24** (BAR-12). El archivo es
-`git show master:hyprland/.config/waybar/config.jsonc`, y este resumen existe
+`git show omarchy-3:hyprland/.config/waybar/config.jsonc`, y este resumen existe
 para no tener que ir a buscarlo.
 
 ### Lo que era mío de verdad
@@ -525,7 +525,7 @@ borrados, más su `source =` en `hyprland.conf`. **Bloque cerrado.**
 | St. | ID | Entrada | Nota |
 |---|---|---|---|
 | ⏭️ | WK-1 | ¿Se sigue queriendo which-key? | **Descartado el 2026-08-28**, arrastrado por BT-1: el submap de bluetooth era el que lo justificaba y se fue. `eww` desinstalado el mismo día (no tenía dependencias inversas y no estaba corriendo). Barrido completo el mismo día. |
-| ✅ | WK-2 | `eww/which-key-daemon.sh` | **Borrado.** Escuchaba el evento `submap` por socket con `socat` y parseaba `hyprctl binds`. Archivo: `git show master:hyprland/.config/eww/which-key-daemon.sh`. |
+| ✅ | WK-2 | `eww/which-key-daemon.sh` | **Borrado.** Escuchaba el evento `submap` por socket con `socat` y parseaba `hyprctl binds`. Archivo: `git show omarchy-3:hyprland/.config/eww/which-key-daemon.sh`. |
 | ⏭️ | WK-3 | Parseo de `hyprctl binds` | Sin objeto tras WK-1: se va con el daemon. Se deja la nota por si algún día se parsean bindings otra vez.  **Resuelto como hecho**: `-j` vuelve a dar JSON válido en 0.56.2 y 226/228 binds conservan `description`. El hack de `8acedd6` se puede tirar. |
 | ⏭️ | WK-4 | Color del borde del popup | Sin objeto tras WK-1: no hay popup.  Salía de `~/.config/omarchy/current/theme/swayosd.css`. swayosd no existe y la ruta del tema cambió a `~/.local/state/omarchy/current`. Buscar equivalente. |
 | ✅ | WK-5 | `eww/eww.yuck`, `eww/eww.scss` | **Borrados** con el resto de `hyprland/.config/eww/`, que ya no existe. |
@@ -621,7 +621,7 @@ tenía este bloque (MON-2, las rayas del LG) se resolvió sola: el monitor muri�
 | St. | ID | Entrada | Nota |
 |---|---|---|---|
 | ✅ | MON-1 | `GDK_SCALE=1` + `monitor=,preferred,auto,1` | **Nada que hacer (2026-09-21)**: `monitors.lua` ya trae exactamente eso de plantilla. |
-| ⏭️ | MON-2 | Override del LG UltraGear a `2560x1440@120` | **Descartada: el monitor se murió (2026-09-21).** El panel ya no arranca, así que el workaround de las rayas negras se va con él. Bloque borrado de `monitors.conf`; cuando llegue el sustituto se configura de cero, sin arrastrar el `desc:` del viejo. Archivo: `git show master:hyprland/.config/hypr/monitors.conf`. |
+| ⏭️ | MON-2 | Override del LG UltraGear a `2560x1440@120` | **Descartada: el monitor se murió (2026-09-21).** El panel ya no arranca, así que el workaround de las rayas negras se va con él. Bloque borrado de `monitors.conf`; cuando llegue el sustituto se configura de cero, sin arrastrar el `desc:` del viejo. Archivo: `git show omarchy-3:hyprland/.config/hypr/monitors.conf`. |
 | ⏭️ | MON-3 | ARZOPA portátil en `auto-left` | **Descartada (2026-09-21)**: "no la estoy usando". Se borra con `monitors.conf`; si vuelve, `position = "auto-left"` es una línea. |
 | ✅ | MON-4 | `decoration.rounding = 8` | **Default (2026-09-21).** Un mes con el `rounding` de quattro (0) sin echarlo de menos. `looknfeel.conf` borrado; `looknfeel.lua` se queda con la plantilla comentada. |
 | ✅ | AUT-1 | `exec-once = hyprsunset` | **Se borra sin sustituto (2026-09-21)**: lo arranca Omarchy. `hyprsunset.conf` sí se queda, que es de donde `nightlight-toggle` lee la temperatura (REP-3). |
@@ -652,7 +652,7 @@ tenía este bloque (MON-2, las rayas del LG) se resolvió sola: el monitor muri�
 | ✅ | REP-6 | **`i3/` (45 ficheros)** | **Borrado (2026-08-28)**. No solo i3+i3blocks: el directorio guardaba también `.config/polybar/` (6 ficheros) y `.config/rofi/` + `.local/share/rofi/themes/` (8), igual de muertos — **rofi tampoco está instalado** y quattro lanza `omarchy-launch-walker`. Verificado antes de borrar: nada stowed (`~/.config/{i3,rofi,polybar}` no existían), ningún paquete instalado, todo X11 (`xss-lock`, `xinput`, `setxkbmap`, `feh`, `xset dpms`, `dex --environment i3`), y las `APIKEY` de `openweather` eran placeholders literales. Recuperable en `git show 22e4155:i3/…`. Arrastró: sección "i3blocks Scripts" y comandos de *Testing* de `AGENTS.md`, y en `install-hyprland.sh` el paquete `rofi-wayland` más 5 líneas de comentarios de un agente preguntándose dónde vivía la config de rofi. Y se llevó por delante el `pkill -RTMIN+10 i3blocks` muerto de `bin/.local/bin/bt`, que BT-2 había dejado a propósito. |
 | ⏭️ | REP-7 | `install-hyprland.sh` | **Borrado (2026-09-21)**, no reescrito. Instalaba `hypridle`, `hyprlock`, `waybar`, `mako`, `swayosd-git` y clonaba omarchy a mano: obsoleto de arriba abajo. **Deuda aceptada a sabiendas**: los tres pasos manuales de una máquina nueva (`pacman -S dotool`, `usermod -aG input $USER`, re-login) se quedan sin sitio ejecutable; están escritos en VOX-6 y nada más. |
 | ✅ | REP-8 | `docs/hyprland.md` | **Reescrito entero (2026-09-21).** Describía Omarchy 3: waybar, mako, submaps, `hyprkeys`, `~/.local/share/omarchy/` y el `source =` de `hyprland.conf`. La versión nueva cuenta las tres capas de quattro (con la ruta del tema ya en `~/.local/state/`), los seis módulos Lua y qué hay en cada uno, y por qué `hyprctl binds` ya no sirve. Se conservan las dos secciones que seguían siendo ciertas y caras de reconstruir: voxtype/dotool y el DND al compartir pantalla, esta última actualizada al IPC nuevo. |
-| ✅ | REP-9 | `docs/which-key.md` | **Borrado** con WK-1, y fuera del índice de `AGENTS.md`. Archivo: `git show master:docs/which-key.md`. |
+| ✅ | REP-9 | `docs/which-key.md` | **Borrado** con WK-1, y fuera del índice de `AGENTS.md`. Archivo: `git show omarchy-3:docs/which-key.md`. |
 | ✅ | REP-10 | `docs/webapps.md` | **Verificado y corregido con una nota (2026-09-21).** El documento era correcto salvo en un punto: enseñaba a poner `env WEBAPP_CONTEXT=Personal` en los `.desktop` como si hiciera falta. Tras WEB-1 se sabe que no — `zen-open-url` usa `Personal` por defecto — y que Omarchy pisa sus tres lanzadores en un upgrade mayor. Añadido eso; el resto se queda. |
 | ⬜ | REP-12 | **`~/.config/omarchy/` no está stowed** | **Pasa de aparcada a pendiente (2026-09-26)** al barrer el estado de stow. Aparcada el 2026-08-28: "no quiero versionar de momento la configuración de omarchy porque todavía no entiendo cómo funciona esta versión exactamente". Hallazgo de entonces barriendo WK-1: `~/.config/omarchy/hooks/theme-set` era un fichero real, **nunca versionado**, con un `eww reload` dentro — 8 meses de deriva silenciosa, el mismo patrón que VOX-2. Choca de frente con la decisión "todo lo configurable va stowed" del 2026-08-23. **Estado al 2026-09-26**: el directorio sigue siendo real, pero ya está **medio versionado** sin que nadie lo decidiera: el paquete `omarchy/` tiene `alex.pomodoro` (enlazado, idéntico) y un `shell.json` del 14-sep que **no** está enlazado — el vivo es del 22-sep y el repo se ha quedado atrás (formato del reloj con `birthYear`/`lifeExpectancy`, el módulo `io.github.sspaeti.timezones`, `system-update` reordenado). `stow omarchy` aborta por ese choque. `dig2go/` también cuelga de aquí (`hooks/theme-set.d/dig2go-color.sh`, enlazado). **Sin versionar**: los plugins de terceros `io.github.sspaeti.timezones` y `shavanced.notification-center`, `extensions/omarchy-menu.jsonc`, `branding/`, `defaults/agent`, `hooks/post-update.d/setup-agent.hook` y tres `shell.json.bak.*`. El resto de `hooks/` son `.sample` de Omarchy. Decidir qué entra al repo; lo mínimo sería adoptar el `shell.json` vivo. |
 | ⬜ | REP-13 | **Shell: bash de Omarchy o zsh** | **Abierta el 2026-09-26**: "todavía me queda la duda de si seguir usando bash por defecto de omarchy o pasarme a zsh. Antes usaba oh my zsh, es un lío". Bloquea el stow de dos paquetes enteros, porque stow aborta el paquete completo ante un solo choque. **Hechos**: el shell de login es `/usr/bin/bash`. `~/.bashrc` es un fichero real: la plantilla de Omarchy (carga `$OMARCHY_PATH/default/bash/rc`) más `SSH_AUTH_SOCK`, `PATH=~/.local/bin`, `~/.local/bin/env` (lo añadió un instalador) y `~/.bashrc.local`. El `bash/.bashrc` del repo es de enero, anterior a Omarchy, y **no** carga el rc de Omarchy: stowearlo tal cual quitaría sus alias y funciones. `~/.zshrc` tiene 2 líneas; `shell/.zshrc` es una config de oh-my-zsh, **que no está instalado**. **Consecuencia invisible**: `~/.bash_aliases`, `~/.bash_prompt` y `~/.zsh_aliases` **no existen** y nada los carga, así que los alias que se duplican en los dos shells llevan sin aplicarse desde el upgrade. Pendiente dentro del mismo paquete: `shell/.config/tinted-theming/tinty/config.toml` solo servía para generar los colores de alacritty, que se borró el 2026-09-26. Se decide junto con esto. |
@@ -765,3 +765,4 @@ a `~/.local/state/omarchy/current/theme` · `githooks/post-merge`.
 | 2026-09-26 | — | Fuera del repo `ai/` (opencode, gemini), `pacman/`, `ruby/` y `shell/.config/alacritty/` | "Ya no los uso". Ninguno estaba stowed, así que los ficheros vivos no se tocaron. De paso sale de la cola del Anexo B la verificación de `makepkg.conf` |
 | 2026-09-26 | REP-12 | Vuelve de ⏸️ a ⬜ | "El shell también déjalo como tarea pendiente". El barrido de stow mostró que `shell.json` ya está en el repo pero desfasado ocho días respecto al vivo: la deriva que se temía el 2026-08-28 ya ha empezado |
 | 2026-09-26 | REP-13 | Bash o zsh queda como entrada de la migración, sin decidir | "Déjalo como parte de la migración". Stowear `bash/` o `shell/` antes sería decidir sin querer: el `.bashrc` del repo quitaría el rc de Omarchy y el `.zshrc` depende de oh-my-zsh, que no está instalado |
+| 2026-11-06 | — | `quattro` se mergea en `master`; el Omarchy 3 queda en el tag `omarchy-3` | Ninguna máquina sigue en Omarchy 3, y el tag conserva el rollback y los `git show omarchy-3:<ruta>` del archivo |
