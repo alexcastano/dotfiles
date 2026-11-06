@@ -30,12 +30,13 @@ después los módulos propios:
 
 | Módulo | Contenido |
 |---|---|
+| `global-workspaces.lua` | Escritorios 1-10 globales en vez de por monitor (deshace el default de 4.5, ver abajo). Va justo después de los defaults |
 | `monitors.lua` | Catch-all a 1 y el AOC 4K a 1.25 por descripción. El catch-all va con otra forma que la plantilla para que `SUPER+/` no lo reescriba (ver comentario en el archivo) |
 | `input.lua` | Teclado `us`(`altgr-intl`) + `es` (`SUPER+I` alterna) con Caps=Ctrl, y el gesto de 3 dedos |
 | `bindings.lua` | Excepciones propias (`SUPER+N`, F8, AltGr+7/8/9…). El dictado usa los atajos de Omarchy |
 | `looknfeel.lua` | Vacío: todo al default |
 | `autostart.lua` | `screencast-dnd` |
-| `windowrules.lua` | Apps fijadas a su escritorio (Spotify→10, Slack→9…) |
+| `windowrules.lua` | Apps fijadas a su escritorio (Spotify→10, Slack→9…). Los números son ids **globales**: solo valen gracias a `global-workspaces.lua` |
 
 Dos globales en cualquiera de ellos: **`hl`** (API de Hyprland) y **`o`**
 (helpers de Omarchy, en `/usr/share/omarchy/default/hypr/helpers.lua`).
@@ -88,6 +89,39 @@ Corre como servicio de usuario y transcribe contra el `whisper.cpp` remoto de
 - dotool no lee el layout activo del compositor: `dotool_xkb_layout` y
   `dotool_xkb_variant` tienen que seguir al primer layout de `input.lua` (hoy `us` / `altgr-intl`).
 
+## Escritorios: globales, no por monitor
+
+Omarchy 4.5 hizo los escritorios **por monitor** (`default/hypr/monitor-workspaces.lua`):
+cada monitor físico (por marca, modelo y serie) tiene un bloque de diez ids
+—portátil 1-10, AOC 11-20— y la barra los muestra como 1-10. Al quitar un
+monitor, sus escritorios pasan como "invitados" al otro, se renumeran y vuelven
+cuando regresa.
+
+Aquí se usa **una sola pantalla cada vez** (portátil abierto, o cerrado con el
+AOC), así que eso solo daba problemas: escritorios que cambiaban de número,
+"invitados" a la derecha en la barra, y `windowrules.lua` mandando ventanas al
+bloque del portátil. Ejemplo: los menús de Bambu Studio (XWayland, misma clase
+que la ventana principal) acababan en un segundo "4".
+
+`global-workspaces.lua` vuelve al modelo de antes:
+
+- `o.workspaces.workspace_id` devuelve el número tal cual, así que `SUPER+N` y la
+  barra van al escritorio global N. Los bindings son los de Omarchy, sin tocar.
+- `o.workspaces.reconcile` no hace nada, así que ya no se renumera al arrancar,
+  al recargar ni al (des)conectar.
+- Vacía `~/.local/state/omarchy/monitor-workspaces`, de donde la barra saca el
+  bloque de cada monitor, y borra `monitor-workspaces-merged`.
+
+Funciona porque Omarchy busca esas funciones en `o.workspaces` **al llamarlas**,
+no al cargar. Si un update las renombra, no se rompe nada: se vuelve al modo por
+monitor, y la señal es ver escritorios 11-20 con el AOC.
+
+**Pendiente upstream**: la PR [omacom/omarchy#16213](https://github.com/omacom/omarchy/pull/16213)
+añade `omarchy toggle monitor-workspaces off`, y este módulo replica su modo
+apagado. Cuando se fusione: borrar el módulo y su `require`, y usar el toggle.
+Relacionados: #16328 (renumerado tras un microcorte del monitor), #16679
+(diálogos en el monitor con foco), #17063 y #17549 (el módulo con Hyprland 0.57).
+
 ## DND al compartir pantalla
 
 `~/.config/hypr/scripts/screencast-dnd` silencia las notificaciones mientras
@@ -111,6 +145,7 @@ hyprland/
     │   ├── hyprland.lua              # entrypoint
     │   ├── monitors.lua  input.lua  bindings.lua
     │   ├── looknfeel.lua  autostart.lua  windowrules.lua
+    │   ├── global-workspaces.lua     # escritorios globales (deshace el por-monitor de 4.5)
     │   ├── hyprsunset.conf  xdph.conf
     │   ├── .luarc.json               # stubs de tipos para el editor
     │   └── scripts/screencast-dnd

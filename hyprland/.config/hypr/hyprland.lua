@@ -16,6 +16,9 @@ require("default.hypr.omarchy")
 -- Put your personal overrides in these files. They're loaded after Omarchy's
 -- defaults so package updates can improve the defaults without rewriting your
 -- ~/.config/hypr files.
+-- Escritorios 1-10 globales, no por monitor (deshace el default de Omarchy 4.5;
+-- el porqué, en el propio archivo).
+require("hypr.global-workspaces")
 require("hypr.monitors")
 require("hypr.input")
 require("hypr.bindings")
