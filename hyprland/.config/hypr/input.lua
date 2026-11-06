@@ -3,17 +3,18 @@
 -- touchpad.scroll_factor 0.4, scroll_touchpad de terminales... ya coinciden
 -- con lo que tenía, así que no hace falta repetirlo).
 
--- Teclado: `us` con variante `intl` — **en prueba (TEC-8, 2026-09-21)**: se
--- vuelve a las teclas muertas a ver si el acento cae donde toca. El español se
--- escribe sin cambiar de layout, y ahora de dos maneras:
+-- Teclado: `us` con variante `altgr-intl` (de vuelta tras TEC-8, 2026-10-01:
+-- las teclas muertas de `intl` resultaron insufribles). `' " ` ~` son literales
+-- y el español se escribe con AltGr, sin cambiar de layout:
 --
---   `'` + a = á     (tecla muerta: pulsar y soltar, sin mantener nada)
---   AltGr+a = á     (sigue estando, como antes)
---   AltGr+n = ñ     AltGr+/ = ¿     AltGr+Shift+1 = ¡
+--   AltGr+a = á     AltGr+n = ñ     AltGr+/ = ¿     AltGr+Shift+1 = ¡
 --
--- Coste de `intl` frente a `altgr-intl`: `' " ` ~` pasan a ser teclas muertas.
--- Para el literal, AltGr+la tecla, o la tecla + espacio. Es lo que duele al
--- escribir código, y es justo lo que hay que ver en esta prueba.
+-- Segundo layout `es` (2026-11-06), para escribir español como antes de
+-- quattro. SUPER+I alterna (es el atajo de Omarchy: omarchy-input-method cycle
+-- recorre los layouts de Hyprland). `us` tiene que ir primero: dotool crea un
+-- teclado virtual nuevo cada vez que escribe y Hyprland le da el primer layout,
+-- que es el que voxtype/config.toml le dice a dotool. Por eso el dictado
+-- funciona aunque tengas `es` activo.
 --
 -- Caps Lock = Ctrl. Ctrl derecho = Compose. AltGr (Alt derecho) sigue siendo
 -- ISO_Level3_Shift, así que los AltGr+7/8/9 de multimedia (MOD5+code:16/17/18
@@ -27,8 +28,8 @@
 -- sección "Investigación cerrada: el teclado" y la entrada TEC-8.
 hl.config({
   input = {
-    kb_layout = "us",
-    kb_variant = "intl",
+    kb_layout = "us,es",
+    kb_variant = "altgr-intl,",
     kb_options = "ctrl:nocaps,compose:rctrl,shift:both_capslock_cancel",
   },
 })

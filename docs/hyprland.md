@@ -31,7 +31,7 @@ después los módulos propios:
 | Módulo | Contenido |
 |---|---|
 | `monitors.lua` | Catch-all a 1 y el AOC 4K a 1.25 por descripción. El catch-all va con otra forma que la plantilla para que `SUPER+/` no lo reescriba (ver comentario en el archivo) |
-| `input.lua` | Teclado `us`+`intl` con Caps=Ctrl, y el gesto de 3 dedos |
+| `input.lua` | Teclado `us`(`altgr-intl`) + `es` (`SUPER+I` alterna) con Caps=Ctrl, y el gesto de 3 dedos |
 | `bindings.lua` | Solo dos excepciones: dictado en `SUPER+SPACE` y `SUPER+N` |
 | `looknfeel.lua` | Vacío: todo al default |
 | `autostart.lua` | `screencast-dnd` |
@@ -86,7 +86,7 @@ Corre como servicio de usuario y transcribe contra el `whisper.cpp` remoto de
   dictado sigue escribiendo, solo que con los acentos rotos en Electron.
   El precio: `input` da lectura de todos los dispositivos de entrada.
 - dotool no lee el layout activo del compositor: `dotool_xkb_layout` y
-  `dotool_xkb_variant` tienen que seguir a `input.lua` (hoy `us` / `intl`).
+  `dotool_xkb_variant` tienen que seguir al primer layout de `input.lua` (hoy `us` / `altgr-intl`).
 
 ## DND al compartir pantalla
 
