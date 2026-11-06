@@ -27,7 +27,7 @@ device = "default"
 sample_rate = 16000
 
 # Maximum recording duration in seconds (safety limit)
-max_duration_secs = 60
+max_duration_secs = 300
 
 # [audio.feedback]
 # Enable audio feedback sounds (beeps when recording starts/stops)
@@ -165,7 +165,7 @@ on_transcription = false
 [meeting]
 # Modo reunión: grabación larga troceada en chunks, transcrita una a una y
 # cosida en un transcript continuo con timestamps. Nada que ver con el dictado:
-# el dictado tiene max_duration_secs = 60, esto llega a max_duration_mins = 180.
+# el dictado tiene max_duration_secs = 300, esto llega a max_duration_mins = 180.
 # Se arranca y se para con F8 (voxtype-meeting-toggle). No hay activación por
 # voz: no existe ninguna frase gatillo en el binario, es start/stop explícito.
 #
