@@ -123,9 +123,10 @@ paste_keys = "shift+insert"
 restore_clipboard = true
 restore_clipboard_delay_ms = 200
 
-# El PTT es SUPER+SPACE: sin esto lo que se teclea se mezcla con el SUPER que
-# todavía tienes apretado y salen chords en vez de texto. El precio es que si
-# no sueltas SUPER no aparece nada — es espera, no un fallo.
+# El atajo de dictado lleva modificador (ALT+SPACE): sin esto
+# lo que se teclea se mezcla con el modificador que todavía tienes apretado y
+# salen chords en vez de texto. El precio es que si no lo sueltas no aparece
+# nada — es espera, no un fallo.
 wait_for_modifier_release = true
 
 # Post-processing command (optional)

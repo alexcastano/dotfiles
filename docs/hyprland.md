@@ -32,7 +32,7 @@ después los módulos propios:
 |---|---|
 | `monitors.lua` | Catch-all a 1 y el AOC 4K a 1.25 por descripción. El catch-all va con otra forma que la plantilla para que `SUPER+/` no lo reescriba (ver comentario en el archivo) |
 | `input.lua` | Teclado `us`(`altgr-intl`) + `es` (`SUPER+I` alterna) con Caps=Ctrl, y el gesto de 3 dedos |
-| `bindings.lua` | Solo dos excepciones: dictado en `SUPER+SPACE` y `SUPER+N` |
+| `bindings.lua` | Excepciones propias (`SUPER+N`, F8, AltGr+7/8/9…). El dictado usa los atajos de Omarchy |
 | `looknfeel.lua` | Vacío: todo al default |
 | `autostart.lua` | `screencast-dnd` |
 | `windowrules.lua` | Apps fijadas a su escritorio (Spotify→10, Slack→9…) |
